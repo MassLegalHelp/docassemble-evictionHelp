@@ -1,0 +1,106 @@
+sections:
+  - Introduction
+  - Basic Information
+  - Your case
+---
+features:
+  navigation: True
+  progress bar: True
+---
+include:
+  - basic-questions.yml
+  - docassemble.CountySelect:counties.yml
+---
+objects:
+  - client: Individual
+  - landlord: Individual
+---
+mandatory: True
+code: |
+  city = "Boston"
+  need(has_seen_introduction)
+  if client_understands:
+    need(user_seen_basic_info, client.name.first, county, landlord.name.first)
+    need(review_basic_info)
+    need(user_seen_form_info)
+  else:
+    need(client_kicked_out)
+---
+question: |
+  Introduction
+subquestion: |
+  This interview is designed to [TODO].
+  By the end of this interview, you should have have a form which you could use to negotiate with your landlord.
+field: has_seen_introduction
+section: Introduction
+---
+question: |
+  Notice
+subquestion:
+  This interview does **not** constitute legal advice. The form you may receive is intended to help negotiations and is not final.
+  Do you understand?
+yesnomaybe: client_understands
+---
+question: |
+  About you
+subquestion: |
+  Before determining the best form for you, I would like to ask some basic information about your case.
+field: user_seen_basic_info
+section: Basic Information
+---
+question: |
+  Finding the appropriate form
+subquestion: |
+  Welcome ${ client.name }. We will now ask a few questions to determine the best form for you.
+field: user_seen_form_info
+section: Your case
+---
+generic object: Individual
+question: |
+  What is ${ x.object_possessive('name') }?
+fields:
+  - First Name: x.name.first
+    default: ${ x.first_name_hint() }
+  - Middle Name: x.name.middle
+    required: False
+  - Last Name: x.name.last
+    default: ${ x.last_name_hint() }
+  - Suffix: x.name.suffix
+    required: False
+    code: |
+      name_suffix()
+---
+question: |
+  Review your answers
+review:
+  - note: |
+      #### Your information
+  - Change your name: client.name.first
+    help: |
+      You said your name was **${ client.name }**
+  - Revisit county: county
+    button: |
+      You said you live in ${ city.capitalize() }, which is in ${ county } County.
+  - note: |
+      #### Your landlord's information
+  - Change your landlord's name: landlord.name.first
+    help: |
+      You said your landlord's name was **${ landlord.name }**
+field: review_basic_info
+---
+event: client_kicked_out
+progress: 100
+question: |
+  Sorry, you cannot proceed with the interview.
+subquestion: |
+  You can only proceed with the interview if you agree that your
+  completion of the interview does not create an attorney-client
+  relationship.
+
+  % if client_understands is None:
+  Contact these people for help
+  % endif
+decoration: exit
+buttons:
+  - Exit: exit
+  - Restart: restart
