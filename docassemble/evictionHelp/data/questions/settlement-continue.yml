@@ -1,0 +1,89 @@
+modules: 
+  - docassemble.base.util
+---
+code: |
+  seen_continue_introduction
+  reschedule_date
+  filer_name = ""
+  if reschedule_reason == "hearing":
+    motions = ["", ""]
+    motions[0 if filer else 1] = motion
+    filer_name = "tenant" if filer else "landlord"
+  reschedule_objective
+  got_continue_form
+  continue_form_complete = True
+reconsider: True
+---
+question: |
+  You are filling out the <b>Stipulation to continue</b> Form.
+subquestion: |
+  This form is can be used to reschedule you case and give time to resolve issues. 
+  If this sounds like what you would like to do, press continue.
+field: seen_continue_introduction
+---
+question: |
+  When is the rescheduled hearing? 
+fields:
+  - Date: reschedule_date
+    datatype: date
+    default: |
+      ${ format_date(today(), format="yyyy-MM-dd") }
+    min: |
+      ${ today() }
+  - Time: reschedule_time
+    datatype: time
+    default: |
+      ${ format_time(current_datetime(), format="HH:mm") }
+---
+question: |
+  Why would you like to reschedule?
+field: reschedule_reason
+choices:
+  - I want to up a court review date: status
+  - My landlord or I have filed a motion and would like to schedule a hearing: hearing
+  - I want to reschedule the trial: trial
+---
+question: |
+  Are you filing the motion?
+fields: 
+  - no label: filer
+    datatype: yesnoradio
+  - What is the motion?: motion
+    required: false
+---
+question: |
+  What would you and your landlord want to happen between now and the next court date?
+fields:
+  - no label: reschedule_objective
+    datatype: area
+  - note: |
+      Please be warned, there is a limit to the number of characters (roughly 400)
+---
+question: |
+  Here is your form
+field: got_continue_form
+attachment:
+  name: Stipulation to Continue
+  filename: stipulation-to-continue
+  pdf template file: stipulation_to_continue.pdf
+  fields: 
+    - county: |
+        ${ county }
+    - plaintiff_landlord: |
+        ${ landlord.name }
+    - defendant_tenant: |
+        ${ client.name }
+    - hearing_date: |
+        ${ reschedule_date }
+    - hearing_time: |
+        ${ format_time(reschedule_time) }
+    - case_reason: |
+        ${ reschedule_reason }
+    - motion_box: |
+        ${ filer_name }
+    - tenant_defendant_motion: |
+        ${ motions[0] }
+    - landlord_plaintiff_motion: |
+        ${ motions[1] }        
+    - agree_text: |
+        ${ reschedule_objective }

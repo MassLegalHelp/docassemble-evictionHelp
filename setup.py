@@ -47,7 +47,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
 setup(name='docassemble.evictionHelp',
       version='0.0.1',
       description=('A docassemble extension.'),
-      long_description=u'# docassemble.evictionHelp\n\nA docassemble extension.\n\n## Author\n\nKendall Garner, garner.k@outlook.com\n\n',
+      long_description='# docassemble.evictionHelp\r\n\r\nA docassemble extension.\r\n\r\n## Author\r\n\r\nKendall Garner, garner.k@outlook.com\r\n\r\n',
       long_description_content_type='text/markdown',
       author='Kendall Garner',
       author_email='garner.k@outlook.com',
