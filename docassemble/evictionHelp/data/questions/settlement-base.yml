@@ -1,6 +1,10 @@
 sections:
   - Introduction
-  - Basic Information
+  - Basic Information:
+    - Name
+    - County
+    - Landlord
+    - Review
   - Your case
 ---
 features:
@@ -9,20 +13,44 @@ features:
 ---
 include:
   - basic-questions.yml
-  - docassemble.CountySelect:counties.yml
+  - counties.yml
+  - settlement-continue.yml
 ---
 objects:
   - client: Individual
   - landlord: Individual
 ---
-mandatory: True
+terms:
+  Stipulation to continue: |
+    You can use this form to reschedule your case and give time to resolve issues
+  Stipulation to reinstate tenancy: |
+    You can use this form to stay in your home, provided you do the things you agree to do in the form.
+  Stipulation to vacate: |
+    You can use this form if you are prepared to move. 
+    You can can use it to negotiate a reasonable amount of time to move, a reference for your next apartment search, and money to help you move.
+---  
+modules:
+  - docassemble.base.util
+---
+initial: True
 code: |
-  city = "Boston"
+  process_action()
+---
+mandatory: True
+code: |    
   need(has_seen_introduction)
   if client_understands:
-    need(user_seen_basic_info, client.name.first, county, landlord.name.first)
-    need(review_basic_info)
-    need(user_seen_form_info)
+    user_seen_basic_info
+    nav.set_section('Name')
+    client.name.first
+    nav.set_section('County')
+    county
+    nav.set_section('Landlord')
+    landlord.name.first
+    nav.set_section('Review')
+    review_basic_info
+    nav.set_section('Your case')
+    user_seen_form_info
   else:
     need(client_kicked_out)
 ---
@@ -53,7 +81,86 @@ question: |
 subquestion: |
   Welcome ${ client.name }. We will now ask a few questions to determine the best form for you.
 field: user_seen_form_info
-section: Your case
+---
+question: |
+  Would you like to reschedule your case?
+yesnomaybe: reschedule
+help: |
+  <div>
+    <h3>How could rescheduling your case help?</h3>
+    You may want to reschedule your case if you would like to give yourself more time to resovle issues before your case.
+    For example, you may want time:
+    <ul>
+      <li>To look for help to pay off rent</li>
+      <li>To get your city or town to inspect your apartment</li>
+      <li>To allow the landlord to make repairs</li>
+    </ul>
+  </div>
+---
+question: |
+  Would you like to stay in your home?
+yesnomaybe: stay
+---
+question: |
+  Are you prepared to move?
+yesnomaybe: vacate
+---
+mandatory: True
+code: |
+  need(reschedule, stay, vacate)
+  formOps = {True: [], False: [], None: []}
+  formOps[reschedule].append("continue")
+  formOps[stay].append("reinstate tenancy")
+  formOps[vacate].append("vacate")
+  
+  if len(formOps[False]) is 3:
+    no_forms
+  else:
+    if current_form == "continue":
+      need(continue_form_complete)
+reconsider: True
+---
+event: no_forms
+question: |
+  Unfortunately, we could not find the best form for you.
+---
+question: |
+  Here are your suggested forms
+subquestion: |
+  <% 
+    certain = len(formOps[True]) 
+    uncertain = len(formOps[None])
+    ops = []
+  %>
+  
+  % if certain > 0:
+    <div>Here are the ${ noun_plural("forms") if certain > 1 else "form" } that best fit (you said Yes):</div>
+    <ul>
+      % for form in formOps[True]:
+        <li>
+          <span>{Stipulation to ${ form }}</span>
+        </li>
+      % endfor
+    </ul>
+  % endif
+  
+  % if uncertain > 0:
+    <div>Here are the ${ noun_plural("forms") if uncertain > 1 else "form" } that might fit (you said Maybe):</div>
+    <ul>
+      % for form in formOps[None]:
+        <li>
+          <span>{Stipulation to ${ form }}</span>
+        </li>
+      % endfor
+    </ul>
+  % endif
+  
+  <div>You can always fill out another form later</div>
+fields: 
+  - no label: current_form
+    datatype: radio
+    code: |
+      [{item: "Stipulation to " + item} for item in formOps[True] + formOps[None]]
 ---
 generic object: Individual
 question: |
