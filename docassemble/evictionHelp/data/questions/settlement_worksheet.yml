@@ -1,0 +1,36 @@
+modules:
+  - docassemble.base.util
+  - docassemble.base.core
+---
+include: 
+  - bad_conditions.yml
+  - rent.yml
+  - vacate.yml
+---
+code: |
+  seen_case_intro
+  processed_rent
+  processed_bad_conditions
+  if client.must_move and not client.wants_to_stay:
+    processed_vacate
+  worksheet_complete = True
+---
+question: |
+  Welcome ${ client.name }.
+subquestion: |
+  Now that we have some basic information about you,
+  I we would like to ask some questions about your case
+field: seen_case_intro
+section: About your case
+---
+need: bad_conditions.present
+question: |
+  Do you have to move?
+yesno: client.must_move
+section: Goals
+---
+need: client.must_move
+question: |
+  Do you want to stay in your home?
+yesno: client.want_to_stay
+---

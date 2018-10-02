@@ -1,0 +1,91 @@
+include:
+  - counties.yml
+  - courts.yml
+---
+modules:
+  - docassemble.base.util
+---
+code: |    
+  client.name.first
+  nav.set_section('County')
+  review_basic_info
+  basic_info_complete = True
+---
+question: |
+  About you
+subquestion: |
+  Before determining the best form for you, I would like to ask some basic information about your case.
+field: user_seen_basic_info
+section: About you
+---
+need: user_seen_basic_info
+question: |
+  What is your name?
+fields:
+  - First Name: client.name.first
+    default: ${ get_logged_in_information("first_name") }
+  - Middle Name: client.name.middle
+    required: False
+  - Last Name: client.name.last
+    default: ${ get_logged_in_information("last_name")}
+  - Suffix: client.name.suffix
+    required: False
+    code: |
+      name_suffix()
+section: Name
+---
+need: county
+question: |
+  What is your landlord's name?
+fields:
+  - First Name: landlord.name.first
+  - Middle Name: landlord.name.middle
+    required: False
+  - Last Name: landlord.name.last
+  - Suffix: landlord.name.suffix
+    required: False
+    code: |
+      name_suffix()
+section: Landlord
+---
+need: landlord.name.first
+question: |
+  What is your court's name?
+fields:
+  - no label: court_name
+    code: |
+      court_list()
+section: Court name
+---
+need: court_name
+question: |
+  What is your docket number?
+fields:
+  - no label: docket_number
+section: Docket number
+---
+need: docket_number
+question: |
+  Review your answers
+review:
+  - note: |
+      #### Your information
+  - Change your name: client.name.first
+    help: |
+      You said your name was **${ client.name }**
+  - Revisit county: county
+    button: |
+      You said you live in ${ city.capitalize() }, which is in ${ county } County.
+  - Revisit court name: court_name
+    button: |
+      You said the name of your court was ${ court_name }.
+  - Revisit docket number: docket_number
+    button: |
+      You said your docket number was ${ docket_number }.
+  - note: |
+      #### Your landlord's information
+  - Change your landlord's name: landlord.name.first
+    help: |
+      You said your landlord's name was **${ landlord.name }**
+field: review_basic_info
+section: Review
