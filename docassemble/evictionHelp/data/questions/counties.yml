@@ -1,6 +1,9 @@
 imports: 
   - difflib
 ---
+include:
+  - helpers.yml
+---
 code: |
   countyList = ["Barnstable","Berkshire","Bristol","Dukes","Essex","Franklin","Hampden","Hampshire","Middlesex","Nantucket","Norfolk","Plymouth","Suffolk","Worcester"]
   cityList = ["abington", "acton", "acushnet", "adams", "agawam", "alford", "amesbury", "amherst", "andover", "aquinnah", "arlington", "ashburnham", "ashby", "ashfield", "ashland", "athol", "attleboro", "auburn", "avon", "ayer", "barnstable", "barre", "becket", "bedford", "belchertown", "bellingham", "belmont", "berkley", "berlin", "bernardston", "beverly", "billerica", "blackstone", "blandford", "bolton", "boston", "bourne", "boxborough", "boxford", "boylston", "braintree", "brewster", "bridgewater", "brimfield", "brockton", "brookfield", "brookline", "buckland", "burlington", "cambridge", "canton", "carlisle", "carver", "charlemont", "charlton", "chatham", "chelmsford", "chelsea", "cheshire", "chester", "chesterfield", "chicopee", "chilmark", "clarksburg", "clinton", "cohasset", "colrain", "concord", "conway", "cummington", "dalton", "danvers", "dartmouth", "dedham", "deerfield", "dennis", "dighton", "douglas", "dover", "dracut", "dudley", "dunstable", "duxbury", "east bridgewater", "east brookfield", "east longmeadow", "eastham", "easthampton", "easton", "edgartown", "egremont", "erving", "essex", "everett", "fairhaven", "fall river", "falmouth", "fitchburg", "florida", "foxborough", "framingham", "franklin", "freetown", "gardner", "georgetown", "gill", "gloucester", "goshen", "gosnold", "grafton", "granby", "granville", "great barrington", "greenfield", "groton", "groveland", "hadley", "halifax", "hamilton", "hampden", "hancock", "hanover", "hanson", "hardwick", "harvard", "harwich", "hatfield", "haverhill", "hawley", "heath", "hingham", "hinsdale", "holbrook", "holden", "holland", "holliston", "holyoke", "hopedale", "hopkinton", "hubbardston", "hudson", "hull", "huntington", "ipswich", "kingston", "lakeville", "lancaster", "lanesborough", "lawrence", "lee", "leicester", "lenox", "leominster", "leverett", "lexington", "leyden", "lincoln", "littleton", "longmeadow", "lowell", "ludlow", "lunenburg", "lynn", "lynnfield", "malden", "manchester by the sea", "mansfield", "marblehead", "marion", "marlborough", "marshfield", "mashpee", "mattapoisett", "maynard", "medfield", "medford", "medway", "melrose", "mendon", "merrimac", "methuen", "middleborough", "middlefield", "middleton", "milford", "millbury", "millis", "millville", "milton", "monroe", "monson", "montague", "monterey", "montgomery", "mt. washington", "nahant", "nantucket", "natick", "needham", "new ashford", "new bedford", "new braintree", "new marlborough", "new salem", "newbury", "newburyport", "newton", "norfolk", "north adams", "north andover", "north attleborough", "north brookfield", "north reading", "northampton", "northborough", "northbridge", "northfield", "norton", "norwell", "norwood", "oak bluffs", "oakham", "orange", "orleans", "otis", "oxford", "palmer", "paxton", "peabody", "pelham", "pembroke", "pepperell", "peru", "petersham", "phillipston", "pittsfield", "plainfield", "plainville", "plymouth", "plympton", "princeton", "provincetown", "quincy", "randolph", "raynham", "reading", "rehoboth", "revere", "richmond", "rochester", "rockland", "rockport", "rowe", "rowley", "royalston", "russell", "rutland", "salem", "salisbury", "sandisfield", "sandwich", "saugus", "savoy", "scituate", "seekonk", "sharon", "sheffield", "shelburne", "sherborn", "shirley", "shrewsbury", "shutesbury", "somerset", "somerville", "south hadley", "southampton", "southborough", "southbridge", "southwick", "spencer", "springfield", "sterling", "stockbridge", "stoneham", "stoughton", "stow", "sturbridge", "sudbury", "sunderland", "sutton", "swampscott", "swansea", "taunton", "templeton", "tewksbury", "tisbury", "tolland", "topsfield", "townsend", "truro", "tyngsborough", "tyringham", "upton", "uxbridge", "wakefield", "wales", "walpole", "waltham", "ware", "wareham", "warren", "warwick", "washington", "watertown", "wayland", "webster", "wellesley", "wellfleet", "wendell", "wenham", "west boylston", "west bridgewater", "west brookfield", "west newbury", "west springfield", "west stockbridge", "west tisbury", "westborough", "westfield", "westford", "westhampton", "westminster", "weston", "westport", "westwood", "weymouth", "whately", "whitman", "wilbraham", "williamsburg", "williamstown", "wilmington", "winchendon", "winchester", "windsor", "winthrop", "woburn", "worcester", "worthington", "wrentham", "yarmouth"]
@@ -39,7 +42,7 @@ script: |
       var recommended = [];
       var city = $("input.form-control");
       var county = $("select.form-control");
-      county.val("${get_user_info().get("subdivisionsecond")}")
+      county.val("${get_logged_in_information("subdivisionsecond")}")
       city.change(function() {
         county.prop("disabled", true);
         var city = $(this).val().toLowerCase().trim();
@@ -71,9 +74,6 @@ script: |
       $("#no").click(function() {
         county.val("");
       });
-      if (city.val() !== "" && city.val !== undefined) {
-        city.change();
-      }
     });
   </script>
 ---
@@ -81,4 +81,3 @@ event: closestCounty
 code: |
   city = action_argument('city')
   json_response(dict(county=getClosestCounty(city)))
----

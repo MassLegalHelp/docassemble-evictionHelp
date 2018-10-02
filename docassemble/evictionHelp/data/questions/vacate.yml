@@ -1,0 +1,15 @@
+code: |
+  pay_to_stay_longer
+  processed_vacate = True
+---
+question: |
+  How much time do you need to move?
+fields:
+  - Days: time_to_move
+    datatype: number
+---
+need: time_to_move
+question: |
+  Do you want to pay so you can stay longer?
+yesno: pay_to_stay_longer
+---
