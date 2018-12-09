@@ -4,6 +4,7 @@ modules:
 ---
 include: 
   - bad_conditions.yml
+  - final_questions.yml
   - rent.yml
   - stay.yml
   - vacate.yml
@@ -12,10 +13,13 @@ code: |
   seen_case_intro
   processed_rent
   processed_bad_conditions
-  if client.must_move and not client.wants_to_stay:
-    processed_vacate
-  else:
+  if client.rent.should_be_reduced:
+    if client.owed.waive_rent:
+      client.owed.reduction = client.owed.rent
+  if client.wants_to_stay:
     processed_stay
+  else:
+    processed_vacate
   worksheet_complete = True
 ---
 question: |
@@ -26,14 +30,24 @@ subquestion: |
 field: seen_case_intro
 section: About your case
 ---
-need: bad_conditions.present
 question: |
-  Do you have to move?
-yesno: client.must_move
-section: Goals
+  Should the rent you owe be reduced?
+yesno: client.rent.should_be_reduced
 ---
-need: client.must_move
+question: |
+  How much should your rent be reduced?
+subquestion: |
+  This should be up to the rent you owed, which is $${ client.owed.rent }
+fields:
+  - no label: client.owed.reduction
+    min: 0
+    max: ${ client.owed.rent }
+    js hide if: |
+      val("client.owed.waive_rent") == true
+  - I should pay no rent: client.owed.waive_rent
+    datatype: yesnowide
+---
 question: |
   Do you want to stay in your home?
-yesno: client.want_to_stay
----
+yesno: client.wants_to_stay
+section: Goals

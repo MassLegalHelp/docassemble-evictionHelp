@@ -1,48 +1,25 @@
 objects: 
   - bad_conditions: DAObject
-  - repairs: DAObject
 ---
 code: |
-  if bad_conditions.present:
-    if bad_conditions.should_reduce_rent:
-      client.owed.reduced_by
-    if repairs.should_be_made:
-      repairs.to_be_made
+  if bad_conditions.present == True:
+    bad_conditions.conditions
+    if need_repairs:
+      repairs
   processed_bad_conditions = True
 ---
-question: Bad Housing Conditions
-fields:
-  - note: "Have you lived with bad conditions?"
-  - no label: bad_conditions.present
-    datatype: yesnoradio
-  - note: "Select the conditions you have had"
-    js show if: |
-      val("bad_conditions.present") == true
-  - no label: bad_conditions.conditions
-    datatype: checkboxes
-    js show if: |
-      val("bad_conditions.present") == true
-    choices:
-      - insects
-      - cockroaches
-      - mice or rats
-      - water leaks or other plumbing problems
-      - electrical problems
-      - lead paint
-      - defective or leaky windows
-      - defective ceilings, walls, or floors
-      - no heat
-      - no hot water
-      - not enough heat
-      - not enough hot water
-      - defective locks
-      - security problems
-      - other
-  - Other conditions: bad_conditions.other_condition
-    datatype: area
-    js show if: |
-      val("bad_conditions.present") && val("bad_conditions.conditions['other']")
+question: |
+  Have you lived with bad conditions?
+subquestion: |
+  Bad conditions could include: insects, mice or rats, electrical problems, no heat
+yesnomaybe: bad_conditions.present
 section: Bad conditions
+---
+question: |
+  Please list the bad conditions you experienced
+fields:
+  - no label: bad_conditions.conditions
+    datatype: area
 ---
 question: |
   Should the bad conditions reduce the rent you owe?
@@ -54,17 +31,18 @@ subquestion: |
   This value should be at most the rent you owe, $${ client.owed.rent }
 fields: 
   - no label: client.owed.reduced_by
+    datatype: currency
     min: 0
     max: ${ client.owed.rent }
 ---
 question: |
   Should repairs be made?
-yesno: repairs.should_be_made
+yesno: need_repairs
 ---
 question: |
   What repairs should be made?
 subquestion: |
   If known, also list approximate times and dates for repairs
 fields:
-  - no label: repairs.to_be_made
+  - no label: repairs
     datatype: area

@@ -1,0 +1,58 @@
+code: |
+  client.initializeAttribute('rent', DAObject)
+  client.initializeAttribute('owed', DAObject)
+  if client.rent.subsidized:
+    client.rent.subsidized_cost
+  if client.owed.owes_rent == True:
+    client.owed.rent
+  processed_rent = True
+---
+question: |
+  What is your unit's address?
+fields:
+  - no label: client.address.address
+section: Rent
+---
+need: client.address.address
+question: |
+  How often do you pay rent?
+field: client.rent.frequency
+buttons:
+  - weekly
+  - monthly
+---
+need: client.rent.frequency
+question: |
+  What is the current ${ client.rent.frequency } rent you pay for your unit?
+fields:
+  - no label: client.rent.value
+    datatype: currency
+    min: 0
+---
+need: client.rent.value
+question: |
+  Is your unit subsidized?
+yesno: client.rent.subsidized
+---
+question: |
+  What is the portion of rent that you pay?
+subquestion: |
+  This should be less than the current rent of $${ client.rent.value }
+fields: 
+  - no label: client.rent.subsidized_cost
+    datatype: currency
+    min: 0
+    max: ${ client.rent.value }
+---
+need: client.rent.subsidized
+question: |
+  Do you owe rent?
+yesnomaybe: client.owed.owes_rent
+---
+question: |
+  How much rent do you owe?
+fields:
+  - no label: client.owed.rent
+    datatype: currency
+    min: 0
+---
