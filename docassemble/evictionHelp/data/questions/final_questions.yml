@@ -1,11 +1,7 @@
-objects: 
-  - additional_terms: DAObject
-  - case: DAObject
----
 code: |
   if additional_terms.present:
     additional_terms.terms
-  if case.dismiss_claims:
+  if case.dismiss_case:
     case.dismiss_date
     if case.filed_dismissal:
       case.dismissal_holder
@@ -63,4 +59,6 @@ question: |
   When would you like the court to eview the agreement?
 fields:
   - no label: case.review_date
-    datatype: datetime
+    datatype: date
+  - no label: case.review_time
+    datatype: time

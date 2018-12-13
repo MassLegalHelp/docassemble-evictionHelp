@@ -10,6 +10,7 @@ sections:
   - About your case:
     - Rent
     - Bad conditions
+    - Payments
     - Goals
   - Your case:
     - Finding a form
@@ -23,6 +24,7 @@ features:
 objects:
   - client: Individual
   - landlord: Individual
+  - case: DAObject
 ---
 include:
   - client_info.yml
@@ -32,6 +34,7 @@ include:
 ---
 modules:
   - docassemble.base.util
+  - .word_helper
 ---
 mandatory: True
 code: |    

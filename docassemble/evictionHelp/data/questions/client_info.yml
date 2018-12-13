@@ -87,7 +87,7 @@ review:
       #### Your information
   - Change your name: client.name.first
     help: |
-      You said your name was **${ client.name }**
+      You said your name is **${ client.name }**
   - Revisit county: county
     button: |
       % if city != "":
@@ -98,14 +98,14 @@ review:
   - Revisit court name: court_name
     button: |
       % if court_name != "":
-      You said the name of your court was ${ court_name }.
+      You said the name of your court is ${ court_name }.
       % else:
       You did not provide a court name
       % endif
   - Revisit docket number: docket_number
     button: |
       % if docket_number != "":
-      You said your docket number was ${ docket_number }.
+      You said your docket number is ${ docket_number }.
       % else:
       You did not provide a docket number
       % endif
@@ -113,6 +113,6 @@ review:
       #### Your landlord's information
   - Change your landlord's name: landlord.name.first
     help: |
-      You said your landlord's name was **${ landlord.name }**
+      You said your landlord's is was **${ landlord.name }**
 field: review_basic_info
 section: Review

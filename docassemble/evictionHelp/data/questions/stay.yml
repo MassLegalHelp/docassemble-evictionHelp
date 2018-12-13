@@ -4,18 +4,6 @@ code: |
   processed_stay = True
 ---
 question: |
-  How would you like to addess your case?
-field: resolve_case
-choices:
-  - I would like to reschedule the case: reschedule
-    help: |
-      Rescheduling your case could allow you and/or your landlord to resolve issues
-  - I would like to reinstate tenancy without a trial: reinstate
-    help: |
-      If you and your landlord agree to this, you will be able to stay in your home as long as you agree to terms.
-  - I don't know: uncertain
----
-question: |
   Here is your form
 field: got_stay_form
 attachment:

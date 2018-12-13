@@ -1,0 +1,134 @@
+code: |
+  client.initializeAttribute('rent', DAObject)
+  client.initializeAttribute('owed', DAObject)
+  if client.rent.subsidized:
+    client.rent.subsidized_cost
+  if client.owed.owes_rent == True:
+    client.owed.rent
+    if client.rent.should_be_reduced == True:
+      if client.owed.waive_rent:
+        client.owed.reduction = client.owed.rent
+  if case.should_have_payments:
+    case.payments
+  if bad_conditions.present == True:
+    bad_conditions.conditions
+    if need_repairs:
+      repairs
+  processed_intro = True
+---
+question: |
+  What is your unit's address?
+fields:
+  - no label: client.address.address
+section: Rent
+---
+need: client.address.address
+question: |
+  How often do you pay rent?
+field: client.rent.frequency
+buttons:
+  - weekly
+  - monthly
+---
+need: client.rent.frequency
+question: |
+  What is the current ${ client.rent.frequency } rent you pay for your unit?
+fields:
+  - no label: client.rent.value
+    datatype: currency
+    min: 0
+---
+need: client.rent.value
+question: |
+  Is your unit subsidized?
+yesnomaybe: client.rent.subsidized
+---
+question: |
+  What is the portion of rent that you pay?
+subquestion: |
+  This should be less than the current rent of $${ client.rent.value }
+fields: 
+  - no label: client.rent.subsidized_cost
+    datatype: currency
+    min: 0
+    max: ${ client.rent.value }
+---
+need: client.rent.subsidized
+question: |
+  Do you owe rent?
+yesnomaybe: client.owed.owes_rent
+---
+question: |
+  How much rent do you owe?
+fields:
+  - no label: client.owed.rent
+    datatype: currency
+    min: 0
+---
+question: |
+  Should the rent you owe be reduced?
+yesno: client.rent.should_be_reduced
+---
+question: |
+  How much should your rent be reduced?
+subquestion: |
+  This should be up to the rent you owed, which is $${ client.owed.rent }
+fields:
+  - no label: client.owed.reduction
+    datatype: currency
+    min: 0
+    max: ${ client.owed.rent }
+    js hide if: |
+      val("client.owed.waive_rent") == true
+  - I should pay no rent: client.owed.waive_rent
+    datatype: yesnowide
+---
+question: |
+  Should payments be made to or by your landlord?
+subquestion: |
+  This includes if you believe your landlord should pay you for your claims, as well as if you agree to pay your landlord.
+yesnomaybe: case.should_have_payments
+---
+question: |
+  Who should be making payments?
+fields:
+  - no label: case.payment_maker
+    input type: radio
+    choices: 
+      - You: tenant
+      - Your landlord: landlord
+      - Both: both
+---
+need: case.payment_maker
+question: |
+  Please describe how the payments would be made.
+subquestion: |
+  Examples: payments on certain dates, with rent payments, or as a rent credit
+fields:
+  - no label: case.payments
+    datatype: area
+---
+question: |
+  Have you lived with bad conditions?
+subquestion: |
+  Bad conditions could include: insects, mice or rats, electrical problems, no heat
+yesnomaybe: bad_conditions.present
+section: Bad conditions
+---
+question: |
+  Please list the bad conditions you experienced
+fields:
+  - no label: bad_conditions.conditions
+    datatype: area
+---
+question: |
+  Should repairs be made?
+yesno: need_repairs
+---
+question: |
+  What repairs should be made?
+subquestion: |
+  If known, also list approximate times and dates for repairs
+fields:
+  - no label: repairs
+    datatype: area

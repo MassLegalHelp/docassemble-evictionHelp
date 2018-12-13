@@ -3,7 +3,7 @@ code: |
   client.initializeAttribute('owed', DAObject)
   if client.rent.subsidized:
     client.rent.subsidized_cost
-  if client.owed.owes_rent == True:
+  if client.owed.owes_rent:
     client.owed.rent
   processed_rent = True
 ---
@@ -15,6 +15,14 @@ section: Rent
 ---
 need: client.address.address
 question: |
+  What is the current rent you pay for your unit?
+fields:
+  - no label: client.rent.value
+    datatype: currency
+    min: 0
+---
+need: client.rent.value
+question: |
   How often do you pay rent?
 field: client.rent.frequency
 buttons:
@@ -22,14 +30,6 @@ buttons:
   - monthly
 ---
 need: client.rent.frequency
-question: |
-  What is the current ${ client.rent.frequency } rent you pay for your unit?
-fields:
-  - no label: client.rent.value
-    datatype: currency
-    min: 0
----
-need: client.rent.value
 question: |
   Is your unit subsidized?
 yesno: client.rent.subsidized
