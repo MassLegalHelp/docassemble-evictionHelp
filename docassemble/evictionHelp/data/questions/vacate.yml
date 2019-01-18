@@ -1,15 +1,113 @@
 code: |
-  pay_to_stay_longer
+  if client.owed.owes_rent:
+    if client.rent.will_be_forgiven:
+      client.rent.forgiven_amount
+
+  if case.vacancy_type == "reserve":
+    case.vacancy_hearing_type
+  else:
+    case.vacancy_inspect_documents
+      
+  if client.wants_reference:
+    client.has_reference_letter
+  final_questions_complete
+  got_stay_form
   processed_vacate = True
 ---
 question: |
-  How much time do you need to move?
-fields:
-  - Days: time_to_move
-    datatype: number
+  Would you like a part of the rent you owe be forgiven when you vacate?
+yesnomaybe: client.rent.will_be_forgiven
 ---
-need: time_to_move
 question: |
-  Do you want to pay so you can stay longer?
-yesno: pay_to_stay_longer
+  How much of the $${ client.owed.rent } rent should be forgiven?
+fields:
+  - no label: client.rent.forgiven_amount
+    datatype: currency
 ---
+question: |
+  Do you wish to keep your claims, or would you like a mutual termination of your tenancy?
+help: |
+  A mutal termination of tenancy means that both you and your landlord agree that you are moving out.
+  This is important if you wish to keep a voucher.
+field: case.vacancy_type
+buttons: 
+  - Keep your claims: reserve
+  - Mutual termination: mutual
+---
+question: |
+  When is the earliest you would be able to move out?
+fields:
+  - no label: client.move_out_date
+    datatype: date
+---
+need: client.move_out_date
+question: |
+  How much should your landlord pay you to move out?
+fields:
+  - no label: landlord.move_out_incentive
+---
+need: landlord.move_out_incentive
+question: |
+  How early of a notice should be given before going to court for a violation of terms?
+fields: 
+  - business days: case.vacancy_notice_days
+    datatype: number
+    min: 0
+---
+need: case.vacancy_notice_days
+question: |
+  Would the hearing be for status, trial, or entry of money judgement?
+help: |
+  Select for status if you agree that the hearing will be to review the Stipulation. 
+  Select for trial if you agree that the hearing will be a trial. 
+  Select for entry of money judgment against Landlord if you agree that you can get a judgment against the landlord if the landlord does not pay you the amount agreed.
+field: case.vacancy_hearing_type
+buttons:
+  - Status: review
+  - Trial: trial
+  - Money judgement: judgement
+---
+question: |
+  Are there any additional terms you would like in regarding your vacancy?
+fields:
+  - note: Please list any terms you would like (optional)
+  - no label: case.vacancy_reinstate_terms
+    required: false
+---
+need: case.vacancy_reinstate_terms
+question: |
+  In the event of a violation of this agreement, how early of a notice should be given before going to court?
+fields:
+  - business days: case.vacancy_violation_notice_days
+---
+need: case.vacancy_violation_notice_days
+question: |
+  Would you like to be able to inspect the documents related to an allegation before a hearing?
+yesnomaybe: case.vacancy_inspect_documents
+---
+question: | 
+  Would you like your landlord to provide a reference to help you relocate?
+yesnomaybe: client.wants_reference
+---
+question: |
+  Should the reference be neutral or positive?
+field: client.reference_type
+buttons:
+  - Neutral
+  - Positive
+---
+need: client.reference_type
+question: |
+  Has your landlord already given you a reference letter?
+yesno: client.has_reference_letter
+---
+question: |
+  Here is your form
+field: got_stay_form
+attachment:
+  name: Your form
+  filename: form
+  docx template file: Stip_to_Vacate.docx
+  valid formats:
+    - pdf
+    - docx

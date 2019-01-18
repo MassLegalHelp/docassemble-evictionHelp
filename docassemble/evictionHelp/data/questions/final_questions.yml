@@ -1,33 +1,38 @@
 code: |
   if additional_terms.present:
     additional_terms.terms
+    
   if case.dismiss_case:
     case.dismiss_date
-    if case.filed_dismissal:
-      case.dismissal_holder
+
   if case.should_review:
     case.review_date
+    
   final_questions_complete = True
 ---
 question: |
-  Do you or your landlord want any additional details in your agreement?
+  Would you like any additional details in your agreement?
 yesnomaybe: additional_terms.present
 ---
 question: |
-  What additional details would you or your landlord like in the agreement?
+  What additional details would you like in the agreement?
 fields: 
   - no label: additional_terms.terms
     datatype: area
 ---
 question: |
-  Do you and your landlord agree to give up legal claims against each other in this case to resolve it?
+  Do you agree to give up legal claims against your landlord to resolve this case?
 subquestion: |
+  Please note, your landlord must also agree to this.
   Both you and your landlord must follow all the terms in the stipulation.
 yesnomaybe: case.waive_claims
 ---
 need: case.waive_claims
 question: |
-  Do you and your landlord agree to dismiss this case when the terms of this agreement are met?
+  Do you agree to dismiss this case when the terms of this agreement are met?
+subquestion: |
+  Even if you say yes, your landlord must also agree to dismiss the case. 
+  Selecting this option indicates what you wish to happen.
 yesnomaybe: case.dismiss_case
 ---
 question: |
@@ -39,26 +44,11 @@ fields:
     datatype: date
 ---
 question: |
-  Have you signed a Stipulation of Dismissal?
-yesnomaybe: case.filed_dismissal
----
-question: |
-  Who will hold the Stipulation of Dismissal?
-Subquestion: |
-  This could be you, your landlord, or your landlord's lawyer. 
-  This person must file the Stipulation of Dismissal in court, on the date in paragraph 9, if neither you nor your landlord files a motion. 
-  At the same time, this person must send a copy of the Stipulation of Dismissal to the other party when they file it.
-fields:
-  - no label: case.dismissal_holder
----
-question: |
-  Do you and your landlord want the court to review if the terms of your agreement have been met?
+  Do you want the court to review if the terms of your agreement have been met?
 yesnomaybe: case.should_review
 ---
 question: |
   When would you like the court to eview the agreement?
 fields:
-  - no label: case.review_date
-    datatype: date
-  - no label: case.review_time
-    datatype: time
+  - note: Please list the date or date(s) you would be availabe.
+  - Date(s): case.review_date
