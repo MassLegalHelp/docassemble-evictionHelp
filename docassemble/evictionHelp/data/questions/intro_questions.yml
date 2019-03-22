@@ -104,25 +104,21 @@ fields:
   - no label: bad_conditions.conditions
     datatype: checkboxes
     choices:
-      - insects
-      - cockroaches
-      - mice or rats
-      - water leaks or other plumbing problems
-      - electrical problems
-      - lead paint
-      - defective or leaky windows
-      - defective ceilings, walls, or floors
-      - no heat
-      - no hot water
-      - not enough heat
-      - not enough hot water
-      - defective locks
+      - "pests: innsects, cockroaches, mice or rats"
+      - missing locks, broken locks or locks that do not work
       - security problems
+      - lead paint
+      - leaks
+      - no heat or not enough heat
+      - no hot water or not enough hot water
+      - electrical problems
       - other
-  - Other conditions: bad_conditions.other_condition
-    datatype: area
-    show if: bad_conditions.conditions['other']
 ---
+question: |
+  Were any children under 6 years old living with you?
+yesno: bad_conditions.children_under_6
+---
+
 question: |
   Should repairs be made?
 subquestion: |

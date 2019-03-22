@@ -1,0 +1,91 @@
+include: 
+  - bad_conditions_heating.yml
+  - bad_conditions_elec_gas.yml
+  - bad_conditions_water.yml
+---
+code: |
+  bad_conditions_list = [
+    { 
+      "heat": "Heat", 
+      "help": "Includes: Not enough heat, temperature over 78 Farenheit" 
+    },
+    { 
+      "elec_gas": "Electricity or gas",
+      "help": "Includes: No electricity or gas, paying for electricity without agreement or meter"
+    },
+    { 
+      "Water": "Water",
+      "help": "Includes: No safe water, not enough water or pressure, being charged without agreement"
+    },
+    { 
+      "vent_light": "Ventilation or light",
+      "help": "Includes: No safe lights or switches, unsafe wiring"
+    },
+    { 
+      "health": "Health",
+      "help": "Includes: Accumulation of garbage, asbestos, lead paint"
+    },
+    { 
+      "build_safe": "Building safety",
+      "help": "Includes: Missing smoke detectors, obstructed exits, cracks in floors or foundation"
+    },
+    { 
+      "maintenance": "Maintenance",
+      "help": "Includes: unsanitary common areas, turning off water or heat without a notice"
+    }
+  ]
+  
+  saw_bad_con_1
+  number_of_units = int(number_of_units)
+  if number_of_units > 2:
+    bad_conditions_list.insert(5, { 
+      "garbage": "Garbage",
+      "help": "Includes: Odor in living spaces, landlord not collecting and disposing of garbage"
+    })  
+  
+  problems_to_fix = {
+    1: [],
+    5: [],
+    30: []
+  }
+  
+  def add_problem(time, message):
+    problems_to_fix[time].append(message)
+  
+  if possible_bad_conditions["heat"]:
+    heating_completed
+    
+  if possible_bad_conditions["elec_gas"]:
+    elec_gas_completed
+  
+  if possible_bad_conditions["water"]:
+    water_completed
+    
+mandatory: true
+---
+question: |
+  We will now ask you if you have experienced bad conditions.
+field: saw_bad_con_1
+---
+# none of the above should be different
+question: |
+  How many units are part of your housing complex (need better word)?
+field: number_of_units
+default: 1 unit
+choices:
+  - 1 unit: 1
+  - 2 units: 2
+  - 3 units: 3
+  - 4 - 9 units: 4
+  - 10+ units: 10
+---
+question: |
+  Have you experienced any bad conditions in the following areas:
+subquestion: |
+  Please select all the areas.
+fields:
+  - no label: possible_bad_conditions
+    datatype: checkboxes
+    code: |
+      bad_conditions_list
+---
