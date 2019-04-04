@@ -1,0 +1,128 @@
+code: |
+  if not adequate_venting and not window_venting:
+    add_problem(30, "Rooms have insufficient venting")
+
+  if not glass_in_rooms or not appropriate_glass_proportionate:
+    add_problem(30, "Insufficient lighting in rooms")
+
+  if number_of_units >= 10 and not emergency_lighting:
+    add_problem(30, "Missing emergency lighting in hallways and/or exits")
+
+  for room in unsafe_lighting_areas:
+    if unsafe_lighting_areas[room]:
+      add_problem(30, room + " lacking safe and reasonable lighting")
+
+  if unsafe_wiring:
+    add_problem(30, "Wiring passes under rugs/floor covering or goes through doorways")
+  
+  if temporary_wiring:
+    add_problem(30, "Temporary wiring is used")
+
+  if number_of_units > 1:
+    for area in lighting_common_areas:
+      if lighting_common_areas[area]:
+        add_problem(30, area + " does not have enough lighting for 24 hours a day")
+
+    if nearby_unit_lighting_wiring:
+      if number_of_units > 3:
+        add_problem(30, "Light fixtures are wired to the service for nearby unit")
+      
+      if lighting_written_agreement:
+        if not informed_occupants_lighting:
+          add_problem(30, "Landlord failed to notify occupats about agreement regarding electrical fixture in common area")
+      elif tenant_paid_lighting:
+        add_problem(30, "Landlord made tenant pay for electricity for fixture in common area without written agreement")
+
+  if number_of_units >= 10:
+    if not backup_lighting:
+      add_problem(30, "Missing backup lighting")     
+
+  light_vent_completed = True
+---
+question: | 
+  Do you have adequate mechanical ventilation systems?
+yesno: adequate_venting
+---
+# tedious, needs better wording
+question: |
+  For rooms without adequate mechanical ventilation, are there 
+  windows, skylights, doors, or transoms in the outside wall or roof that open easily to 
+  at least 4% of the floor area of that room?
+yesno: window_venting
+---
+# more tedious language
+question: |
+  Does every room have ransparent or translucent glass that admits light from the outdoors?
+yesno: glass_in_rooms
+---
+# so much tedious language. Send help
+question: | 
+  Is the glass in every room equal to at 8% of the floor area?
+yesno: appropriate_glass_proportionate
+---
+question: |
+  Are there emergency lighting in halls and at exits?
+yesno: emergency_lighting
+---
+question: |
+  Are there any areas without electric lighting and switches that provides safe and reasonable use?
+subquestion: |
+  Please select all areas that apply.
+fields:
+  - no label: unsafe_lighting_areas
+    datatype: checkboxes
+    choices:
+      - Laundry room
+      - Pantry
+      - Hallways
+      - Stairways
+      - Foyer
+      - Community corridor
+      - Closet/storage spcae
+      - Cellar
+      - Porch
+      - Outside stairways and passageways
+---
+question: |
+  Are there wires going under rugs or other coverings or through doorways?
+yesno: unsafe_wiring
+---
+question: |
+  Is temporary wiring used?
+subquestion: |
+  This excludes extension cords for fixtures and portable appliances.
+yesno: temporary_wiring
+---
+question: |
+  Are there any areas without sufficient 24-hour lighting?
+subquestion: |
+  Select all that apply
+fields:
+  - no label: lighting_common_areas
+    datatype: checkboxes
+    choices:
+      - Interior passageways
+      - Hallways
+      - Stairways
+---
+question: |
+  Are light fixtures in common areas wiried to the closest unit for service?
+yesno: nearby_unit_lighting_wiring
+---
+# wording help
+question: |
+  Do you have a written agreement with your landlord saying you must
+  pay for electricity to lighting fixtures wired to your unit?
+yesno: lighting_written_agreement
+---
+question: |
+  Has the landlord made you pay for electricity for the fixture?
+yesno: tenant_paid_lighting
+---
+question: |
+  Has your landlord told other occupants in the building about your agreement?
+yesno: informed_occupants_lighting
+---
+question: |
+  Is there back-up emergency lighting separate from regular lighting in your building?
+yesno: backup_lighting

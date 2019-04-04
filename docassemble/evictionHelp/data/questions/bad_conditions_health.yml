@@ -1,0 +1,64 @@
+code: |
+  if garbage_accumulation:
+    add_problem(1, "Unsafe garbage accumulation that could cause disease or attract pests")
+
+  if lead_paint_present:
+    if child_reach_lead_paint:
+      add_problem(1, "Presence of lead paint that a child under 6 could reach")
+    
+    if lead_paint_on_surface:
+      add_problem(30, "Lead paint found on a surface")
+
+  if asbestos_risk:
+    add_problem(1, "Building defects risk release of asbestos dust")
+
+  if number_of_units > 1:
+    if pest_infestation:
+      add_problem(5, "Cockroach, insect, or rodent infestation in building")
+  
+    if petst_individual_apartment:
+      add_problem(30, "Pests have been found in at least one apartment")
+
+  if pests_common_area:
+    add_problem(30, "Pests have been found in common areas")
+    
+  health_completed = True
+---
+question: |
+  Is there an accumulation of garbage of fillth that could sustain pests or cause accidents or disease?
+yesno: garbage_accumulation
+---
+question: |
+  Does your unit have lead paint?
+yesno: lead_paint_present
+---
+question: |
+  Is there lead paint on any surface?
+yesno: lead_paint_on_surface
+---
+question: |
+  Could a child under 6 reach the lead paint?
+yesno: child_reach_lead_paint
+---
+# it also says later f you have a child under the age of 6, your landlord must remove or properly cover lead paint up to 5 feet from the floor. 
+# but lead paint a child can reach is already a serious violation
+# should we ask twice?
+---
+question: |
+  Are there defects in the building that could release asbestos dust?
+yesno: asbestos_risk
+---
+# should we ask if they have called a health inspector
+---
+question: |
+  Is there an infestation of cockroaches, insects or rodents in the building?
+yesno: pest_infestation
+---
+question: |
+  Have rats, mice, roaches, bedbugs or other insects been found in common areas?
+yesno: pests_common_area
+---
+question: |
+  Have rats, mice, roaches, beadbugs or other insects been found in an individual unit?
+yesno: petst_individual_apartment
+  

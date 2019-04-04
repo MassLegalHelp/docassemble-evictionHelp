@@ -1,6 +1,11 @@
 include: 
+  - bad_conditions_bathroom_appliances.yml
+  - bad_conditions_garbage.yml
   - bad_conditions_heating.yml
   - bad_conditions_elec_gas.yml
+  - bad_conditions_health.yml
+  - bad_conditions_kitchen_appliances.yml
+  - bad_conditions_light_vent.yml
   - bad_conditions_water.yml
 ---
 code: |
@@ -14,10 +19,14 @@ code: |
       "help": "Includes: No electricity or gas, paying for electricity without agreement or meter"
     },
     { 
-      "Water": "Water",
+      "water": "Water",
       "help": "Includes: No safe water, not enough water or pressure, being charged without agreement"
     },
-    { 
+    {
+      "app": "Appliances, fixtures, and plumbing",
+      "help": "Includes: broken kitchen or bathroom appliances, broken toilets and faulty sewage draining"
+    },
+    {
       "vent_light": "Ventilation or light",
       "help": "Includes: No safe lights or switches, unsafe wiring"
     },
@@ -38,7 +47,7 @@ code: |
   saw_bad_con_1
   number_of_units = int(number_of_units)
   if number_of_units > 2:
-    bad_conditions_list.insert(5, { 
+    bad_conditions_list.insert(6, { 
       "garbage": "Garbage",
       "help": "Includes: Odor in living spaces, landlord not collecting and disposing of garbage"
     })  
@@ -52,15 +61,30 @@ code: |
   def add_problem(time, message):
     problems_to_fix[time].append(message)
   
-  if possible_bad_conditions["heat"]:
-    heating_completed
+  #if possible_bad_conditions["heat"]:
+  #  heating_completed
     
-  if possible_bad_conditions["elec_gas"]:
-    elec_gas_completed
+  #if possible_bad_conditions["elec_gas"]:
+  #  elec_gas_completed
   
-  if possible_bad_conditions["water"]:
-    water_completed
+  #if possible_bad_conditions["water"]:
+  #  water_completed
     
+  #if possible_bad_conditions["app"]:
+  #  kitchen_completed
+  #  bathroom_completed
+  
+  #if possible_bad_conditions["vent_light"]:
+  #  light_vent_completed
+    
+  #if possible_bad_conditions["health"]:
+  #  health_completed
+    
+  #if possible_bad_conditions["garbage"]:
+  #  garbage_completed
+    
+  if possible_bad_conditions["build_safe"]:
+    building_safety_completed
 mandatory: true
 ---
 question: |

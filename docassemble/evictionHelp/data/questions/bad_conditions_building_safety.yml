@@ -1,0 +1,26 @@
+code: |
+
+  building_safety_completed = True
+---
+question: |
+  Are the exits in your building lacking?
+subquestion: |
+  This includes if any exits, passageways, 
+  or common areas you exit in during an emergency are blocked.
+---
+question: |
+  Are there locks for entry doors to the building and apartment?
+yesno: locks_present
+---
+question: |
+  Are the locks for entry doors to your building or apartment lacking?
+yesno: locks_inadequate
+---
+question: |
+  Do you have functional smoke detectors or carbon monoxide alarms?
+yesno: no_smoke_co_alarm
+---
+question: |
+  Are there any improperly installed or maintained electrical, plumbing or heating
+  applications that could expose you or others to danger?
+yesno: improper_applications
