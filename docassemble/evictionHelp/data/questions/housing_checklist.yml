@@ -1,11 +1,13 @@
 include: 
   - bad_conditions_bathroom_appliances.yml
+  - bad_conditions_building_safety.yml
   - bad_conditions_garbage.yml
   - bad_conditions_heating.yml
   - bad_conditions_elec_gas.yml
   - bad_conditions_health.yml
   - bad_conditions_kitchen_appliances.yml
   - bad_conditions_light_vent.yml
+  - bad_conditions_maintenance.yml
   - bad_conditions_water.yml
 ---
 code: |
@@ -83,8 +85,11 @@ code: |
   #if possible_bad_conditions["garbage"]:
   #  garbage_completed
     
-  if possible_bad_conditions["build_safe"]:
-    building_safety_completed
+  #if possible_bad_conditions["build_safe"]:
+  #  building_safety_completed
+  
+  if possible_bad_conditions["maintenance"]:
+    maintenance_completed  
 mandatory: true
 ---
 question: |

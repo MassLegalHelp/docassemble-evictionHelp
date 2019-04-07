@@ -1,12 +1,83 @@
 code: |
+  if insufficient_exits:
+    add_problem(1, "Obstructed exits or common areas leading to exits")
+
+  if locks_present:
+    if locks_inadequate:
+      add_problem(1, "Locks for your building or apartment are insufficient")
+  else:
+    add_problem(1, "No locks are present for your building or apartment")
+
+  if no_smoke_co_alarm:
+    add_problem(1, "Missing functional smoke detectors or carbon monoxide alarms")
+
+  if improper_applications:
+    if improper_applications_danger:
+      add_problem(1, "Improper installation or maintenance of electrical, plumbing, or heating that risk danger")
+    else:
+      add_problem(5, "Problems in heating, electrical, or heating appliances that do not risk exposing danger")
+
+  if unsafe_handrails:
+    add_problem(5, "Lacking or unsafe handrails/protective railings")
+
+  if personal_exit:
+    if not personal_exit_agreement and not personal_exit_landlord_safe:
+      add_problem(30, "Landlord does not keep tenant's exit safe, operable and/or free from ice and snow")
+        
+  if not all_exits_landlord_safe:
+    add_problem(30, "Landlord does not keep shared and public exit safe, operable and/or free from ice and snow")
+
+  if fire_ext_present:
+    if not fire_ext_maintenance:
+      add_problem(30, "Landlord does not faintain fire extinguishers appropropriately")
+  else:
+    add_problem(30, "Landlord has not installed fire extinguishers")
+
+  if not landlord_verifies_locks:
+    add_problem(30, "Landlord does not verify that all exterior windows that can open and entry doors have working locks")
+
+  if number_of_units > 3:
+    if not sufficient_front_door:
+      add_problem(30, "Building lacking front door that closes and locks automatically")
+
+    if not exterior_door_working_lock:
+      add_problem(30, "Some or all exterior doors are lacking working locks")
+
+    if building_over_70:
+      if not automatic_sprinkler:
+        add_problem(30, "Building lacking automatic sprinkler system in accordance with Building Code")
+
+  if number_of_units >= 10:
+    if not exit_signs_present:
+      add_problem(30, "Building lacking exit signs for primary and secondary exits")
+    else:
+      if not exit_signs_symbols:
+        add_problem(30, "Exit signs lack symbols")
+
+  for element in structures:
+    if structures[element]:
+      add_problem(30, element + " are not in good repair")
+
+  if not doors_weather_proof:
+    add_problem(30, "Doors are not sufficiently weather-proofed")
+
+  if not windows_weather_proof:
+    add_problem(30, "Windows are not sufficiently weather-proofed")
+
+  if not doors_windows_open:
+    add_problem(30, "Doors and/or windows cannot open fully and easily")
+
+  if not sufficient_glass_panes:
+    add_problem(30, "Some glass panes are broken or improperly caulked")
 
   building_safety_completed = True
 ---
 question: |
-  Are the exits in your building lacking?
+  Are the exits in your building blocked or lacking?
 subquestion: |
   This includes if any exits, passageways, 
   or common areas you exit in during an emergency are blocked.
+yesno: insufficient_exits
 ---
 question: |
   Are there locks for entry doors to the building and apartment?
@@ -21,6 +92,118 @@ question: |
 yesno: no_smoke_co_alarm
 ---
 question: |
-  Are there any improperly installed or maintained electrical, plumbing or heating
-  applications that could expose you or others to danger?
+  Are there any problems in electrical, plumbing or heating applications?
 yesno: improper_applications
+---
+question: |
+  Could these problems in electrical, plumbing, or heating applications expose you
+  or others to danger?
+yesno: improper_applications_danger
+---
+question: |
+  Are there any unsafe handrails or protective railings on porches, roofs,
+  stairways or other similar places?
+yesno: unsafe_handrails
+---
+# not sure what general accepted standards is
+question: |
+  Do you have an exit that you do not share with anyone?
+yesno: personal_exit
+---
+question: |
+  Do you have an agreement with your landlord requiring you to keep your exit free
+  of snow and ice?
+yesno: personal_exit_agreement
+---
+question: |
+  Does your landlord keep your personal exits safe, operable, 
+  and free from ice and snow?
+yesno: personal_exit_landlord_safe
+---
+question: |
+  Does your landlord keep all shared and public exits safe, operable, 
+  and free from ice and snow?
+subquestion: |
+  This includes exterior stairways and fire escapes.
+yesno: all_exits_landlord_safe
+---
+question: |
+  Has your landlord installed fire extinguishers as required by yur local fire chief?
+yesno: fire_ext_present
+---
+question: |
+  Does your landlord maintain fire extinguishers?
+yesno: fire_ext_maintenance
+---
+question: |
+  Does your landlord make sure that all exterior windows that can open and
+  all entry doors have working locks?
+yesno: landlord_verifies_locks
+---
+question: |
+  Does your building have a main front door that closes and locks automatically?
+yesno: sufficient_front_door
+---
+question: |
+  Does every exterior door have a working lock?
+yesno: exterior_door_working_lock
+---
+question: |
+  Is your building over 70 feet high?
+yesno: building_over_70
+---
+question: |
+  Does your building have an automatic sprinkler system that follows the state 
+  Building Code?
+yesno: automatic_sprinkler
+---
+question: |
+  Does your building have lighted signs that show both a primary and seconary exit?
+yesno: exit_signs_present
+---
+question: |
+  Do the signs use symbols so that people do not have to speak English?
+yesno: exit_signs_symbols
+---
+question: |
+  Are there defects in the roof, foundation, or other structure that risk exposing
+  you to fire, shock, accident, or other dangers?
+yesno: structuran_defect_unsfae
+---
+question: |
+  Are there any structural elements not in good repair?
+subquestion:
+  Structural elements must be weathertight, free from chronic dampness,
+  insect- and rodent-proof. They must also be free of holes, cracks and other defects.
+fields:
+  - no label: structures
+    datatype: checkboxes
+    choices:
+      - Foundations
+      - Floors
+      - Walls
+      - Ceilings
+      - Roofs
+      - Chimneys
+      - Other structural elements
+---
+question: |
+  Are your doors storm doors or sufficiently weather stripped?
+yesno: doors_weather_proof
+---
+question: |
+  Are your windows storm windows or sufficiently weather stripped?
+yesno: windows_weather_proof
+---
+question: |
+  Do your doors and windows open fully and easily?
+yesno: doors_windows_open
+---
+question: |
+  Are all glass panes unbroken and caulked correctly?
+yesno: sufficient_glass_panes
+---
+question: |
+  Are your staircases stable with a safe handrail?
+yesno: safe_staircase_handrail
+---
