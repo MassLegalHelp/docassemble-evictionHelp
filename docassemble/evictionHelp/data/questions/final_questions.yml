@@ -1,3 +1,6 @@
+objects:
+  - additional_terms: DADict
+---
 code: |
   if additional_terms.present:
     additional_terms.terms

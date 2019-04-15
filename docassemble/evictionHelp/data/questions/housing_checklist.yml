@@ -46,14 +46,6 @@ code: |
     }
   ]
   
-  saw_bad_con_1
-  number_of_units = int(number_of_units)
-  if number_of_units > 2:
-    bad_conditions_list.insert(6, { 
-      "garbage": "Garbage",
-      "help": "Includes: Odor in living spaces, landlord not collecting and disposing of garbage"
-    })  
-  
   problems_to_fix = {
     1: [],
     5: [],
@@ -62,35 +54,64 @@ code: |
   
   def add_problem(time, message):
     problems_to_fix[time].append(message)
+---
+code: |
+  saw_bad_con_1
+  number_of_units = int(number_of_units)
+  if number_of_units > 2:
+    bad_conditions_list.insert(6, { 
+      "garbage": "Garbage",
+      "help": "Includes: Odor in living spaces, landlord not collecting and disposing of garbage"
+    })  
+    
+  if possible_bad_conditions["heat"]:
+    heating_completed
+    
+  if possible_bad_conditions["elec_gas"]:
+    elec_gas_completed
   
-  #if possible_bad_conditions["heat"]:
-  #  heating_completed
+  if possible_bad_conditions["water"]:
+    water_completed
     
-  #if possible_bad_conditions["elec_gas"]:
-  #  elec_gas_completed
+  if possible_bad_conditions["app"]:
+    kitchen_completed
+    bathroom_completed
   
-  #if possible_bad_conditions["water"]:
-  #  water_completed
+  if possible_bad_conditions["vent_light"]:
+    light_vent_completed
     
-  #if possible_bad_conditions["app"]:
-  #  kitchen_completed
-  #  bathroom_completed
-  
-  #if possible_bad_conditions["vent_light"]:
-  #  light_vent_completed
+  if possible_bad_conditions["health"]:
+    health_completed
     
-  #if possible_bad_conditions["health"]:
-  #  health_completed
+  if number_of_units > 2 and possible_bad_conditions["garbage"]:
+    garbage_completed
     
-  #if possible_bad_conditions["garbage"]:
-  #  garbage_completed
-    
-  #if possible_bad_conditions["build_safe"]:
-  #  building_safety_completed
+  if possible_bad_conditions["build_safe"]:
+    building_safety_completed
   
   if possible_bad_conditions["maintenance"]:
     maintenance_completed  
-mandatory: true
+    
+  bad_conditions_string = ""
+
+  message_strings = [
+    [1, "Very serious"],
+    [5, "Serious"],
+    [30, "Moderately serious"]
+  ]
+
+  for (time, name) in message_strings:
+    if len(problems_to_fix[time]) > 0:
+      day = "days" if time != 1 else "day"
+      bad_conditions_string += "#### %s problems (%d %s): \n" % (name, time, day)
+
+      for problem in problems_to_fix[time]:
+        bad_conditions_string += "* %s \n" % problem
+
+  if additional_conditions_present == True:
+    bad_conditions_string += "#### Additional Problems: \n %s" % additional_conditions
+
+  bad_conditions_completed
 ---
 question: |
   We will now ask you if you have experienced bad conditions.
@@ -118,3 +139,18 @@ fields:
     code: |
       bad_conditions_list
 ---
+question: |
+  Are there any other bad conditions you would like to mention?
+fields:
+  - no label: additional_conditions_present
+    datatype: yesnoradio
+  - no label: additional_conditions
+    datatype: area
+    js show if: |
+      val("add_conditions_present") == true
+---
+question: |
+  Here are the bad conditions you mentioned
+subquestion: |
+  ${ bad_conditions_string }
+field: bad_conditions_completed

@@ -1,28 +1,32 @@
+include:
+  - housing_checklist.yml
+---
 code: |
   client.initializeAttribute('rent', DAObject)
   client.initializeAttribute('owed', DAObject)
   if client.rent.subsidized:
     client.rent.subsidized_cost
-    
+       
+  bad_conditions_completed
+  
   if client.owed.owes_rent is True:
     client.owed.rent
-    if client.rent.should_be_reduced == True:
+  
+  if len(bad_conditions_string) > 0:
+    if client.owed.owes_rent == True and client.rent.should_be_reduced == True:
       client.owed.reduction = client.owed.rent - client.owed.reduced_rent
-        
-  bad_conditions.conditions 
+
   known_issues = []
-
-  for issue in bad_conditions.conditions:
-    if bad_conditions.conditions[issue] is True:
-      if issue == "other":
-        known_issues.append(bad_conditions.other_condition)
-      else:
-        known_issues.append(issue)    
-
-  if len(known_issues) > 0:
+  for time in [1, 5, 30]:
+    if len(problems_to_fix[time]) > 0:
+      known_issues += problems_to_fix[time]
+      
+  if additional_conditions_present == True:
+    known_issues.append(additional_conditions)
+      
+  if len(bad_conditions_string) > 0:
     repairs 
-    total_repairs = "I would like my landlord to address the following issues: " + str(known_issues)[1:-1] + "\n" + repairs
-    
+    total_repairs = "I would like my landlord to address the following issues: \n" + ", ".join(known_issues) + "\n" + repairs
       
   if case.payments_to != "none":
     case.payment_amount
@@ -96,29 +100,6 @@ fields:
   - I don't know: client.owed.unknown_reduction
     datatype: yesnowide
 ---
-question: |
-  Have you lived with any of the following conditions?
-subquestion: |
-  Please select all the bad conditions you experienced
-fields:
-  - no label: bad_conditions.conditions
-    datatype: checkboxes
-    choices:
-      - "pests: innsects, cockroaches, mice or rats"
-      - missing locks, broken locks or locks that do not work
-      - security problems
-      - lead paint
-      - leaks
-      - no heat or not enough heat
-      - no hot water or not enough hot water
-      - electrical problems
-      - other
----
-question: |
-  Were any children under 6 years old living with you?
-yesno: bad_conditions.children_under_6
----
-
 question: |
   Should repairs be made?
 subquestion: |
