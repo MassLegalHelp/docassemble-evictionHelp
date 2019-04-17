@@ -24,10 +24,13 @@ features:
 objects:
   - client: Individual
   - landlord: Individual
+  - additional_terms: DAObject
+  - bad_conditions: DAObject
   - case: DAObject
 ---
 include:
   - client_info.yml
+  - final_questions.yml
   - courts.yml
   - helpers.yml
   - settlement_worksheet.yml

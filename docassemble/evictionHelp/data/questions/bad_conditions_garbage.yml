@@ -1,0 +1,37 @@
+code: |
+  if not enough_garbage_cans:
+    add_problem(30, "Landlord has not provided enough garbage cans")
+  
+  if not garbage_cans_fitting_covers:
+    add_problem(30, "Garbage cans are missing tightly fitting covers")
+  
+  if not garbage_cans_convenient_location:
+    add_problem(30, "Garbage cans are not in a convenient place for tenants")
+    
+  if not garbage_cans_no_odor:
+    add_problem(30, "Odor from garbage reaches living spaces")
+    
+  if not landlord_dispose_garbage:
+    add_problem(30, "Landlord does not collect and/or remove garbage")
+  
+  garbage_completed = True
+---
+question: |
+  Has your landlord provided enough watertight garbage cans?
+yesno: enough_garbage_cans
+---
+question: |
+  Do the garbage cans have tightly fitting covers?
+yesno: garbage_cans_fitting_covers
+---
+question: |
+  Are the garbage cans in a place that is convenient for you?
+yesno: garbage_cans_convenient_location
+---
+question: |
+  Are the garbage cans in a place that prevents odors from reaching your living space?
+yesno: garbage_cans_no_odor
+---
+question: |
+  Does your landlord collect and remove garbage?
+yesno: landlord_dispose_garbage

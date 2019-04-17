@@ -1,0 +1,90 @@
+code: |
+  if not_enough_heat:
+    add_problem(1, "Not enough heat")
+  
+  if has_space_heater:
+    if improper_space_heater_usage:
+      add_problem(1, "Improper usage of space heaters")
+      
+    if not electric_only_space_heaters and not proper_space_heater_venting:
+      add_problem(30, "Space heater does not vent to a chimney or a vent leading outside")
+  
+  if not has_written_heating_agreement and landlord_required_heat_payment:
+    add_problem(30, "Landlord asked tenant to pay for heat without a written agreement stating the tenant must pay for heat")
+  
+  seen_heating_season_blurb
+  
+  if cool_heating_daytime:
+    add_problem(30, "Temperature dropped below 68 Farenheit between 7 AM and 11 PM")
+    
+  if cool_heating_nighttime:
+    add_problem(30, "Temperature dropped below 64 Farenheit between 11 PM and 7 AM")
+
+  if over_maximum_allowed_heating:
+    add_problem(30, "Temperature exceeded 78 Farenheit during the heating season")
+  
+  if not provided_maintained_heating:
+    add_problem(30, "Landlord failed to provide and/or maintain heating equipment in good order")
+  
+  heating_completed = True
+---
+terms:
+  habitable room: |
+    Any room that is used for living, sleeping, cooking, or eating
+  heating season: |
+    September 16 to June 14
+---
+question: |
+  Have you ever had not enough heat?
+yesno: not_enough_heat
+---
+question: |
+  Do you any space heaters?
+yesno: has_space_heater
+---
+question: |
+  Have you experienced improper usage of your space heater?
+  #CR edit - I have no idea what this means
+yesno: improper_space_heater_usage
+---
+question: |
+  Are all of your space heaters electric?
+  # Make this question depend on - Do you have any? How many do you have? How many are electric - choices are based on answer to how many they have
+yesno: electric_only_space_heaters
+---
+question: |
+  Do your non-electric space heaters vent to a chimney or a vent that leads outdoors?
+yesno: proper_space_heater_venting
+---
+# special case for idk
+question: |
+  Have you signed a written agreement with your landlord that says **you** pay for heat?
+yesnomaybe: has_written_heating_agreement
+---
+question: |
+  Has your landlord made you pay for heat?
+yesno: landlord_required_heat_payment
+---
+question: |
+  About the {heating season}
+subquestion: |
+  Between September 16 and June 14, your landlord must provide
+  equipment and appliances to heat every {habitable room} and bathroom.
+field: seen_heating_season_blurb
+---
+question: |
+  During the {heating season}, has any room been cooler than 68°F between 7 AM and 11 PM?
+yesno: cool_heating_daytime
+---
+question: |
+  During the {heating season}, has a room been cooler than 64°F  between 11 PM and 7 AM?
+yesno: cool_heating_nighttime
+---
+question: |
+  During the {heating season}, has the temperature ever gone over 78°F ?
+yesno: over_maximum_allowed_heating
+---
+question: |
+  Has your landlord provided and maintained heating equipment in good working order?
+yesno: provided_maintained_heating
+---

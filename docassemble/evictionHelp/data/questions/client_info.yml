@@ -5,16 +5,21 @@ include:
 modules:
   - docassemble.base.util
 ---
-code: |    
+code: |
   client.name.first
   nav.set_section('County')
+  if court_name_unknown or court_name not in court_list():
+    court_name = ""
+  if docket_number_unknown:
+    docket_number = ""
   review_basic_info
   basic_info_complete = True
+reconider: True
 ---
 question: |
   About you
 subquestion: |
-  Before determining the best form for you, I would like to ask some basic information about your case.
+  Before determining the best form for you, we would like to ask some basic information about your case.
 field: user_seen_basic_info
 section: About you
 ---
@@ -53,8 +58,14 @@ question: |
   What is your court's name?
 fields:
   - no label: court_name
+    input type: combobox
     code: |
       court_list()
+    js hide if: |
+      val("court_name_unknown") == true
+  - I don't know: court_name_unknown
+    datatype: yesnowide
+    disable others: True
 section: Court name
 ---
 need: court_name
@@ -62,6 +73,10 @@ question: |
   What is your docket number?
 fields:
   - no label: docket_number
+    js hide if: |
+      val("docket_number_unknown") == true
+  - I don't know: docket_number_unknown
+    datatype: yesnowide
 section: Docket number
 ---
 need: docket_number
@@ -72,20 +87,32 @@ review:
       #### Your information
   - Change your name: client.name.first
     help: |
-      You said your name was **${ client.name }**
+      You said your name is **${ client.name }**
   - Revisit county: county
     button: |
+      % if city != "":
       You said you live in ${ city.capitalize() }, which is in ${ county } County.
+      % else: 
+      You said you live in ${ county } County
+      % endif
   - Revisit court name: court_name
     button: |
-      You said the name of your court was ${ court_name }.
+      % if court_name != "":
+      You said the name of your court is ${ court_name }.
+      % else:
+      You did not provide a court name
+      % endif
   - Revisit docket number: docket_number
     button: |
-      You said your docket number was ${ docket_number }.
+      % if docket_number != "":
+      You said your docket number is ${ docket_number }.
+      % else:
+      You did not provide a docket number
+      % endif
   - note: |
       #### Your landlord's information
   - Change your landlord's name: landlord.name.first
     help: |
-      You said your landlord's name was **${ landlord.name }**
+      You said your landlord's is was **${ landlord.name }**
 field: review_basic_info
 section: Review

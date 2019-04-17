@@ -1,0 +1,57 @@
+objects:
+  - additional_terms: DADict
+---
+code: |
+  if additional_terms.present:
+    additional_terms.terms
+    
+  if case.dismiss_case:
+    case.dismiss_date
+
+  if case.should_review:
+    case.review_date
+    
+  final_questions_complete = True
+---
+question: |
+  Would you like any additional details in your agreement?
+yesnomaybe: additional_terms.present
+---
+question: |
+  What additional details would you like in the agreement?
+fields: 
+  - no label: additional_terms.terms
+    datatype: area
+---
+question: |
+  Do you agree to give up legal claims against your landlord to resolve this case?
+subquestion: |
+  Please note, your landlord must also agree to this.
+  Both you and your landlord must follow all the terms in the stipulation.
+yesnomaybe: case.waive_claims
+---
+need: case.waive_claims
+question: |
+  Do you agree to dismiss this case when the terms of this agreement are met?
+subquestion: |
+  Even if you say yes, your landlord must also agree to dismiss the case. 
+  Selecting this option indicates what you wish to happen.
+yesnomaybe: case.dismiss_case
+---
+question: |
+  When should the case be dismissed?
+subquestion: |
+  If neither you or your landlord file additional motions, your case will be dismissed on this date. 
+fields:
+  - no label: case.dismiss_date
+    datatype: date
+---
+question: |
+  Do you want the court to review if the terms of your agreement have been met?
+yesnomaybe: case.should_review
+---
+question: |
+  When would you like the court to eview the agreement?
+fields:
+  - note: Please list the date or date(s) you would be availabe.
+  - Date(s): case.review_date

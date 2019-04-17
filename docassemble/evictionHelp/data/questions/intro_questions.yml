@@ -1,0 +1,186 @@
+include:
+  - housing_checklist.yml
+---
+code: |
+  client.initializeAttribute('rent', DAObject)
+  client.initializeAttribute('owed', DAObject)
+  if client.rent.subsidized:
+    client.rent.subsidized_cost
+       
+  bad_conditions_completed
+  
+  if client.owed.owes_rent is True:
+    client.owed.rent
+  
+  if len(bad_conditions_string) > 0:
+    if client.owed.owes_rent == True and client.rent.should_be_reduced == True:
+      client.owed.reduction = client.owed.rent - client.owed.reduced_rent
+
+  known_issues = []
+  for time in [1, 5, 30]:
+    if len(problems_to_fix[time]) > 0:
+      known_issues += problems_to_fix[time]
+      
+  if additional_conditions_present == True:
+    known_issues.append(additional_conditions)
+      
+  if len(bad_conditions_string) > 0:
+    repairs 
+    total_repairs = "I would like my landlord to address the following issues: \n" + ", ".join(known_issues) + "\n" + repairs
+      
+  if case.payments_to != "none":
+    case.payment_amount
+    
+  processed_intro = True
+---
+question: |
+  What is your unit's address?
+fields:
+  - no label: client.address.address
+section: Rent
+---
+need: client.address.address
+question: |
+  How often do you pay rent?
+field: client.rent.frequency
+buttons:
+  - weekly
+  - monthly
+---
+need: client.rent.frequency
+question: |
+  How much is the ${ client.rent.frequency } rent?
+  CR edit: How much rent does your landlord charge? have some help text or a note 
+fields:
+  - no label: client.rent.value
+    datatype: currency
+    min: 0
+---
+need: client.rent.value
+question: |
+  Is your unit subsidized?
+yesnomaybe: client.rent.subsidized
+---
+question: |
+  What portion of the rent do you pay?
+subquestion: |
+  This should be less than the current rent of $${ client.rent.value }
+fields: 
+  - no label: client.rent.subsidized_cost
+    datatype: currency
+    min: 0
+    max: ${ client.rent.value }
+---
+need: client.rent.subsidized
+question: |
+  Do you owe rent?
+yesnomaybe: client.owed.owes_rent
+---
+question: |
+  How much rent do you owe?
+fields:
+  - no label: client.owed.rent
+    datatype: currency
+    min: 0
+---
+question: |
+  Should your landlord lower your rent?
+subquestion: |
+  One reason your landlord should lower your rent is because of the bad conditions in your apartment.
+yesno: client.rent.should_be_reduced
+---
+question: |
+  What should your reduced rent be?
+subquestion: |
+  For reference, you said you owe $${ client.owed.rent }
+fields:
+  - no label: client.owed.reduced_rent
+    datatype: currency
+    min: 0
+    max: ${ client.owed.rent }
+  - I don't know: client.owed.unknown_reduction
+    datatype: yesnowide
+---
+question: |
+  Does the apartment need repairs?
+subquestion: |
+  % if len(known_issues) > 0:
+  If there are any additional repairs or conditions you yould like mentioned, please add them here.
+  CR edit: Describe or list any more repairs or bad conditions your apartments needs fixing.
+  
+  The problems you already told me about are:
+    <ul>
+    % for issue in known_issues:
+      <li>${ issue }</li>
+    % endfor
+    </ul>
+  % else:
+    You did not mention any issues
+  % endif
+fields:
+  - no label: repairs
+    datatype: area
+    required: false
+---
+section: Payments
+question: |
+  Does your landlord owe you money?
+fields:
+  - note: Reasons your landlord may owe your money
+  - no label: landlord.reasons_to_owe
+    datatype: checkboxes
+    choices:
+      - Utilities: utilities
+      - Security Deposit: deposit
+      - Entering your apartment without permission: entering
+      - I paid for repairs: repairs
+      - other: other
+  - Other issues: landlord.other_reasons_to_owe
+    datatype: area
+    show if: landlord.reasons_to_owe['other']
+---
+question: |
+  Should your landlord reduce the rent you owe?
+yesno: landlord.should_reduce_rent  
+fields:
+  - "What should the reduced amount be?": client.rent.reduced_value
+    datatype: currency
+    min: 0
+    max: client.owed.rent
+    show if: landlord.should_reduce_rent
+---
+question: |
+  Do you need a payment plan to help you pay back rent you owe?
+yesno: client.owed.payment_plan
+---
+question: |
+  Describe how you would like to pay your landlord
+---
+section: Payments
+question: |
+  Should payments be made?
+  
+  CR edit: need to make this question more active Who should pay whom?(suggestion)
+subquestion: |
+  You may want to pay your landlord back rent, while you are waiting for a court decision (?), or to resolve their claims (need better Plain Language here).
+  You might want your landlord to pay you for repairs living with bad conditions...(to resolve your claims).
+fields: 
+  - no label: case.payments_to
+    datatype: radio
+    choices: 
+      - I would like to make payments to my landlord: landlord
+      - My landlord should pay me: tenant
+      - No: none
+---
+question: | 
+  Tell me about the payments ${ "you" if case.payments_to == "tenant" else "your landlord" } should make.
+fields: 
+  - note: How much should they/you (variable to be defined) pay?
+  - no label: case.payment_amount
+    datatype: currency
+  - note: | 
+      How should ${ "you" if case.payments_to == "tenant" else "your landlord" } pay.
+      This could be payments on a certain date, a rent credit, or some other way.
+  - no label: case.payments_description
+    datatype: area
+---

@@ -1,0 +1,52 @@
+code: |
+  for name in elec_gas_problems:
+    if not elec_gas_problems[name]:
+      continue
+      
+    value = 1
+    
+    if name == "Not enough amperage to meet needs":
+      value = 30
+      
+    add_problem(30, name)
+  
+  if not metered_gas_elec and not tenant_pays_for_elec_gas and not landlord_provides_elec_gas:
+    add_problem(30, "Landlord asked you to pay for electricity and/or gas without an agreement")
+  
+  if not sufficient_outlets_light:
+    add_problem(30, "Lacking two electrical wall outlets or 1 light fixture and wall outlet in one or more rooms")
+  
+  elec_gas_completed = True
+---
+question: |
+  Have you experienced any of the following problems:
+fields:
+  - no label: elec_gas_problems
+    datatype: checkboxes
+    choices:
+      - No electricity
+      - No gas
+      - No electrical outlets in common areas, or not enough
+      - No lighting in common areas, or not enough
+      - Electricity shut off and/or failure to 
+      - Electricity not turned back on again after it was shut off
+      - Gas shut off
+      - Gas not turned back on again after it was shut off 
+      - Not enough electric current to meet your needs
+---
+question: |
+  Does your apartment have its own meter?
+yesno: metered_gas_elec
+---
+question: |
+  Do you have a written agreement with your landlord that says you must pay for electricity and gas? CR edit - do we want to make these separate? Do you have to pay for gas? Do you have to pay for electricity? One combo question?
+yesno: tenant_pays_for_elec_gas
+---
+question: |
+  Does your landlord pay for electricity and gas? CR edit - same as previous question - double barreled 2 questions in one but on backend can use the same variable?
+yesno: landlord_provides_elec_gas
+---
+question: |
+  Aside from your kitchen and bathroom, do all your rooms have 2 electrical wall outlets 
+  or 1 light fixture and wall outlet for? CR edit - bathroom and kitchen not required to have AT LEAST this many electrical outlets? double checking.
+yesno: sufficient_outlets_light
