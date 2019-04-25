@@ -1,0 +1,72 @@
+code: |
+  if case.goal == "reschedule":
+    case.hearing_type
+  else:
+    case.inspect_documents
+  final_questions_complete
+  got_stay_form
+  processed_stay = True
+---
+question: |
+  Would you like to reschedule your case or reinstate tenancy?
+help: |
+  Please note, if you choose to reschedule your case, both you and your landlord keep your claims.
+  In this case, the original case goes on trial for a judge or jury to decide.
+  If you feel that you will not be able to come up with an agreement with your landlord, you may want to choose to reschedule your case.
+  If you and your landlord agree to reinstate your tenancy, you can stay in your home and the case will be dismissed after the terms have been met.
+field: case.goal
+buttons:
+  - Reschedule my case: reschedule
+  - Reinstate my tenancy: reinstate
+---
+question: |
+  Do you want anything to be done between now and your next court date?
+subquestion: |
+  You do not need to restate any repairs or payments you have already mentioned.
+fields:
+  - no label: case.temporary_agreement
+    required: false
+---
+need: case.temporary_agreement
+question: |
+  How early of a notice should be given before going to court for a violation of terms?
+fields: 
+  - business days: case.notice_days
+    datatype: number
+    min: 0
+---
+need: case.notice_days
+question: |
+  Would the hearing be to review this document, or a trial?
+field: case.hearing_type
+buttons:
+  - Review: review
+  - Trial: trial
+---
+question: |
+  Are there any additional terms you would like in regarding your tenancy?
+fields:
+  - no label: case.reinstate_terms
+    required: false
+---
+need: case.reinstate_terms
+question: |
+  In the event of a violation of this agreement, how early of a notice should be given before going to court?
+fields:
+  - business days: case.violation_notice_days
+---
+need: case.violation_notice_days
+question: |
+  Would you like to be able to inspect the documents related to an allegation before a hearing?
+yesnomaybe: case.inspect_documents
+---
+question: |
+  Here is your form
+field: got_stay_form
+attachment:
+  name: Your form
+  filename: form
+  docx template file: Stip_to_Reinstate.docx
+  valid formats:
+    - pdf
+    - docx

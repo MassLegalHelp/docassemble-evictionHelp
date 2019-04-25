@@ -3,15 +3,17 @@ modules:
   - docassemble.base.core
 ---
 include: 
-  - bad_conditions.yml
-  - rent.yml
+  - final_questions.yml
+  - intro_questions.yml
+  - stay.yml
   - vacate.yml
 ---
 code: |
   seen_case_intro
-  processed_rent
-  processed_bad_conditions
-  if client.must_move and not client.wants_to_stay:
+  processed_intro
+  if client.wants_to_stay:
+    processed_stay
+  else:
     processed_vacate
   worksheet_complete = True
 ---
@@ -23,14 +25,7 @@ subquestion: |
 field: seen_case_intro
 section: About your case
 ---
-need: bad_conditions.present
-question: |
-  Do you have to move?
-yesno: client.must_move
-section: Goals
----
-need: client.must_move
 question: |
   Do you want to stay in your home?
-yesno: client.want_to_stay
----
+yesno: client.wants_to_stay
+section: Goals
