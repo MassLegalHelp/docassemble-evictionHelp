@@ -35,19 +35,21 @@ terms:
     September 16 to June 14
 ---
 question: |
-  Have you experienced times of not enough heat?
+  Have you ever had not enough heat?
 yesno: not_enough_heat
 ---
 question: |
-  Do you have one or more space heaters?
+  Do you any space heaters?
 yesno: has_space_heater
 ---
 question: |
   Have you experienced improper usage of your space heater?
+  #CR edit - I have no idea what this means
 yesno: improper_space_heater_usage
 ---
 question: |
   Are all of your space heaters electric?
+  # Make this question depend on - Do you have any? How many do you have? How many are electric - choices are based on answer to how many they have
 yesno: electric_only_space_heaters
 ---
 question: |
@@ -56,7 +58,7 @@ yesno: proper_space_heater_venting
 ---
 # special case for idk
 question: |
-  Have you signed a written agreement with your landlord saying you must pay for heat?
+  Have you signed a written agreement with your landlord that says **you** pay for heat?
 yesnomaybe: has_written_heating_agreement
 ---
 question: |
@@ -71,16 +73,16 @@ subquestion: |
 field: seen_heating_season_blurb
 ---
 question: |
-  During the {heating season}, has a room been cooler than 68 Farenheit between 7 AM and 11 PM?
+  During the {heating season}, has any room been cooler than 68°F between 7 AM and 11 PM?
 yesno: cool_heating_daytime
 ---
 question: |
-  During the {heating season}, has a room been cooler than 64 Farenheit between 11 PM and 7 AM?
+  During the {heating season}, has a room been cooler than 64°F  between 11 PM and 7 AM?
 yesno: cool_heating_nighttime
 ---
 question: |
-  During the {heating season}, has the temperature ever gone over 78 degrees Fahrenheit?
-yesno: over_maximum_allowed_heating
+  During the {heating season}, has the temperature ever gone over 78°F ?
+allowed_heating
 ---
 question: |
   Has your landlord provided and maintained heating equipment in good working order?

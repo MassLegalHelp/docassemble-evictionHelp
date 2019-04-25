@@ -25,7 +25,7 @@ code: |
   maintenance_completed = True
 ---
 question: |
-  Does your landlord keep commean areas clean and sanitary?
+  Does your landlord keep common areas clean and sanitary?
 yesno: common_area_clean
 ---
 question: |
@@ -33,49 +33,56 @@ question: |
 yesno: landlord_manager_on_property
 ---
 question: |
-  Has your landlord provided a sign with the name, address, and 
-  phone number of them or their agent?
+  Has your landlord posted a sign with their name, address, and 
+  phone number or their agent's contact information?
 yesno: landlord_provides_sign
 ---
 question: |
-  Has your landlord turned off or interfered with your water, 
+  Has your landlord ever turned off or (interfered with?) your water, 
   hot water, heat, light, power or gas?
 yesno: utility_interference
 ---
 question: |
-  Did your landlord shut off utilities to make necessary repairs?
+  Did your landlord ever shut off utilities to make necessary repairs?
 yesno: shutoff_repairs
 ---
 question: |
   Did your landlord give reasonable notice before shutting off
   your utilities to make repairs?
+  # combine with question above
 yesno: reasonable_notice
 ---
 question: |
-  Between April 1 and october 30, were any windows that open outside on
-  the first four floors missing screens?
-yesno: missing_screens
+  Think about the windows on the bottom 4 floors of your building.
+subquestion: |
+  Between April 1 and october 30, were any of these windows missing screens?
+yesnomaybe: missing_screens
 ---
 question: |  
-  Between April 1 and october 30, were any doors that open directly outside
-  lacking screens?
-yesno: lacking_door_screen
+  Between April 1 and october 30, were any doors that open to the outside
+  missing screens?
+yesnomaybe: lacking_door_screen
 ---
 question: |
   Do any of the following have problems?
 subquestion: |
-  This could include if they were not installed correctly, leaking, blocked, or have some
-  other defects. Please check all that apply
+  "Problems" include 
+  not installed correctly, 
+  leaking, 
+  blocked, or 
+  have some
+  other defects. 
+  Please check all that apply:
 fields:
   - no label: broken_required_fixture
     datatype: checkboxes
     choices:
-      - Sinks, bathtubs, showers and toilets
-      - Waterheating facilities, gas pipes, heating equipment, and water pipes
-      - Stoves and ovens
-      - Catch-basins, vents, drains, and other similar fixtures
-      - Connections to water, sewer, and gas lines, and the subsurface sewage disposal system
-      - All electrical fixtures, wiring, and outlets
-      - All smoke detectors and carbon monoxide alarms
-      - All heating and ventilation equipment
-      - Landlord-installed equipment, including dishwashers, washing machines, dryers, refrigerators, and garbage disposals
+      - Sinks, bathtubs, showers or toilets,
+      - Waterheating facilities, gas pipes, heating equipment, or water pipes,
+      - Stoves or ovens,
+      - Catch-basins, vents, drains, and other similar fixtures,
+      - Connections to water, sewer, gas lines, ( - I think sewer includes this and the subsurface sewage disposal system),
+      # - Any (All) electrical fixtures, wiring, and outlets,
+      # - Any (All) smoke detectors and carbon monoxide alarms,
+      # - Any (All) heating and ventilation equipment,
+      - Landlord-installed equipment like a dishwasher, washing machine, clothes dryer, refrigerator, or garbage disposal.

@@ -49,13 +49,14 @@ code: |
 question: |
   Do you have a working toilet?
 yesno: working_toilet
+# CR - how many toilets do you have? do they all work? (2 questions) Also what about a note somewhere about if there ever was a problem with toilet or other thing not working say No also.
 ---
 question: |
-  Do you have a working sewage disposal system?
+  Does your sewage system work?
 yesno: working_sewage_disposal
 ---
 question: |
-  Are any of the following not in working condition?
+  Are any of the following not in working condition? 
 fields:
   - no label: bathroom_appliances
     datatype: checkboxes
@@ -65,11 +66,11 @@ fields:
       - Shower
 ---
 question: |
-  Is your toilet free from defects?
+  Is your toilet free from defects? CR??
 yesno: no_toilet_defect
 ---
 question: |
-  Is your toilet in a room not used for living, sleeping, cooking, or eating?
+  Is your toilet in a separate room from those you use for living, sleeping, cooking, or eating?
 yesno: toilet_in_appropriate_room
 ---
 question: |
@@ -81,12 +82,13 @@ question: |
 yesno: no_bath_shower_defect
 ---
 question: |
-  Is your bathtub or shower in a room not used for living, sleeping, cooking, or eating?
+  Is your bathtub or shower in a separate room from those you use for living, sleeping, cooking, or eating?
 yesno: tub_shower_in_appropriate_room
 ---
 question: |
-  Do you have at least one light fixture in good working condition in your bathroom?
-yesno: bathroom_working_light
+  Does at least one light work well in your bathroom?
+yesno: bathroom_working_light 
+# Was there ever a time you had no good lights in the bathroom? 
 ---
 question: |
   Are your bathroom floors:
@@ -101,13 +103,14 @@ fields:
       - Protected by a waterproof covering
 ---
 question: |
-  Are your bathroom walls made with nonabsorbent, waterproof, smooth material up to four feet?
+  Are your bathroom walls covered with a waterproof, smooth material up to 4 feet from the floor?
 yesno: bathroom_walls_appropriate
 ---
 question: |
   Is there nonabsorbent, waterproof covering up to six feet high for walls above bathubs with showers or stalls?
+  CR edit: Are the walls around your bathtub or shower covered with a waterproof material for at least 6 feet above ...something (floor of the tub or shower?)
 yesno: bathroom_wall_shower_covering
 ---
 question: |
-  Is there a door that can be closed for every room with a toilet?
+  Does every room that has a toilet have a door you can close?
 yesno: toilet_with_door

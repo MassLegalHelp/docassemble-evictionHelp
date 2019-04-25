@@ -44,6 +44,7 @@ question: |
 yesno: adequate_venting
 ---
 # tedious, needs better wording
+# What if we rewrite this series of questions on adequate mechanical ventilation systems? What kind of windows do you have? checkboxes. Do all of these open easily, I don't know what the 4% thing even means. Do you have any rooms or spaces with no windows?
 question: |
   For rooms without adequate mechanical ventilation, are there 
   windows, skylights, doors, or transoms in the outside wall or roof that open easily to 
@@ -52,19 +53,20 @@ yesno: window_venting
 ---
 # more tedious language
 question: |
-  Does every room have ransparent or translucent glass that admits light from the outdoors?
+  Does every room have at least one window that lets in outside light? (transparent or translucent glass that admits light from the outdoors)?
 yesno: glass_in_rooms
 ---
-# so much tedious language. Send help
+# so much tedious language. Send help CR - LOL
 question: | 
   Is the glass in every room equal to at 8% of the floor area?
-yesno: appropriate_glass_proportionate
+#  yesnomaybe: appropriate_glass_proportionate
 ---
 question: |
-  Are there emergency lighting in halls and at exits?
+  Do the halls and exits have emergency lighting?
 yesno: emergency_lighting
 ---
 question: |
+  CR Need to fix this - not exactly sure what it means
   Are there any areas without electric lighting and switches that provides safe and reasonable use?
 subquestion: |
   Please select all areas that apply.
@@ -84,19 +86,20 @@ fields:
       - Outside stairways and passageways
 ---
 question: |
-  Are there wires going under rugs or other coverings or through doorways?
+  Can you see any wiring that goes through doorways, under rugs or carpets?
+  # CR - not sure what other floor coverings there are - linoleum?
 yesno: unsafe_wiring
 ---
 question: |
-  Is temporary wiring used?
+  Temporary wiring
 subquestion: |
-  This excludes extension cords for fixtures and portable appliances.
+  Does your place have any temporary wiring that is not an extension cord for lights or portable appliances.
 yesno: temporary_wiring
 ---
 question: |
-  Are there any areas without sufficient 24-hour lighting?
+  Are there any areas that do not have enough 24-hour lighting?
 subquestion: |
-  Select all that apply
+  Check all that apply
 fields:
   - no label: lighting_common_areas
     datatype: checkboxes
@@ -106,23 +109,27 @@ fields:
       - Stairways
 ---
 question: |
-  Are light fixtures in common areas wiried to the closest unit for service?
-yesno: nearby_unit_lighting_wiring
+  Are the lights in common areas wired to the closest unit for service?
+yesnomaybe: nearby_unit_lighting_wiring
+---
+# combine questions into one (with show if)
+question: |
+  Has the landlord made you pay for electricity any lighting outside your apartment?
+yesno: tenant_paid_lighting
 ---
 # wording help
 question: |
-  Do you have a written agreement with your landlord saying you must
-  pay for electricity to lighting fixtures wired to your unit?
+  Do you have a written agreement with your landlord that says you must
+  pay for lighting just outside your apartment?
 yesno: lighting_written_agreement
 ---
 question: |
-  Has the landlord made you pay for electricity for the fixture?
-yesno: tenant_paid_lighting
+  Did your landlord tell other occupants in your building about your agreement?
+yesnomaybe: informed_occupants_lighting
 ---
 question: |
-  Has your landlord told other occupants in the building about your agreement?
-yesno: informed_occupants_lighting
----
-question: |
-  Is there back-up emergency lighting separate from regular lighting in your building?
-yesno: backup_lighting
+  Does your building have back-up emergency lighting?
+subquestion: |
+   separate from  the regular lighting
+yesnomaybe: backup_lighting
+

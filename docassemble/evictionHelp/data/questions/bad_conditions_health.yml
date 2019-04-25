@@ -25,11 +25,11 @@ code: |
   health_completed = True
 ---
 question: |
-  Is there an accumulation of garbage of fillth that could sustain pests or cause accidents or disease?
+  Is there an accumulation of garbage or filth that could: * attract pests or * cause accidents or *cause disease CR edit - make each of these separate check boxes that if any are true make the variable garbage accumulation true?
 yesno: garbage_accumulation
 ---
 question: |
-  Does your unit have lead paint?
+  Does your apartment have any lead paint?
 yesno: lead_paint_present
 ---
 question: |
@@ -42,16 +42,18 @@ yesno: child_reach_lead_paint
 ---
 # it also says later f you have a child under the age of 6, your landlord must remove or properly cover lead paint up to 5 feet from the floor. 
 # but lead paint a child can reach is already a serious violation
-# should we ask twice?
+# should we ask twice? - nope I don't think so - thought maybe - ask twice but use variable so value is already filled in the 2nd time question is asked? Or question is skipped if they have already answered. - possibilities
 ---
 question: |
   Are there defects in the building that could release asbestos dust?
 yesno: asbestos_risk
 ---
 # should we ask if they have called a health inspector
+# it would make sense to do that, but it would mean another series of questions. But also we could tell them to get a copy of the health inspector's report.
 ---
 question: |
-  Is there an infestation of cockroaches, insects or rodents in the building?
+  Are there cockroaches, insects or rodents in the building?
+  # we could ask this as one question with 3 boxes or just one...If we build an affidavit at any time it's helpful to have specific details but this question isn't that complex if we are not building statements.
 yesno: pest_infestation
 ---
 question: |
@@ -60,5 +62,9 @@ yesno: pests_common_area
 ---
 question: |
   Have rats, mice, roaches, beadbugs or other insects been found in an individual unit?
-yesno: petst_individual_apartment
+yesno: pests_individual_apartment
+
+
+# Maybe we could ask the last 3 questions in 1 - Any in the building then under this, in common areas, in an apartment do we care if it's the client's apartment or their neighbor's?
+
   

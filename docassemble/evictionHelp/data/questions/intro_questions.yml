@@ -50,6 +50,7 @@ buttons:
 need: client.rent.frequency
 question: |
   How much is the ${ client.rent.frequency } rent?
+  CR edit: How much rent does your landlord charge? have some help text or a note 
 fields:
   - no label: client.rent.value
     datatype: currency
@@ -83,9 +84,9 @@ fields:
     min: 0
 ---
 question: |
-  Should the rent you owe be reduced?
+  Should your landlord lower your rent?
 subquestion: |
-  One reason you may wish for your rent to be reduced is if you lived with bad conditions.
+  One reason your landlord should lower your rent is because of the bad conditions in your apartment.
 yesno: client.rent.should_be_reduced
 ---
 question: |
@@ -101,12 +102,13 @@ fields:
     datatype: yesnowide
 ---
 question: |
-  Should repairs be made?
+  Does the apartment need repairs?
 subquestion: |
   % if len(known_issues) > 0:
   If there are any additional repairs or conditions you yould like mentioned, please add them here.
+  CR edit: Describe or list any more repairs or bad conditions your apartments needs fixing.
   
-  Here are the issues you mentioned:
+  The problems you already told me about are:
     <ul>
     % for issue in known_issues:
       <li>${ issue }</li>
@@ -139,29 +141,28 @@ fields:
 ---
 question: |
   Should your landlord reduce the rent you owe?
-yesno: landlord.should_reduce_rent
----
-question: |
-  What should your reduced balance be?
+yesno: landlord.should_reduce_rent  
 fields:
-  - no label: client.rent.reduced_value
-    datatype: currenty
+  - "What should the reduced amount be?": client.rent.reduced_value
+    datatype: currency
     min: 0
     max: client.owed.rent
+    show if: landlord.should_reduce_rent
 ---
 question: |
-  Would you like to have a payment plan to help you pay back rent you owe?
+  Do you need a payment plan to help you pay back rent you owe?
 yesno: client.owed.payment_plan
 ---
 question: |
-  Please describe how you would like to pay your landlord
+  Describe how you would like to pay your landlord
 ---
 section: Payments
 question: |
-  Should payments be made?
+  Should payments be made?  
+  CR edit: need to make this question more active Who should pay whom?(suggestion)
 subquestion: |
-  You might want to pay your landlord for back rent, for tenancy while your case is processed, or to resolve their claims.
-  You might want your landlord to pay you to resolve your claims.
+  You may want to pay your landlord back rent, while you are waiting for a court decision (?), or to resolve their claims (need better Plain Language here).
+  You might want your landlord to pay you for repairs living with bad conditions...(to resolve your claims).
 fields: 
   - no label: case.payments_to
     datatype: radio
@@ -171,14 +172,13 @@ fields:
       - No: none
 ---
 question: | 
-  Please describe the payments made by ${ "you" if case.payments_to == "tenant" else "your landlord" }.
+  Tell me about the payments ${ "you" if case.payments_to == "tenant" else "your landlord" } should make.
 fields: 
-  - note: How much will be paid?
+  - note: How much should they/you (variable to be defined) pay?
   - no label: case.payment_amount
     datatype: currency
   - note: | 
-      Please describe how the payments will be made
-      This could be payments on a certain date, a rent credit, or other means.
-  - no label: case.payments_description
+      How should ${ "you" if case.payments_to == "tenant" else "your landlord" } pay.
+      This could be payments on a certain date, a rent credit, or some other way
     datatype: area
 ---

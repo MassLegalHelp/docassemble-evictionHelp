@@ -9,20 +9,20 @@ code: |
   processed_bad_conditions = True
 ---
 question: |
-  Have you lived with bad conditions?
+  Have you lived with bad conditions in your apartment?
 subquestion: |
-  Bad conditions could include: insects, mice or rats, electrical problems, no heat
+  Bad conditions include: insects, mice or rats, electrical problems, no heat
 yesnomaybe: bad_conditions.present
 section: Bad conditions
 ---
 question: |
-  Please list the bad conditions you experienced
+  Describe the bad conditions you lived with.
 fields:
   - no label: bad_conditions.conditions
     datatype: area
 ---
 question: |
-  Should the bad conditions reduce the rent you owe?
+  Should you have to pay less rent because of the bad conditions?
 yesno: bad_conditions.should_reduce_rent
 ---
 question: |
@@ -34,9 +34,13 @@ fields:
     datatype: currency
     min: 0
     max: ${ client.owed.rent }
+# CR comment - this could be a show if bad_conditions.should_reduce_rent, then this question could just be How much?
+# Then we need to figure out how to make it clear, that the amount we are asking for is either the amount by which the rent should be lowered or the reduced rent after subtracting money for bad conditions.
 ---
 question: |
-  Should repairs be made?
+  Repairs
+subquestion: |
+  Does your apartment need repairs?
 yesno: need_repairs
 ---
 question: |
@@ -46,3 +50,5 @@ subquestion: |
 fields:
   - no label: repairs
     datatype: area
+    show if: need_repairs
+# CR edit put note in explaining how to answer questions with clearer directions - times and dates to schedule repairs? Or when problem occurred?
