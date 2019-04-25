@@ -110,17 +110,18 @@ fields:
 ---
 question: |
   Are the lights in common areas wired to the closest unit for service?
-#yesnomaybe: nearby_unit_lighting_wiring
+yesnomaybe: nearby_unit_lighting_wiring
+---
+# combine questions into one (with show if)
+question: |
+  Has the landlord made you pay for electricity any lighting outside your apartment?
+yesno: tenant_paid_lighting
 ---
 # wording help
 question: |
   Do you have a written agreement with your landlord that says you must
-  pay the electric bill for the lights in your apartment?
+  pay for lighting just outside your apartment?
 yesno: lighting_written_agreement
----
-question: |
-  Has the landlord made you pay for electricity for the lights in your apartment?
-yesno: tenant_paid_lighting
 ---
 question: |
   Did your landlord tell other occupants in your building about your agreement?
@@ -131,3 +132,4 @@ question: |
 subquestion: |
    separate from  the regular lighting
 yesnomaybe: backup_lighting
+

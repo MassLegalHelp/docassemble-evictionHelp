@@ -50,7 +50,7 @@ code: |
   kitchen_completed = True
 ---
 question: |
-  First we will ask you a couple of questions about your kitchen appliances.
+  First, we will ask you a couple of questions about your kitchen appliances.
 field: saw_kitchen_intro
 ---
 question: |
@@ -151,6 +151,4 @@ yesno: refrigerator_proper_outlet
 # -carpeted
 # -linoleum
 # then ask other kitchen floor questions all in one.
-
-
 

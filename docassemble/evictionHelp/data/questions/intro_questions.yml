@@ -158,8 +158,7 @@ question: |
 ---
 section: Payments
 question: |
-  Should payments be made?
-  
+  Should payments be made?  
   CR edit: need to make this question more active Who should pay whom?(suggestion)
 subquestion: |
   You may want to pay your landlord back rent, while you are waiting for a court decision (?), or to resolve their claims (need better Plain Language here).
@@ -180,7 +179,6 @@ fields:
     datatype: currency
   - note: | 
       How should ${ "you" if case.payments_to == "tenant" else "your landlord" } pay.
-      This could be payments on a certain date, a rent credit, or some other way.
-  - no label: case.payments_description
+      This could be payments on a certain date, a rent credit, or some other way
     datatype: area
 ---
