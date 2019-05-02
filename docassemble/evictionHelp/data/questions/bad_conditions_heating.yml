@@ -82,7 +82,7 @@ yesno: cool_heating_nighttime
 ---
 question: |
   During the {heating season}, has the temperature ever gone over 78°F ?
-allowed_heating
+yesno: over_maximum_allowed_heating
 ---
 question: |
   Has your landlord provided and maintained heating equipment in good working order?

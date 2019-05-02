@@ -59,7 +59,7 @@ yesno: glass_in_rooms
 # so much tedious language. Send help CR - LOL
 question: | 
   Is the glass in every room equal to at 8% of the floor area?
-#  yesnomaybe: appropriate_glass_proportionate
+yesnomaybe: appropriate_glass_proportionate
 ---
 question: |
   Do the halls and exits have emergency lighting?

@@ -141,13 +141,15 @@ fields:
 ---
 question: |
   Should your landlord reduce the rent you owe?
-yesno: landlord.should_reduce_rent  
 fields:
+  - no label: landlord.should_reduce_rent  
+    datatype: yesnoradio
   - "What should the reduced amount be?": client.rent.reduced_value
     datatype: currency
     min: 0
     max: client.owed.rent
-    show if: landlord.should_reduce_rent
+    js show if: |
+      val("landlord.should_reduce_rent") === true
 ---
 question: |
   Do you need a payment plan to help you pay back rent you owe?
