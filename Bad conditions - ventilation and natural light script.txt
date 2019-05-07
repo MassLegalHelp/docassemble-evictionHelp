@@ -1,0 +1,97 @@
+Sections:
+Bad Conditions
+	Air
+	Light
+
+question: |
+  Does your apartment get enough fresh air?
+subquestion: 
+  Do all of the rooms have a window or a door to the outside?
+Yes
+No
+  If no, do **any** rooms in your apartment have some sort of window or door to the outside?
+If yes, do the doors or windows open easily?
+   Yes
+   No
+   I don't know
+  If Yes
+When the doors or windows are open, would you say the floor is 25 times the size of the opening? 
+the floor space **less than** 25 x the size of the windows and door openings.
+the floor space **is** 25 x the size of the window or door opening
+floor space is **more than** 25 x the size of the windows and door openings.
+I don't know.
+Note: Take your best guess. If the windows and door openings do not give enough fresh air you are living with bad conditions.
+
+Try to get a sketch of window compared to floor.
+Note: There is a rule about the size of the opening for the window or door.  If the opening  is less than 4% of the floor space, you are living with bad conditions. 
+
+Saved 2 images in Google Drive...
+
+If No to all of the rooms
+ If No to any of the rooms do the rooms with no windows or doors have some sort of fan or ventilation system to move fresh air through the room?
+Yes
+No
+
+
+Is your kitchen floor smaller than 70 square feet?
+yesnomaybe: not_count_kitchen
+Is your bathroom floor smaller than 70 square feet.
+yesnomaybe:not_count_bathroom
+# Initialize not_counting_bthroom_ktchn
+not_counting_bthroom_ktchn = ''
+if not_count_kitchen:
+  not_counting_bthroom_ktchn = 'Not counting your kitchen,'
+if not_count_bathroom:
+  not_counting_bthroom_ktchn = 'Not counting your bathroom,'
+if not_count_bathroom and not_count_kitchen:
+not_counting_bthroom_ktchn = 'Not counting your bathroom and kitchen, '
+
+
+question: |
+  Does your apartment get enough light?
+subquestion: question: |
+  Does every room have at least one window, or skylight, that lets in light from the outdoors? 
+yesno: glass_in_rooms
+If yes
+Is the floor in each of these rooms 
+- 12.5 x the square feet of glass in the room
+- less than 12.5 x the square feet of glass in the room
+- more than 12.5 x the square feet of glass in the room
+Note: 
+If the glass in your windows is less than 8% of the square of the floor, you are living with bad conditions. Take your best guess. 
+Comment: |
+  Show images again to give people an idea.
+
+ 
+---
+question: |
+  Lighting in common areas.
+subquestion: |
+	Do you have to pay for any lighting **outside** your apartment?
+
+Is your apartment closer than any other to this lighting?
+show if: 
+	tenant_paid_lighting
+question: |
+  Do you have a written agreement with your landlord that says you must
+  pay for lighting just outside your apartment?
+yesno: lighting_written_agreement
+show if: 
+	tenant_paid_lighting
+
+question: |
+  Did your landlord tell other occupants in your building about your agreement?
+yesnomaybe: informed_occupants_lighting
+show if: 
+	lighting_written_agreement
+---
+question: |
+  Does your building have emergency lighting?
+subquestion: |
+   In case the regular lights go out is there an emergency system for lights? So you will not end up in the dark.
+yesnomaybe: backup_lighting
+
+
+
+
+---
