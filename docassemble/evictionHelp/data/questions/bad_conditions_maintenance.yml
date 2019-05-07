@@ -41,6 +41,7 @@ question: |
   Has your landlord ever turned off or (interfered with?) your water, 
   hot water, heat, light, power or gas?
 yesno: utility_interference
+# comment - let's take out "interfered with"
 ---
 question: |
   Did your landlord ever shut off utilities to make necessary repairs?
@@ -62,6 +63,7 @@ question: |
   Between April 1 and october 30, were any doors that open to the outside
   missing screens?
 yesnomaybe: lacking_door_screen
+#combine with above
 ---
 question: |
   Do any of the following have problems?
@@ -72,7 +74,7 @@ subquestion: |
   blocked, or 
   have some
   other defects. 
-  Please check all that apply:
+  Check the box next to every problem your apartment has:
 fields:
   - no label: broken_required_fixture
     datatype: checkboxes
@@ -85,4 +87,4 @@ fields:
       # - Any (All) electrical fixtures, wiring, and outlets,
       # - Any (All) smoke detectors and carbon monoxide alarms,
       # - Any (All) heating and ventilation equipment,
-      - Landlord-installed equipment like a dishwasher, washing machine, clothes dryer, refrigerator, or garbage disposal.
+      - Appliances your landlord installed like a dishwasher, washing machine, clothes dryer, refrigerator, or garbage disposal.

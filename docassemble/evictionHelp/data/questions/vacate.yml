@@ -15,19 +15,19 @@ code: |
   processed_vacate = True
 ---
 question: |
-  Would you like a part of the rent you owe be forgiven when you vacate?
+  Do you need the landlord to forgive some of the rent you owe when you move out?
 yesnomaybe: client.rent.will_be_forgiven
 ---
 question: |
-  How much of the $${ client.owed.rent } rent should be forgiven?
+  How much of the $${ client.owed.rent } rent should they forgivn?
 fields:
   - no label: client.rent.forgiven_amount
     datatype: currency
 ---
 question: |
-  Do you wish to keep your claims, or would you like a mutual termination of your tenancy?
+  Do you need to keep your claims, or do you need both sides to agree that you both need to end the tenancy, in other words the need to end the tenancy is mutual?
 help: |
-  A mutal termination of tenancy means that both you and your landlord agree that you are moving out.
+  If both you and your landlord agree that you are moving out, this is a 'mutal termination of tenancy'.
   This is important if you wish to keep a voucher.
 field: case.vacancy_type
 buttons: 
@@ -48,19 +48,21 @@ fields:
 ---
 need: landlord.move_out_incentive
 question: |
-  How early of a notice should be given before going to court for a violation of terms?
+  How much notice should be given before going to court for a violation of terms?
 fields: 
   - business days: case.vacancy_notice_days
     datatype: number
     min: 0
+# See question in other yml file
 ---
 need: case.vacancy_notice_days
 question: |
   Would the hearing be for status, trial, or entry of money judgement?
 help: |
-  Select for status if you agree that the hearing will be to review the Stipulation. 
-  Select for trial if you agree that the hearing will be a trial. 
-  Select for entry of money judgment against Landlord if you agree that you can get a judgment against the landlord if the landlord does not pay you the amount agreed.
+  Pick 'Status' if you agree that the hearing will be to review the Stipulation. 
+  Pick 'Trial' if you agree that the hearing will be a trial. 
+  Pick 'Mmoney judgment' if you agree that you can get a judgment against the landlord if the landlord does not pay you the amount agreed.
+  # isn't this really if the landlord agrees you can get a judgment if htey do not pay you the amount they agreed to.
 field: case.vacancy_hearing_type
 buttons:
   - Status: review
@@ -68,7 +70,7 @@ buttons:
   - Money judgement: judgement
 ---
 question: |
-  Are there any additional terms you would like in regarding your vacancy?
+  Are there any more terms about moving out that you would need to add ?
 fields:
   - note: Please list any terms you would like (optional)
   - no label: case.vacancy_reinstate_terms
@@ -79,14 +81,16 @@ question: |
   In the event of a violation of this agreement, how early of a notice should be given before going to court?
 fields:
   - business days: case.vacancy_violation_notice_days
+# See other questions like this
 ---
 need: case.vacancy_violation_notice_days
 question: |
   Would you like to be able to inspect the documents related to an allegation before a hearing?
 yesnomaybe: case.vacancy_inspect_documents
+# See other questions like this
 ---
 question: | 
-  Would you like your landlord to provide a reference to help you relocate?
+  Do you need your landlord to write/be? a reference to help you relocate?
 yesnomaybe: client.wants_reference
 ---
 question: |

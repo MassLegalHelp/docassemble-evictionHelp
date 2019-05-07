@@ -16,7 +16,7 @@ code: |
     if pest_infestation:
       add_problem(5, "Cockroach, insect, or rodent infestation in building")
   
-    if petst_individual_apartment:
+    if pests_individual_apartment:
       add_problem(30, "Pests have been found in at least one apartment")
 
   if pests_common_area:

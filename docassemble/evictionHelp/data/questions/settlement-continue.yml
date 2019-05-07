@@ -17,12 +17,15 @@ reconsider: True
 question: |
   You are filling out the <b>Stipulation to continue</b> Form.
 subquestion: |
-  This form is can be used to reschedule you case and give time to resolve issues. 
-  If this sounds like what you would like to do, press continue.
+  You can use this form to ask the court to:
+  - give you more time to resolve some issues and
+  - change the date of your court case. 
+  If you need one or both, click 'Next' .
 field: seen_continue_introduction
+# We may not need this question because the following questions just flow from previously selected preferences - have to look at the flow.
 ---
 question: |
-  When is the rescheduled hearing? 
+  When should the new court date be? 
 fields:
   - Date: reschedule_date
     datatype: date
@@ -36,12 +39,15 @@ fields:
       ${ format_time(current_datetime(), format="HH:mm") }
 ---
 question: |
-  Why would you like to reschedule?
+  Why do you need to change the date?
 field: reschedule_reason
 choices:
-  - I want to up a court review date: status
-  - My landlord or I have filed a motion and would like to schedule a hearing: hearing
-  - I want to reschedule the trial: trial
+  - I need to up a court review date: status
+  # typo above "up a court review date? ask the court to review? maybe?"
+  - My landlord filed a motion and needs to schedule a hearing: hearing_ll
+  - I have filed a motion and would like to schedule a hearing: hearing_ten
+  - I need to reschedule the trial: trial
+# note if logic depends on reschedule_reason being hearing - need to update logic
 ---
 question: |
   Are you filing the motion?
@@ -50,6 +56,8 @@ fields:
     datatype: yesnoradio
   - What is the motion?: motion
     required: false
+# this question is answered in previous question = need logic to assig value to filer
+# but still need to ask what is the motion for - could this be a show if reschedule reason in (hearing_ten, trial)?
 ---
 question: |
   What would you and your landlord want to happen between now and the next court date?
@@ -58,6 +66,8 @@ fields:
     datatype: area
   - note: |
       Please be warned, there is a limit to the number of characters (roughly 400)
+# I have to check this does it make sense to have this be 2 questions or
+# is it really you and your landlord working together to resolve and get more time before next court date?
 ---
 question: |
   Here is your form

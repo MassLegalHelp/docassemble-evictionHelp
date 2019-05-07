@@ -62,7 +62,7 @@ yesno: small_kitchen_sink
 question: |
   Are any of these appliances broken?
 subquestion: |
-  Please select all that are broken
+  Check the box next to every appliance that does **not** work.
 fields:
   - no label: broken_kitchen_appliances
     datatype: checkboxes
@@ -70,17 +70,18 @@ fields:
       - Kitchen sink
       - Stove
       - Oven
-      - Landlord-installed refrigerator
+      - Refrigerator your landlord installed
       - Gas-burning equipment
       - Oil-burning equipment
 ---      
 question: |
-  Does your sink have hot **and** cold water?
+  Does your kitchen sink have both hot **and** cold water?
 yesno: kitchen_sink_water
 ---
 question: |
   Does your sink drain properly?
 yesno: kitchen_sink_drainage
+#  Let's put all kitchen sink questions together into 1 question.Does your kitchen sink.. choices 
 ---
 question: |
   Has your landlord provided you with a working stove?
@@ -90,6 +91,7 @@ yesno: landlord_provided_stove
 question: |
   Do you have a written agreement with your landlord that says you must provide your own stove?
 yesno: tenant_must_provide_stove
+# stove questions together
 ---
 question: |
   Has your landlord provided you with a working oven?
@@ -98,14 +100,16 @@ yesno: landlord_provided_oven
 question: |
   Do you have a written agreement with your landlord that says you must provide your own oven?
 yesno: tenant_must_provide_oven
+# oven questions together
 ---
 question: |
-  Do you have at least 1 working light fixture in your kitchen?
+  Does your kitchen have at least 1 light that works?
 yesno: kitchen_light_fixture
 ---
 question: |
-  Do you have at least 2 wall outlets in your kitchen?
+  Does your kitchen have at least 2 wall outlets?
 yesno: kitchen_wall_outlets
+# comment make light and wall outlets Does your kitchen have - at least 1 working light, yesno/ at least 2 working electical outlets
 ---
 question: |
   Are the kitchen floors:
@@ -116,6 +120,7 @@ fields:
       - Smooth
       - Non-corrosive
       - Waterproof
+
 ---
 question: |
   Do you have carpet in your kitchen?
@@ -124,6 +129,7 @@ yesno: kitchen_has_carpet
 question: |
   Does the carpet have a nonabsorbent, water-repellant backing?
 yesno: kitchen_floor_carpet_backing
+
 ---
 question: |
   Do you have wooden floors in your kitchen?
@@ -136,6 +142,7 @@ yesno: kitchen_wood_floor_finish
 question: |
   Does the floor have any cracks?
 yesno: kitchen_wood_floor_cracks
+
 ---
 question: |
   Do you have enough space to install a refrigerator?

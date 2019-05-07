@@ -90,7 +90,7 @@ subquestion: |
 yesno: client.rent.should_be_reduced
 ---
 question: |
-  What should your reduced rent be?
+  What should the lower rent be?
 subquestion: |
   For reference, you said you owe $${ client.owed.rent }
 fields:
@@ -106,7 +106,7 @@ question: |
 subquestion: |
   % if len(known_issues) > 0:
   If there are any additional repairs or conditions you yould like mentioned, please add them here.
-  CR edit: Describe or list any more repairs or bad conditions your apartments needs fixing.
+  CR edit: Describe or list any more repairs or bad conditions your apartment needs fixing.
   
   The problems you already told me about are:
     <ul>
@@ -140,14 +140,16 @@ fields:
     show if: landlord.reasons_to_owe['other']
 ---
 question: |
-  Should your landlord reduce the rent you owe?
-yesno: landlord.should_reduce_rent  
+  Should your landlord lower the rent you owe?
 fields:
+  - no label: landlord.should_reduce_rent  
+    datatype: yesnoradio
   - "What should the reduced amount be?": client.rent.reduced_value
     datatype: currency
     min: 0
     max: client.owed.rent
-    show if: landlord.should_reduce_rent
+    js show if: |
+      val("landlord.should_reduce_rent") === true
 ---
 question: |
   Do you need a payment plan to help you pay back rent you owe?
