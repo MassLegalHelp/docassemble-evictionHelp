@@ -22,7 +22,7 @@ fields:
     datatype: area
 ---
 question: |
-  Should you have to pay less rent because of the bad conditions?zz
+  Should you have to pay less rent because of the bad conditions?
 yesno: bad_conditions.should_reduce_rent
 ---
 question: |

@@ -120,7 +120,6 @@ fields:
       - Smooth
       - Non-corrosive
       - Waterproof
-
 ---
 question: |
   Do you have carpet in your kitchen?
@@ -129,7 +128,6 @@ yesno: kitchen_has_carpet
 question: |
   Does the carpet have a nonabsorbent, water-repellant backing?
 yesno: kitchen_floor_carpet_backing
-
 ---
 question: |
   Do you have wooden floors in your kitchen?
@@ -142,7 +140,6 @@ yesno: kitchen_wood_floor_finish
 question: |
   Does the floor have any cracks?
 yesno: kitchen_wood_floor_cracks
-
 ---
 question: |
   Do you have enough space to install a refrigerator?
