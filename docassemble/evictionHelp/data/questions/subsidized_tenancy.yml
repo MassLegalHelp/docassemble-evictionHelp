@@ -2,7 +2,7 @@
 question: |
   What type of subsidy do you have?
 subquestion: |
-  What is the best description of the public housing program or program that lowers your rent?
+  What is the best description of the public housing program you are in or the program that lowers your rent?
 field: subsidy_type
 choices:
   - Section 8 voucher (portable voucher): Section 8 voucher
@@ -31,11 +31,11 @@ fields:
     default:
       code: |
         subsidy_type in ["Section 8 voucher","MRVP"]
-  - The public housing authority stopped payment to the landlord due to bad conditions.: subsidized_housing.stopped_payment
+  - The public housing authority stopped paying my landlord because of bad conditions.: subsidized_housing.stopped_payment
     datatype: yesno
-  - My landlord or the housing authority improperly calculated my rent share.: subsidized_housing.improper_rent_calculation
+  - My landlord or the housing authority made a mistake in calculating my share of the rent.: subsidized_housing.improper_rent_calculation
     datatype: yesno
-  - My landlord charged me more rent than allowed by the housing authority (side payments). : subsidized_housing.landlord_overcharged
+  - My landlord charged me a side payment on top of the rent the housing authority allows: subsidized_housing.landlord_overcharged
     datatype: yesno
 section: Claims and Defenses
 ---
@@ -49,7 +49,8 @@ fields:
   - My landlord does not have good cause to evict me. : subsidized_housing.no_just_cause
     datatype: yesnoradio
     default: True
-  - The landlord did not send a copy of the notice to quit to my housing authority at the same time as they sent it to me. : subsidized_housing.no_ntq_to_agency
+    # need to put a definition of 'good cause in here'
+  - The landlord did not send a copy of the 'Notice to Quit' to my housing authority at the same time they sent it to me. : subsidized_housing.no_ntq_to_agency
     datatype: yesnoradio
     show if: 
       code: |

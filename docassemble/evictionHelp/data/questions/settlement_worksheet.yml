@@ -21,7 +21,7 @@ question: |
   Welcome ${ client.name }.
 subquestion: |
   Now that we have some basic information about you,
-  I we would like to ask some questions about your case
+  We would need to some questions about your case.
 field: seen_case_intro
 section: About your case
 ---

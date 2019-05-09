@@ -59,7 +59,7 @@ yesno: glass_in_rooms
 # so much tedious language. Send help CR - LOL
 question: | 
   Is the glass in every room equal to at 8% of the floor area?
-#  yesnomaybe: appropriate_glass_proportionate
+yesnomaybe: appropriate_glass_proportionate
 ---
 question: |
   Do the halls and exits have emergency lighting?
@@ -84,6 +84,9 @@ fields:
       - Cellar
       - Porch
       - Outside stairways and passageways
+Comment: |
+  q. Unsafe lighting in common areas. subq. Check the box next to any space where the lights or light switches are dangerous or unreasonable. perhaps make a note 
+    for example - if you have to go down the cellar stairs or cross the laundry room in the dark to turn on the light, check the box next to the space.
 ---
 question: |
   Can you see any wiring that goes through doorways, under rugs or carpets?
@@ -107,6 +110,8 @@ fields:
       - Interior passageways
       - Hallways
       - Stairways
+comment: |
+  q. Common areas should be lit 24 hours a day. subq.Which of these areas do not have enough light?, add - They are all well lit 24 hours a day.
 ---
 question: |
   Are the lights in common areas wired to the closest unit for service?

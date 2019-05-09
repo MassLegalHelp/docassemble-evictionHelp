@@ -14,44 +14,63 @@ code: |
   final_questions_complete = True
 ---
 question: |
-  Would you like any additional details in your agreement?
+  # Do you need to add anything more to this agreement?
+  Would you like 
+    any additional details 
+  in your agreement?
 yesnomaybe: additional_terms.present
 ---
 question: |
-  What additional details would you like in the agreement?
+  What 
+  # else
+  additional details 
+  would you like
+  # to put
+  in the agreement?
 fields: 
   - no label: additional_terms.terms
     datatype: area
+# combine with above.
 ---
 question: |
-  Do you agree to give up legal claims against your landlord to resolve this case?
+  Do you promise 
+  not to sue your landlord later, if you both agree to the terms in this stipulation - 'negotiate a settlement' for this case?  
+  agree to give up legal claims against your landlord to resolve this case?
 subquestion: |
-  Please note, your landlord must also agree to this.
+  **Important** Both you and your landlord must agree not to sue the other one later. This is called "giving up your legal claims"
   Both you and your landlord must follow all the terms in the stipulation.
 yesnomaybe: case.waive_claims
 ---
 need: case.waive_claims
 question: |
-  Do you agree to dismiss this case when the terms of this agreement are met?
+  Do you agree to dismiss this case when both sides have met the terms of this agreement?
 subquestion: |
-  Even if you say yes, your landlord must also agree to dismiss the case. 
-  Selecting this option indicates what you wish to happen.
+  Even if you say 'yes', your landlord must also agree to dismiss the case. 
+  Saying yes means you will if they will, this is the way you would **like** it to work out.
+  # cut this line out 'Selecting this option indicates what you wish to happen.''
 yesnomaybe: case.dismiss_case
 ---
 question: |
   When should the case be dismissed?
 subquestion: |
-  If neither you or your landlord file additional motions, your case will be dismissed on this date. 
+ This is the date you would like the court to dismiss your case. 
 fields:
   - no label: case.dismiss_date
     datatype: date
+    note: the court cannot dismiss the case on this date if you or your landlord file another motion.
+# combine with dismiss question above.
 ---
 question: |
-  Do you want the court to review if the terms of your agreement have been met?
+  Do you need the court to review the agreement to see if the terms of your agreement were met?
 yesnomaybe: case.should_review
 ---
 question: |
-  When would you like the court to eview the agreement?
+  When do you think the court should review the agreement?
 fields:
   - note: Please list the date or date(s) you would be availabe.
   - Date(s): case.review_date
+  # combine with review question. above
+
+# I think the show if function cuts down on the perceived length of interviews and we should make as much use of it if we can. 
+# The drawback is that variables need to be defined even if htey don't get asked this way - I think. But probably worth it for user experience.
+

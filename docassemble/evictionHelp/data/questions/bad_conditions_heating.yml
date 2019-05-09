@@ -35,16 +35,17 @@ terms:
     September 16 to June 14
 ---
 question: |
-  Have you ever had not enough heat?
+  Have you ever not had enough heat?
 yesno: not_enough_heat
 ---
 question: |
-  Do you any space heaters?
+  Do you have any space heaters?
 yesno: has_space_heater
 ---
 question: |
   Have you experienced improper usage of your space heater?
-  #CR edit - I have no idea what this means
+  #CR edit - https://www.mass.gov/files/documents/2017/09/11/105cmr410.pdf#page=7 (410.200: Heating Facilities Required)(B) 
+  # CR let's try - Do you use a space heater because the heating system in the building does not work properly?  
 yesno: improper_space_heater_usage
 ---
 question: |
@@ -77,14 +78,19 @@ question: |
 yesno: cool_heating_daytime
 ---
 question: |
-  During the {heating season}, has a room been cooler than 64°F  between 11 PM and 7 AM?
+  During the {heating season}, has any room been cooler than 64°F  between 11 PM and 7 AM?
 yesno: cool_heating_nighttime
 ---
 question: |
   During the {heating season}, has the temperature ever gone over 78°F ?
-allowed_heating
+yesno: over_maximum_allowed_heating
 ---
 question: |
   Has your landlord provided and maintained heating equipment in good working order?
 yesno: provided_maintained_heating
+comment: |
+  Ask this question and then ask the 3 heating season questions all in one so question starts with during the heating season and then
+  During the day, between 7am and 11pm, has any room been cooler than 68°F
+  At night, between 11pm and 7, am has any room been cooler than 64°F
+  Has the temperature ever gone over 78°F ?
 ---
