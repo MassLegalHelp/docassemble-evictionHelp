@@ -55,7 +55,8 @@ section: Landlord
 ---
 need: landlord.name.first
 question: |
-  What is your court's name?
+  What is the name of the court on the Summons and Complaint?
+  # show image of summons and complaint
 fields:
   - no label: court_name
     input type: combobox
@@ -71,6 +72,9 @@ section: Court name
 need: court_name
 question: |
   What is your docket number?
+subquestion: |
+  Look at the top right corner of the Summons and Complaint 
+  # We need images of Summons and Complaint - circle Court name for previou question, docket number for this question.
 fields:
   - no label: docket_number
     js hide if: |
@@ -88,13 +92,6 @@ review:
   - Change your name: client.name.first
     help: |
       You said your name is **${ client.name }**
-  - Revisit county: county
-    button: |
-      % if city != "":
-      You said you live in ${ city.capitalize() }, which is in ${ county } County.
-      % else: 
-      You said you live in ${ county } County
-      % endif
   - Revisit court name: court_name
     button: |
       % if court_name != "":

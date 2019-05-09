@@ -9,7 +9,7 @@ code: |
     if bathroom_appliances[name]:
       add_problem(5, name + " not in working condition")
 
-  if not no_toilet_defect:
+  if toilet_defect:
     add_problem(30, "Toilet has defects")
 
   if not toilet_in_appropriate_room:
@@ -46,10 +46,20 @@ code: |
 
   bathroom_completed = True
 ---
+
 question: |
-  Do you have a working toilet?
+  How many toilets do you have?
+fields:
+  - no label: toilet_count
+    datatype: number
+    min: 0
+---
+need: toilet_count
+question: |
+  Do all of your toilets work?
+subquestion: |
+  If you have had a problem with one or more of your toilets, select No
 yesno: working_toilet
-# CR - how many toilets do you have? do they all work? (2 questions) Also what about a note somewhere about if there ever was a problem with toilet or other thing not working say No also.
 ---
 question: |
   Does your sewage system work?
@@ -66,8 +76,10 @@ fields:
       - Shower
 ---
 question: |
-  Is your toilet free from defects? CR??
-yesno: no_toilet_defect
+  Do your toilets have any defects
+yesno: toilet_defect
+comment: |
+  give examples
 ---
 question: |
   Is your toilet in a separate room from those you use for living, sleeping, cooking, or eating?
@@ -86,9 +98,8 @@ question: |
 yesno: tub_shower_in_appropriate_room
 ---
 question: |
-  Does at least one light work well in your bathroom?
-yesno: bathroom_working_light 
-# Was there ever a time you had no good lights in the bathroom? 
+  Was there ever a time you had no good lights in the bathroom? 
+yesno: bathroom_working_light  
 ---
 question: |
   Are your bathroom floors:
@@ -107,8 +118,7 @@ question: |
 yesno: bathroom_walls_appropriate
 ---
 question: |
-  Is there nonabsorbent, waterproof covering up to six feet high for walls above bathubs with showers or stalls?
-  CR edit: Are the walls around your bathtub or shower covered with a waterproof material for at least 6 feet above ...something (floor of the tub or shower?)
+  Are the walls around your bathtub or shower covered with a waterproof material for at least 6 feet above the floor?
 yesno: bathroom_wall_shower_covering
 ---
 question: |

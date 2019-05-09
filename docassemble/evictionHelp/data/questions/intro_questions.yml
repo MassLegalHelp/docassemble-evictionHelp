@@ -49,12 +49,13 @@ buttons:
 ---
 need: client.rent.frequency
 question: |
-  How much is the ${ client.rent.frequency } rent?
-  CR edit: How much rent does your landlord charge? have some help text or a note 
+  How much rent does your landlord charge every $${ client.rent.frequency[:-2] }?
 fields:
   - no label: client.rent.value
     datatype: currency
     min: 0
+comment: |
+  have some help text or a note 
 ---
 need: client.rent.value
 question: |
@@ -90,7 +91,7 @@ subquestion: |
 yesno: client.rent.should_be_reduced
 ---
 question: |
-  What should your reduced rent be?
+  What should the lower rent be?
 subquestion: |
   For reference, you said you owe $${ client.owed.rent }
 fields:
@@ -106,7 +107,7 @@ question: |
 subquestion: |
   % if len(known_issues) > 0:
   If there are any additional repairs or conditions you yould like mentioned, please add them here.
-  CR edit: Describe or list any more repairs or bad conditions your apartments needs fixing.
+  CR edit: Describe or list any more repairs or bad conditions your apartment needs fixing.
   
   The problems you already told me about are:
     <ul>
@@ -140,7 +141,7 @@ fields:
     show if: landlord.reasons_to_owe['other']
 ---
 question: |
-  Should your landlord reduce the rent you owe?
+  Should your landlord lower the rent you owe?
 fields:
   - no label: landlord.should_reduce_rent  
     datatype: yesnoradio
@@ -160,8 +161,7 @@ question: |
 ---
 section: Payments
 question: |
-  Should payments be made?  
-  CR edit: need to make this question more active Who should pay whom?(suggestion)
+  Who should pay whom?
 subquestion: |
   You may want to pay your landlord back rent, while you are waiting for a court decision (?), or to resolve their claims (need better Plain Language here).
   You might want your landlord to pay you for repairs living with bad conditions...(to resolve your claims).

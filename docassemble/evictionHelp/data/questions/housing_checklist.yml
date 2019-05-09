@@ -55,6 +55,7 @@ code: |
   def add_problem(time, message):
     problems_to_fix[time].append(message)
 ---
+mandatory: True
 code: |
   saw_bad_con_1
   number_of_units = int(number_of_units)
@@ -114,20 +115,20 @@ code: |
   bad_conditions_completed
 ---
 question: |
-  We will now ask you if you have experienced bad conditions.
+  Now we need to ask about any bad conditions at your apartment.
 field: saw_bad_con_1
 ---
 # none of the above should be different
 question: |
-  How many units are part of your housing complex (need better word)?
+  How many apartments are in your building?
 field: number_of_units
-default: 1 unit
+default: 1
 choices:
-  - 1 unit: 1
-  - 2 units: 2
-  - 3 units: 3
-  - 4 - 9 units: 4
-  - 10+ units: 10
+  - 1: 1
+  - 2: 2
+  - 3: 3
+  - 4 - 9: 4
+  - 10+: 10
 ---
 question: |
   Have you experienced any bad conditions in the following areas:
@@ -140,7 +141,7 @@ fields:
       bad_conditions_list
 ---
 question: |
-  Are there any other bad conditions you would like to mention?
+  Are there any other bad conditions you need to bring up?
 fields:
   - no label: additional_conditions_present
     datatype: yesnoradio
@@ -150,7 +151,7 @@ fields:
       val("add_conditions_present") == true
 ---
 question: |
-  Here are the bad conditions you mentioned
+  The bad conditions you noted are:
 subquestion: |
   ${ bad_conditions_string }
 field: bad_conditions_completed

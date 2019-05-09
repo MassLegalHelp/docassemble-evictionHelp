@@ -12,6 +12,10 @@ code: |
   if not has_written_heating_agreement and landlord_required_heat_payment:
     add_problem(30, "Landlord asked tenant to pay for heat without a written agreement stating the tenant must pay for heat")
   
+  if not provided_maintained_heating:
+    add_problem(30, "Landlord failed to provide and/or maintain heating equipment in good order")
+  
+  
   seen_heating_season_blurb
   
   if cool_heating_daytime:
@@ -23,9 +27,6 @@ code: |
   if over_maximum_allowed_heating:
     add_problem(30, "Temperature exceeded 78 Farenheit during the heating season")
   
-  if not provided_maintained_heating:
-    add_problem(30, "Landlord failed to provide and/or maintain heating equipment in good order")
-  
   heating_completed = True
 ---
 terms:
@@ -35,35 +36,48 @@ terms:
     September 16 to June 14
 ---
 question: |
-  Have you ever had not enough heat?
+  Have you ever not had enough heat?
 yesno: not_enough_heat
 ---
 question: |
-  Do you any space heaters?
+  Do you have any space heaters?
 yesno: has_space_heater
 ---
 question: |
-  Have you experienced improper usage of your space heater?
-  #CR edit - I have no idea what this means
+  Do you use a space heater because the heating system in the building does not work properly?  
 yesno: improper_space_heater_usage
+comment: |
+  CR edit - https://www.mass.gov/files/documents/2017/09/11/105cmr410.pdf#page=7 (410.200: Heating Facilities Required)(B) 
+  CR let's try - 
 ---
 question: |
   Are all of your space heaters electric?
-  # Make this question depend on - Do you have any? How many do you have? How many are electric - choices are based on answer to how many they have
 yesno: electric_only_space_heaters
+comment: |
+  Make this question depend on - Do you have any? How many do you have? How many are electric - choices are based on answer to how many they have
 ---
 question: |
   Do your non-electric space heaters vent to a chimney or a vent that leads outdoors?
 yesno: proper_space_heater_venting
 ---
-# special case for idk
 question: |
   Have you signed a written agreement with your landlord that says **you** pay for heat?
 yesnomaybe: has_written_heating_agreement
+comment: |
+  special case for idk
 ---
 question: |
   Has your landlord made you pay for heat?
 yesno: landlord_required_heat_payment
+---
+question: |
+  Has your landlord provided and maintained heating equipment in good working order?
+yesno: provided_maintained_heating
+comment: |
+  Ask this question and then ask the 3 heating season questions all in one so question starts with during the heating season and then
+  During the day, between 7am and 11pm, has any room been cooler than 68°F
+  At night, between 11pm and 7, am has any room been cooler than 64°F
+  Has the temperature ever gone over 78°F ?
 ---
 question: |
   About the {heating season}
@@ -73,18 +87,13 @@ subquestion: |
 field: seen_heating_season_blurb
 ---
 question: |
-  During the {heating season}, has any room been cooler than 68°F between 7 AM and 11 PM?
-yesno: cool_heating_daytime
----
-question: |
-  During the {heating season}, has a room been cooler than 64°F  between 11 PM and 7 AM?
-yesno: cool_heating_nighttime
----
-question: |
-  During the {heating season}, has the temperature ever gone over 78°F ?
-yesno: over_maximum_allowed_heating
----
-question: |
-  Has your landlord provided and maintained heating equipment in good working order?
-yesno: provided_maintained_heating
----
+  During the {heating season}, 
+fields:  
+  - has any room been cooler than 68°F between 7 AM and 11 PM?: cool_heating_daytime
+    datatype: yesnoradio
+  - has any room been cooler than 64°F  between 11 PM and 7 AM?: cool_heating_nighttime
+    datatype: yesnoradio
+  - has the temperature ever gone over 78°F ?: over_maximum_allowed_heating
+    datatype: yesnoradio
+comment: |
+  Not sure if radio or wide is better here
