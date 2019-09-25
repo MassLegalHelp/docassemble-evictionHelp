@@ -52,19 +52,15 @@ yesno: asbestos_risk
 # it would make sense to do that, but it would mean another series of questions. But also we could tell them to get a copy of the health inspector's report.
 ---
 question: |
-  Are there cockroaches, insects or rodents in the building?
-  # we could ask this as one question with 3 boxes or just one...If we build an affidavit at any time it's helpful to have specific details but this question isn't that complex if we are not building statements.
-yesno: pest_infestation
----
-question: |
-  Have rats, mice, roaches, bedbugs or other insects been found in common areas?
-yesno: pests_common_area
----
-question: |
-  Have rats, mice, roaches, beadbugs or other insects been found in an individual unit?
-yesno: pests_individual_apartment
-
-
-# Maybe we could ask the last 3 questions in 1 - Any in the building then under this, in common areas, in an apartment do we care if it's the client's apartment or their neighbor's?
-
+  Pests
+fields:
+  - note: <div class="inline-q">Are there cockroaches, insects or rodents in the building?</div>
+  - no label: pest_infestation
+    datatype: yesnoradio
+  - note: <div class="inline-q">Have rats, mice, roaches, bedbugs or other insects been found in common areas?</div>
+  - no label: pests_common_area
+    datatype: yesnoradio
+  - note: <div class="inline-q">Have rats, mice, roaches, beadbugs or other insects been found in an individual unit?</div>
+  - no label: pests_individual_apartment
+    datatype: any
   

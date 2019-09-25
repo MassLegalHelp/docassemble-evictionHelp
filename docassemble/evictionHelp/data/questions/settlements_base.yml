@@ -18,6 +18,7 @@ sections:
     - Your form
 ---
 features:
+  css: inline-question.css
   navigation: True
   progress bar: True
 ---
@@ -47,7 +48,6 @@ code: |
 question: |
   Introduction
 subquestion: |
-  This interview is designed to [TODO].
   By the end of this interview, you should have have a form which you could use to negotiate with your landlord.
 field: has_seen_introduction
 section: Introduction
@@ -56,18 +56,22 @@ need: has_seen_introduction
 question: |
   Notice
 subquestion:
-  This interview does **not** constitute legal advice. The form you may receive is intended to help negotiations and is not final.
+  This interview is **not** legal advice. We cannot tell you what you should do. The form you get at the end of the interview is to help you negotiate with your landlord or their lawyer.
+  It is not a final agreement. 
   Do you understand?
 yesnomaybe: client_understands
 ---
 event: client_kicked_out
 progress: 100
 question: |
-  Sorry, you cannot proceed with the interview.
+  Sorry, we cannot help you.
 subquestion: |
-  You can only proceed with the interview if you agree that your
-  completion of the interview does not create an attorney-client
-  relationship.
+  We can only ask you questions to help you fill out the worksheet and forms if you agree 
+  that we are not your lawyer. 
+  If you need to understand more the documents we can help you put together see Negotiating a Settlement with your Landlord in an Eviction Case 
+  #Link to MassLegalHelp.org/housing....
+  Use the Legal Resource Finder to help find a lawyer.
+  #Link to MassLegalHelp.org/find-legal-aid
 
   % if client_understands is None:
   Contact these people for help
@@ -76,3 +80,4 @@ decoration: exit
 buttons:
   - Exit: exit
   - Restart: restart
+# If exit send to MassLegalHelp.org/housing/negotiating-settlement

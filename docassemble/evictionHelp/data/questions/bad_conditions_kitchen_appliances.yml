@@ -1,21 +1,21 @@
 code: |
   saw_kitchen_intro
-  
-  if small_kitchen_sink:
-    add_problem(5, "Kitchen sink is too small")
     
   for name in broken_kitchen_appliances:
     if broken_kitchen_appliances[name]:
       value = 30 if "-" in name else 5
       add_problem(value, "Broken " + name.lower())
-      
+  
+  if small_kitchen_sink:
+    add_problem(5, "Kitchen sink is too small")
+  
   if not kitchen_sink_water:
     add_problem(30, "Kitchen sink cannot get hot/cold water")
     
   if not kitchen_sink_drainage:
     add_problem(30, "Kitchen sink does not have proper drainage")
     
-  if not landlord_provided_stove and not tenant_must_provide_stove:
+  if (not landlord_provided_stove or not stove_works_properly) and not tenant_must_provide_stove:
     add_problem(30, "Landlord failed to provide working stove")
   
   if not landlord_provided_oven and not tenant_must_provide_oven:
@@ -31,10 +31,10 @@ code: |
     if not kitchen_floors_state[name]:
       add_problem(30, "Kitchen floor is not " + name)
       
-  if kitchen_has_carpet and not kitchen_floor_carpet_backing:
-    add_problem(30, "Kitchen carpet does not have nonabsorbent, water-proof backing")
-   
-  if kitchen_wood_floor:
+  if kitchen_floor_type == "Carpeted":
+    if not kitchen_floor_carpet_backing:
+      add_problem(30, "Kitchen carpet does not have nonabsorbent, water-proof backing")
+  elif kitchen_floor_type == "Wood":
     if not kitchen_wood_floor_finish:
       add_problem(30, "Wooden floor in kitchen does not have a water-resistant finish")
       
@@ -54,12 +54,6 @@ question: |
 field: saw_kitchen_intro
 ---
 question: |
-  Is your kitchen sink too small?
-subquestion: |
-  If you have trouble washing dishes in your sink it is too small.
-yesno: small_kitchen_sink
----
-question: |
   Are any of these appliances broken?
 subquestion: |
   Check the box next to every appliance that does **not** work.
@@ -73,43 +67,67 @@ fields:
       - Refrigerator your landlord installed
       - Gas-burning equipment
       - Oil-burning equipment
----      
+---     
 question: |
-  Does your kitchen sink have both hot **and** cold water?
-yesno: kitchen_sink_water
+  Is your kitchen sink too small?
+subquestion: |
+  If you have trouble washing dishes in your sink it is too small.
+yesno: small_kitchen_sink
 ---
 question: |
-  Does your sink drain properly?
-yesno: kitchen_sink_drainage
-#  Let's put all kitchen sink questions together into 1 question.Does your kitchen sink.. choices 
+  Does your kitchen sink
+fields:
+  - note: <div class="initial-q">have both hot **and** cold water?</div>
+  - no label: kitchen_sink_water
+    datatype: yesnoradio
+  - note: <div class="initial-q">drain properly?</div>
+  - no label: kitchen_sink_drainage
+    datatype: yesnoradio
 ---
 question: |
-  Has your landlord provided you with a working stove?
-  # Do we want to ask 2 questions here did he give you a stove, does it work properly?
-yesno: landlord_provided_stove
+  Kitchen stove
+fields: 
+  - note: <div class="initial-q">Has your landlord provided you with a working stove?</div>
+  - no label: landlord_provided_stove
+    datatype: yesnoradio
+  - note: <div class="initial-q">Does your stove work properly?</div>
+    js show if: |
+      val("landlord_provided_stove") === false  
+  - no label: stove_works_properly
+    datatype: yesnoradio
+    js show if: |
+      val("landlord_provided_stove") === true
+  - note: <div class="initial-q">Do you have a written agreement with your landlord that says you must provide your own stove?</div>
+    js show if: |
+      val("landlord_provided_stove") === false  
+  - no label: tenant_must_provide_stove
+    datatype: yesnoradio
+    js show if: |
+      val("landlord_provided_stove") === false
 ---
 question: |
-  Do you have a written agreement with your landlord that says you must provide your own stove?
-yesno: tenant_must_provide_stove
-# stove questions together
+  Kitchen oven
+fields:
+  - note: <div class="initial-q">Has your landlord provided you with a working oven?</div>
+  - no label: landlord_provided_oven
+    datatype: yesnoradio
+  - note: <div class="initial-q">Do you have a written agreement with your landlord that says you must provide your own oven?</div>
+    js show if: |
+      val("landlord_provided_oven") === false  
+  - no label: tenant_must_provide_oven
+    datatype: yesnoradio
+    js show if: |
+      val("landlord_provided_oven") === false
 ---
 question: |
-  Has your landlord provided you with a working oven?
-yesno: landlord_provided_oven
----
-question: |
-  Do you have a written agreement with your landlord that says you must provide your own oven?
-yesno: tenant_must_provide_oven
-# oven questions together
----
-question: |
-  Does your kitchen have at least 1 light that works?
-yesno: kitchen_light_fixture
----
-question: |
-  Does your kitchen have at least 2 wall outlets?
-yesno: kitchen_wall_outlets
-# comment make light and wall outlets Does your kitchen have - at least 1 working light, yesno/ at least 2 working electical outlets
+  Does your kitchen have at least
+fields:
+  - note: <div class="initial-q">1 working light?</div>
+  - no label: kitchen_light_fixture
+    datatype: yesnoradio
+  - note: <div class="initial-q">2 wall outlets?</div>
+  - no label: kitchen_wall_outlets
+    datatype: yesnoradio
 ---
 question: |
   Are the kitchen floors:
@@ -122,37 +140,33 @@ fields:
       - Waterproof
 ---
 question: |
-  Do you have carpet in your kitchen?
-yesno: kitchen_has_carpet
+  Your kitchen floor is
+field: kitchen_floor_type
+choices:
+  - Carpeted
+  - Linoleum
+  - Wood
 ---
 question: |
   Does the carpet have a nonabsorbent, water-repellant backing?
 yesno: kitchen_floor_carpet_backing
 ---
 question: |
-  Do you have wooden floors in your kitchen?
-yesno: kitchen_wood_floor
+  Does the wood floor have
+fields:
+  - note: <div class="initial-q">a water-resistant finish?</div>
+  - no label: kitchen_wood_floor_finish
+    datatype: yesnoradio
+  - note: <div class="initial-q">any cracks?</div>
+  - no label: kitchen_wood_floor_cracks
+    datatype: yesnoradio
 ---
 question: |
-  Does the floor have a water-resistant finish?
-yesno: kitchen_wood_floor_finish
----
-question: |
-  Does the floor have any cracks?
-yesno: kitchen_wood_floor_cracks
----
-question: |
-  Do you have enough space to install a refrigerator?
-yesno: refrigerator_enough_space
----
-question: |
-  Do you have a proper electrical outlet for your refrigerator?
-yesno: refrigerator_proper_outlet
-
-#I think - could be wrong you could put all kitchen floor questions into one question so people would not have to progress from one screen to the next
-#Is your kitchen floor
-# -wood
-# -carpeted
-# -linoleum
-# then ask other kitchen floor questions all in one.
-
+  Refridgerator
+fields:
+  - note: <div class="initial-q">Do you have enough space to install a refrigerator?</div>
+  - no label: refrigerator_enough_space
+    datatype: yesnoradio
+  - note: <div class="initial-q">Do you have a proper electrical outlet for your refrigerator?</div>
+  - no label: refrigerator_proper_outlet
+    datatype: yesnoradio

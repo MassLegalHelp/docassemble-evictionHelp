@@ -10,9 +10,13 @@ code: |
       
     add_problem(30, name)
   
-  if not metered_gas_elec and not tenant_pays_for_elec_gas and not landlord_provides_elec_gas:
-    add_problem(30, "Landlord asked you to pay for electricity and/or gas without an agreement")
+  if not metered_gas_elec:
+    if not tenant_pays_for_gas and not landlord_pays_for_gas:
+      add_problem(30, "Landlord asked you to pay for gas without an agreement")
   
+    if not tenant_pays_for_electricity and not landlord_pays_for_electricity:
+      add_problem(30, "Landlord asked you to pay for gas without an agreement")
+      
   if not sufficient_outlets_light:
     add_problem(30, "Lacking two electrical wall outlets or 1 light fixture and wall outlet in one or more rooms")
   
@@ -39,14 +43,34 @@ question: |
 yesno: metered_gas_elec
 ---
 question: |
-  Do you have a written agreement with your landlord that says you must pay for electricity and gas? CR edit - do we want to make these separate? Do you have to pay for gas? Do you have to pay for electricity? One combo question?
-yesno: tenant_pays_for_elec_gas
+  Do you have a written agreement with your landlord that says you must pay for gas?
+fields:
+  - no label: tenant_pays_for_gas
+    datatype: yesnoradio
+  - note: <div class="initial-q">Does your landlord pay for gas?</div>
+    js show if: |
+      val("tenant_pays_for_gas") === false  
+  - no label: landlord_pays_for_gas
+    datatype: yesnoradio
+    js show if: |
+      val("tenant_pays_for_gas") === false
 ---
 question: |
-  Does your landlord pay for electricity and gas? CR edit - same as previous question - double barreled 2 questions in one but on backend can use the same variable?
-yesno: landlord_provides_elec_gas
+  Do you have a written agreement with your landlord that says you must pay for gas?
+fields:
+  - no label: tenant_pays_for_electricity
+    datatype: yesnoradio
+  - note: <div class="initial-q">Does your landlord pay for gas?</div>
+    js show if: |
+      val("tenant_pays_for_electricity") === false
+  - no label: landlord_pays_for_electricity
+    datatype: yesnoradio
+    js show if: |
+      val("tenant_pays_for_electricity") === false
 ---
 question: |
   Aside from your kitchen and bathroom, do all your rooms have 2 electrical wall outlets 
-  or 1 light fixture and wall outlet for? CR edit - bathroom and kitchen not required to have AT LEAST this many electrical outlets? double checking.
+  or 1 light fixture and wall outlet for?
 yesno: sufficient_outlets_light
+comment: |
+   CR edit - bathroom and kitchen not required to have AT LEAST this many electrical outlets? double checking.

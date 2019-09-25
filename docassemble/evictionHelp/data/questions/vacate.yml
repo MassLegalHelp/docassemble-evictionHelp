@@ -83,11 +83,11 @@ fields:
   - business days: case.vacancy_violation_notice_days
 # See other questions like this
 ---
-need: case.vacancy_violation_notice_days
+need: case.violation_notice_days
 question: |
-  Would you like to be able to inspect the documents related to an allegation before a hearing?
-yesnomaybe: case.vacancy_inspect_documents
-# See other questions like this
+  Do you need to look at the documents that say you broke the terms of the agreement before the hearing?
+yesnomaybe: case.inspect_documents
+# I think this is what the question means.
 ---
 question: | 
   Do you need your landlord to write/be? a reference to help you relocate?

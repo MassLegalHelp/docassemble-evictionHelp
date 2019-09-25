@@ -8,8 +8,7 @@ code: |
   processed_stay = True
 ---
 question: |
-  Would you like to reschedule your case or reinstate tenancy?
-  # Do you need to change the date of your case or renew your tenancy agreement?
+  Do you need to change the date of your case or renew your tenancy agreement?
 help: |
   Note, if you change the date of your case:
    - both you and your landlord keep your claims.
