@@ -3,12 +3,12 @@ code: |
     add_problem(1, "Obstructed exits or common areas leading to exits")
 
   if locks_present:
-    if locks_inadequate:
+    if not locks_adequate:
       add_problem(1, "Locks for your building or apartment are insufficient")
   else:
     add_problem(1, "No locks are present for your building or apartment")
 
-  if no_smoke_co_alarm:
+  if not smoke_co_alarms_present or not smoke_co_alarms_work:
     add_problem(1, "Missing functional smoke detectors or carbon monoxide alarms")
 
   if improper_applications:
@@ -53,6 +53,9 @@ code: |
     else:
       if not exit_signs_symbols:
         add_problem(30, "Exit signs lack symbols")
+        
+  if structural_defect_unsfae:
+    add_problem(30, "Structural defect that could expose danger")
 
   for element in structures:
     if structures[element]:
@@ -64,32 +67,52 @@ code: |
   if not windows_weather_proof:
     add_problem(30, "Windows are not sufficiently weather-proofed")
 
-  if not doors_windows_open:
-    add_problem(30, "Doors and/or windows cannot open fully and easily")
+  if not doors_windows_open_fully:
+    add_problem(30, "Doors and/or windows cannot open fully")
+    
+  if not doors_windows_open_easily:
+    add_problem(30, "Doors and/or windows cannot open fully")
 
-  if not sufficient_glass_panes:
-    add_problem(30, "Some glass panes are broken or improperly caulked")
+  if not glass_panes_unbroken:
+    add_problem(30, "Some glass panes are broken")
+
+  if not glass_panes_caulked_correctly:
+    add_problem(30, "Some glass panes are improperly caulked")
+
+  if not safe_staircase:
+    add_problem(30, "One or more staircases are not stable")
 
   building_safety_completed = True
 ---
 question: |
-  Are the exits in your building blocked or lacking CR: edit lacking something, or non existent/missing/not enough?
+  Exits
 subquestion: |
-  This includes if any exits, passageways, 
-  or common areas you exit in during an emergency are blocked. CR edit - inclined to make this a kind of explanatory note, move question text to subquestion and just make question be Exits
+  Are the exits in your building blocked or lacking something, or non existent/missing/not enough?
+  This includes if any exits, passageways, or common areas you exit in during an emergency are blocked.
 yesno: insufficient_exits
 ---
 question: |
- Do all the entry doors to the building your apartment have locks? CR edit - multiple choice maybe?
+ Do all the entry doors to the building your apartment have locks?
 yesno: locks_present
+comment: |
+  CR edit - multiple choice maybe?
 ---
 question: |
-  Do the locks for entry doors to your building or apartment all work well (change variable to locks_adequate?)?
-yesno: locks_inadequate
+  Do the locks for entry doors to your building or apartment all work well?
+yesno: locks_adequate
 ---
 question: |
-  Do you have functional smoke detectors or carbon monoxide alarms (Double barrelled question - do you have, do they work?)
-yesno: no_smoke_co_alarm
+  Do you have functional smoke detectors or carbon monoxide alarms?
+fields:
+  - no label: smoke_co_alarms_present
+    datatype: yesnoradio
+  - note: <div class="initial-q">Do they work?</div>
+    js show if: |
+      val("smoke_co_alarms_present") === true
+  - no label: smoke_co_alarms_work
+    datatype: yesnoradio
+    js show if: |
+      val("smoke_co_alarms_present") === true
 ---
 question: |
   Do you have any problems with electrical, plumbing or heating applications?
@@ -104,10 +127,11 @@ question: |
   Do any porches, roofs, stairways or other similar places have handrails or protective railings that are unsafe?
 yesno: unsafe_handrails
 ---
-# not sure what general accepted standards is
 question: |
   Do you have an exit that is only for you and your family?
 yesno: personal_exit
+comment: |
+  not sure what general accepted standards is
 ---
 question: |
   Do you have an agreement with your landlord that says you must keep your exit free
@@ -153,8 +177,10 @@ yesno: building_over_70
 ---
 question: |
   Does your building have an automatic sprinkler system that follows the state 
-  Building Code? CR edit - link to state building code about automatic sprinkler systems.
+  Building Code?
 yesno: automatic_sprinkler
+comment: |
+ CR edit - link to state building code about automatic sprinkler systems.
 ---
 question: |
   Does your building have lighted signs that show both a primary and secondary exit?
@@ -167,11 +193,11 @@ yesno: exit_signs_symbols
 question: |
   Are there defects in the roof, foundation, or other structure that risk exposing
   you to fire, shock, accident, or other dangers?
-yesno: structuran_defect_unsfae
+yesno: structural_defect_unsfae
 ---
 question: |
   Are there any structural elements not in good repair?
-subquestion:
+subquestion: |
   Structural elements must be weathertight, free from chronic dampness,
   insect- and rodent-proof. They must also be free of holes, cracks and other defects.
 fields:
@@ -195,14 +221,26 @@ question: |
 yesno: windows_weather_proof
 ---
 question: |
-  Do your doors and windows open fully and easily CR edit - 2 questions, fully is one easily is another make a combo question??
-yesno: doors_windows_open
+  Do all your doors and windows open
+fields:
+  - note: <div class="initial-q">Fully?</div>
+  - no label: doors_windows_open_fully
+    datatype: yesnoradio
+  - note: <div class="initial-q">Easily?</div>
+  - no label: doors_windows_open_easily
+    datatype: yesnoradio
 ---
 question: |
-  Are all glass panes unbroken and caulked correctly CR edit - 2 questions,unbroken and caulked ?
-yesno: sufficient_glass_panes
+  Are all glass panes
+fields:
+  - note: <div class="initial-q">Unbroken?</div>
+  - no label: glass_panes_unbroken
+    datatype: yesnoradio
+  - note: <div class="initial-q">Caulked correctly?</div>
+  - no label: glass_panes_caulked_correctly
+    datatype: yesnoradio
 ---
 question: |
-  Are your staircases stable? Do they have a safe handrail CR-edit did we already ask this but about public/shared stairways?
-yesno: safe_staircase_handrail
+  Are your staircases stable?
+yesno: safe_staircase
 ---

@@ -8,7 +8,7 @@ code: |
   processed_rent = True
 ---
 question: |
-  What is your address?
+  What is your unit's address?
 fields:
   - no label: client.address.address
 section: Rent
@@ -56,4 +56,3 @@ fields:
     datatype: currency
     min: 0
 ---
-# CR checking these questions public housing attorney Andrea on 5/6/19
