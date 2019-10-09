@@ -1,0 +1,101 @@
+code: |
+  if not_enough_heat:
+    add_problem(1, "Not enough heat")
+  
+  if has_space_heater:
+    if improper_space_heater_usage:
+      add_problem(1, "Improper usage of space heaters")
+      
+    if not electric_only_space_heaters and not proper_space_heater_venting:
+      add_problem(30, "Space heater does not vent to a chimney or a vent leading outside")
+  
+  if not has_written_heating_agreement and landlord_required_heat_payment:
+    add_problem(30, "Landlord asked tenant to pay for heat without a written agreement stating the tenant must pay for heat")
+  
+  if not provided_maintained_heating:
+    add_problem(30, "Landlord failed to provide and/or maintain heating equipment in good order")
+  
+  
+  seen_heating_season_blurb
+  
+  if cool_heating_daytime:
+    add_problem(30, "Temperature dropped below 68 Farenheit between 7 AM and 11 PM")
+    
+  if cool_heating_nighttime:
+    add_problem(30, "Temperature dropped below 64 Farenheit between 11 PM and 7 AM")
+
+  if over_maximum_allowed_heating:
+    add_problem(30, "Temperature exceeded 78 Farenheit during the heating season")
+  
+  heating_completed = True
+---
+terms:
+  habitable room: |
+    Any room that is used for living, sleeping, cooking, or eating
+  heating season: |
+    September 16 to June 14
+---
+question: |
+  ${question_id("Heating:1")}Have you ever not had enough heat?
+yesno: not_enough_heat
+---
+question: |
+  ${question_id("Heating:2")}Do you have any space heaters?
+yesno: has_space_heater
+---
+question: |
+  ${question_id("Heating:3")}Do you use a space heater because the heating system in the building does not work properly?  
+yesno: improper_space_heater_usage
+comment: |
+  CR edit - https://www.mass.gov/files/documents/2017/09/11/105cmr410.pdf#page=7 (410.200: Heating Facilities Required)(B) 
+---
+question: |
+  ${question_id("Heating:4")}Are all of your space heaters electric?
+yesno: electric_only_space_heaters
+comment: |
+  Make this question depend on - Do you have any? How many do you have? How many are electric - choices are based on answer to how many they have
+---
+question: |
+  ${question_id("Heating:5")}Do your non-electric space heaters vent to a chimney or a vent that leads outdoors?
+yesno: proper_space_heater_venting
+---
+question: |
+  ${question_id("Heating:6")}Have you signed a written agreement with your landlord that says **you** pay for heat?
+yesnomaybe: has_written_heating_agreement
+comment: |
+  special case for idk
+---
+question: |
+  ${question_id("Heating:7")}Has your landlord made you pay for heat?
+yesno: landlord_required_heat_payment
+---
+question: |
+  ${question_id("Heating:8")}Has your landlord provided and maintained heating equipment in good working order?
+yesno: provided_maintained_heating
+comment: |
+  Ask this question and then ask the 3 heating season questions all in one so question starts with during the heating season and then
+  During the day, between 7am and 11pm, has any room been cooler than 68°F
+  At night, between 11pm and 7, am has any room been cooler than 64°F
+  Has the temperature ever gone over 78°F ?
+---
+question: |
+  ${question_id("Heating:9")}About the {heating season}
+subquestion: |
+  Between September 16 and June 14, your landlord must provide
+  equipment and appliances to heat every {habitable room} and bathroom.
+field: seen_heating_season_blurb
+---
+question: |
+  ${question_id("Heating:10")}During the {heating season}, 
+fields:  
+  - note: <div class="initial-q">has any room been cooler than 68°F between 7 AM and 11 PM?</div>
+  - no label: cool_heating_daytime
+    datatype: yesnoradio
+  - note: <div class="initial-q">has any room been cooler than 64°F  between 11 PM and 7 AM?</div>
+  - no label: cool_heating_nighttime
+    datatype: yesnoradio
+  - note: <div class="initial-q">has the temperature ever gone over 78°F ?</div>
+  - no label: over_maximum_allowed_heating
+    datatype: yesnoradio
+comment: |
+  Not sure if radio or wide is better here

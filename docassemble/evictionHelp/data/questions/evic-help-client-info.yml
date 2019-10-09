@@ -1,0 +1,125 @@
+include:
+  - evic-help-counties.yml
+  - evic-help-courts.yml
+---
+modules:
+  - docassemble.base.util
+---
+code: |
+  client.name.first
+  nav.set_section('County')
+  if court_name_unknown or court_name not in court_list():
+    court_name = ""
+  if docket_number_unknown:
+    docket_number = ""
+  review_basic_info
+  basic_info_complete = True
+reconider: True
+---
+question: |
+  ${question_id("Client:1")}About you
+subquestion: |
+  Before determining the best form for you, we would like to ask some basic information about your case.
+field: user_seen_basic_info
+section: About you
+---
+need: user_seen_basic_info
+question: |
+  ${question_id("Client:2")}What is your name?
+fields:
+  - First Name: client.name.first
+    default: ${ get_logged_in_information("first_name") }
+  - Middle Name: client.name.middle
+    required: False
+  - Last Name: client.name.last
+    default: ${ get_logged_in_information("last_name")}
+  - Suffix: client.name.suffix
+    required: False
+    code: |
+      name_suffix()
+section: Name
+---
+need: county
+question: |
+  ${question_id("Client:4")}What is your landlord's name?
+fields:
+  - First Name: landlord.name.first
+  - Middle Name: landlord.name.middle
+    required: False
+  - Last Name: landlord.name.last
+  - Suffix: landlord.name.suffix
+    required: False
+    code: |
+      name_suffix()
+section: Landlord
+---
+need: landlord.name.first
+question: |
+  ${question_id("Client:5")}What is the name of the court on the Summons and Complaint?
+help: |
+  ## A Sample Summons and Complaint.
+  
+  Look for the boxed section "COURT NAME"
+  
+  [FILE summary-process-court-name.png, 100%]
+fields:
+  - no label: court_name
+    input type: combobox
+    code: |
+      court_list()
+    js hide if: |
+      val("court_name_unknown") == true
+  - I don't know: court_name_unknown
+    datatype: yesnowide
+    disable others: True
+section: Court name
+---
+need: court_name
+question: |
+  ${question_id("Client:6")}What is your docket number?
+help: |
+  ## A Sample Summons and Complaint.
+  
+  Look for the boxed section "Docket No."
+  
+  [FILE summary-process-docket-no.png, 100%]
+subquestion:
+  Look at the top right corner of the Summons and Complaint 
+fields:
+  - no label: docket_number
+    js hide if: |
+      val("docket_number_unknown") == true
+  - I don't know: docket_number_unknown
+    datatype: yesnowide
+section: Docket number
+---
+need: docket_number
+question: |
+  ${question_id("Client:7")}Review your answers
+review:
+  - note: |
+      #### Your information
+  - Change your name: client.name.first
+    help: |
+      You said your name is **${ client.name }**
+  - Revisit court name: court_name
+    button: |
+      % if court_name != "":
+      You said the name of your court is ${ court_name }.
+      % else:
+      You did not provide a court name
+      % endif
+  - Revisit docket number: docket_number
+    button: |
+      % if docket_number != "":
+      You said your docket number is ${ docket_number }.
+      % else:
+      You did not provide a docket number
+      % endif
+  - note: |
+      #### Your landlord's information
+  - Change your landlord's name: landlord.name.first
+    help: |
+      You said your landlord's is was **${ landlord.name }**
+field: review_basic_info
+section: Review

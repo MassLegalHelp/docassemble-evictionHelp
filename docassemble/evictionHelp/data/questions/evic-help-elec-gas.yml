@@ -1,0 +1,76 @@
+code: |
+  for name in elec_gas_problems:
+    if not elec_gas_problems[name]:
+      continue
+      
+    value = 1
+    
+    if name == "Not enough amperage to meet needs":
+      value = 30
+      
+    add_problem(30, name)
+  
+  if not metered_gas_elec:
+    if not tenant_pays_for_gas and not landlord_pays_for_gas:
+      add_problem(30, "Landlord asked you to pay for gas without an agreement")
+  
+    if not tenant_pays_for_electricity and not landlord_pays_for_electricity:
+      add_problem(30, "Landlord asked you to pay for gas without an agreement")
+      
+  if not sufficient_outlets_light:
+    add_problem(30, "Lacking two electrical wall outlets or 1 light fixture and wall outlet in one or more rooms")
+  
+  elec_gas_completed = True
+---
+question: |
+  ${question_id("ElecGas:1")}Have you experienced any of the following problems:
+fields:
+  - no label: elec_gas_problems
+    datatype: checkboxes
+    choices:
+      - No electricity
+      - No gas
+      - No electrical outlets in common areas, or not enough
+      - No lighting in common areas, or not enough
+      - Electricity shut off and/or failure to 
+      - Electricity not turned back on again after it was shut off
+      - Gas shut off
+      - Gas not turned back on again after it was shut off 
+      - Not enough electric current to meet your needs
+---
+question: |
+  ${question_id("ElecGas:2")}Does your apartment have its own meter?
+yesno: metered_gas_elec
+---
+question: |
+  ${question_id("ElecGas:3")}Do you have a written agreement with your landlord that says you must pay for gas?
+fields:
+  - no label: tenant_pays_for_gas
+    datatype: yesnoradio
+  - note: <div class="initial-q">Does your landlord pay for gas?</div>
+    js show if: |
+      val("tenant_pays_for_gas") === false  
+  - no label: landlord_pays_for_gas
+    datatype: yesnoradio
+    js show if: |
+      val("tenant_pays_for_gas") === false
+---
+question: |
+  ${question_id("ElecGas:4")}Do you have a written agreement with your landlord that says you must pay for gas?
+fields:
+  - no label: tenant_pays_for_electricity
+    datatype: yesnoradio
+  - note: <div class="initial-q">Does your landlord pay for gas?</div>
+    js show if: |
+      val("tenant_pays_for_electricity") === false
+  - no label: landlord_pays_for_electricity
+    datatype: yesnoradio
+    js show if: |
+      val("tenant_pays_for_electricity") === false
+---
+question: |
+  ${question_id("ElecGas:5")}Aside from your kitchen and bathroom, do all your rooms have 2 electrical wall outlets 
+  or 1 light fixture and wall outlet for?
+yesno: sufficient_outlets_light
+comment: |
+   CR edit - bathroom and kitchen not required to have AT LEAST this many electrical outlets? double checking.

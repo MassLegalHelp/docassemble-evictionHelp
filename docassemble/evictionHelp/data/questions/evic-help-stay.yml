@@ -1,0 +1,84 @@
+code: |
+  if case.goal == "reschedule":
+    case.hearing_type
+  else:
+    case.inspect_documents
+  final_questions_complete
+  got_stay_form
+  processed_stay = True
+---
+question: |
+  ${question_id("Stay:1")}Do you need to change the date of your case or renew your tenancy agreement?
+help: |
+  Note, if you change the date of your case:
+   - both you and your landlord keep your claims.
+   - the original case goes on trial for a judge or jury to decide.
+  If you feel  you will not be able to come to an agreement with your landlord, you may need ask the court to change the date of your case.
+  # Not sure I understand this one.
+  If you and your landlord agree to renew your tenancy, you can stay in your home and the court will dismiss the case once the terms of your agreement have been met.
+field: case.goal
+buttons:
+  - Change the date of my case: reschedule
+  - Renew my tenancy: reinstate
+---
+question: |
+  ${question_id("Stay:2")}Do you need anything to be done between now and your next court date?
+subquestion: |
+  You do not need to restate any repairs or payments you have already mentioned.
+fields:
+  - no label: case.temporary_agreement
+    required: false
+comment: |
+  Like what?? Need to find an example somewhere.
+---
+need: case.temporary_agreement
+question: |
+  ${question_id("Stay:3")}How much notice should you or the landlord give each other?
+subquestion: |
+  If you or your landlord breaks the terms of the agreement you can take each other to court.
+  How much notice of the court date should you give each other? 
+fields: 
+  - business days: case.notice_days
+    datatype: number
+    min: 0
+---
+need: case.notice_days
+question: |
+  ${question_id("Stay:4")}Would the hearing be to review this document, or a trial?
+subquestion: |
+  If your or your landlord broke the terms of the agreement and one of you takes the other court, should it be for the court to review the agreement or should it be a trial?
+field: case.hearing_type
+buttons:
+  - Review: review
+  - Trial: trial
+# We definitely need some help text here so people understand the reasons behind picking each. 
+---
+question: |
+  ${question_id("Stay:5")}Are there any more terms about your tenancy that you need to include?
+fields:
+  - no label: case.reinstate_terms
+    required: false
+---
+need: case.reinstate_terms
+question: |
+  ${question_id("Stay:6")}In the event of a violation of this agreement, how early of a notice should be given before going to court?
+fields:
+  - business days: case.violation_notice_days
+# see question above.
+---
+need: case.violation_notice_days
+question: |
+  ${question_id("Stay:7")}Do you need to look at the documents that say you broke the terms of the agreement before the hearing?
+yesnomaybe: case.inspect_documents
+# I think this is what the question means.
+---
+question: |
+  ${question_id("Stay:8")}Here is your form
+field: got_stay_form
+attachment:
+  name: Your form
+  filename: form
+  docx template file: Stip_to_Reinstate.docx
+  valid formats:
+    - pdf
+    - docx

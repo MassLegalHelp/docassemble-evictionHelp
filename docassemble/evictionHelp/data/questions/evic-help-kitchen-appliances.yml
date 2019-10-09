@@ -1,0 +1,172 @@
+code: |
+  saw_kitchen_intro
+    
+  for name in broken_kitchen_appliances:
+    if broken_kitchen_appliances[name]:
+      value = 30 if "-" in name else 5
+      add_problem(value, "Broken " + name.lower())
+  
+  if small_kitchen_sink:
+    add_problem(5, "Kitchen sink is too small")
+  
+  if not kitchen_sink_water:
+    add_problem(30, "Kitchen sink cannot get hot/cold water")
+    
+  if not kitchen_sink_drainage:
+    add_problem(30, "Kitchen sink does not have proper drainage")
+    
+  if (not landlord_provided_stove or not stove_works_properly) and not tenant_must_provide_stove:
+    add_problem(30, "Landlord failed to provide working stove")
+  
+  if not landlord_provided_oven and not tenant_must_provide_oven:
+    add_problem(30, "Landlord failed to provide working oven")
+  
+  if not kitchen_light_fixture:
+    add_problem(30, "Kitchen does not have any working light fixtures")
+    
+  if not kitchen_wall_outlets: 
+    add_problem(30, "Kitchen does not have at least two wall outlets")
+  
+  for name in kitchen_floors_state:
+    if not kitchen_floors_state[name]:
+      add_problem(30, "Kitchen floor is not " + name)
+      
+  if kitchen_floor_type == "Carpeted":
+    if not kitchen_floor_carpet_backing:
+      add_problem(30, "Kitchen carpet does not have nonabsorbent, water-proof backing")
+  elif kitchen_floor_type == "Wood":
+    if not kitchen_wood_floor_finish:
+      add_problem(30, "Wooden floor in kitchen does not have a water-resistant finish")
+      
+    if not kitchen_wood_floor_cracks:
+      add_problem(30, "Wooden floor in kitchen has cracks")
+  
+  if not refrigerator_enough_space:
+    add_problem(30, "Not enough space to install a refrigerator")
+    
+  if not refrigerator_proper_outlet:
+    add_problem(30, "Lacking a proper electrical outlet to install a refrigerator")
+  
+  kitchen_completed = True
+---
+question: |
+  ${question_id("Kitchen:1")}First, we will ask you a couple of questions about your kitchen appliances.
+field: saw_kitchen_intro
+---
+question: |
+  ${question_id("Kitchen:2")}Are any of these appliances broken?
+subquestion: |
+  Check the box next to every appliance that does **not** work.
+fields:
+  - no label: broken_kitchen_appliances
+    datatype: checkboxes
+    choices:
+      - Kitchen sink
+      - Stove
+      - Oven
+      - Refrigerator your landlord installed
+      - Gas-burning equipment
+      - Oil-burning equipment
+---     
+question: |
+  ${question_id("Kitchen:3")}Is your kitchen sink too small?
+subquestion: |
+  If you have trouble washing dishes in your sink it is too small.
+yesno: small_kitchen_sink
+---
+question: |
+  ${question_id("Kitchen:4")}Does your kitchen sink
+fields:
+  - note: <div class="initial-q">have both hot **and** cold water?</div>
+  - no label: kitchen_sink_water
+    datatype: yesnoradio
+  - note: <div class="initial-q">drain properly?</div>
+  - no label: kitchen_sink_drainage
+    datatype: yesnoradio
+---
+question: |
+  ${question_id("Kitchen:5")}Kitchen stove
+fields: 
+  - note: <div class="initial-q">Has your landlord provided you with a working stove?</div>
+  - no label: landlord_provided_stove
+    datatype: yesnoradio
+  - note: <div class="initial-q">Does your stove work properly?</div>
+    js show if: |
+      val("landlord_provided_stove") === false  
+  - no label: stove_works_properly
+    datatype: yesnoradio
+    js show if: |
+      val("landlord_provided_stove") === true
+  - note: <div class="initial-q">Do you have a written agreement with your landlord that says you must provide your own stove?</div>
+    js show if: |
+      val("landlord_provided_stove") === false  
+  - no label: tenant_must_provide_stove
+    datatype: yesnoradio
+    js show if: |
+      val("landlord_provided_stove") === false
+---
+question: |
+  ${question_id("Kitchen:6")}Kitchen oven
+fields:
+  - note: <div class="initial-q">Has your landlord provided you with a working oven?</div>
+  - no label: landlord_provided_oven
+    datatype: yesnoradio
+  - note: <div class="initial-q">Do you have a written agreement with your landlord that says you must provide your own oven?</div>
+    js show if: |
+      val("landlord_provided_oven") === false  
+  - no label: tenant_must_provide_oven
+    datatype: yesnoradio
+    js show if: |
+      val("landlord_provided_oven") === false
+---
+question: |
+  ${question_id("Kitchen:7")}Does your kitchen have at least
+fields:
+  - note: <div class="initial-q">1 working light?</div>
+  - no label: kitchen_light_fixture
+    datatype: yesnoradio
+  - note: <div class="initial-q">2 wall outlets?</div>
+  - no label: kitchen_wall_outlets
+    datatype: yesnoradio
+---
+question: |
+  ${question_id("Kitchen:8")}Are the kitchen floors:
+fields:
+  - no label: kitchen_floors_state
+    datatype: checkboxes
+    choices:
+      - Smooth
+      - Non-corrosive
+      - Waterproof
+---
+question: |
+  ${question_id("Kitchen:9")}Your kitchen floor is
+field: kitchen_floor_type
+choices:
+  - Carpeted
+  - Linoleum
+  - Wood
+---
+question: |
+  ${question_id("Kitchen:10")}Does the carpet have a nonabsorbent, water-repellant backing?
+yesno: kitchen_floor_carpet_backing
+---
+question: |
+  ${question_id("Kitchen:11")}Does the wood floor have
+fields:
+  - note: <div class="initial-q">a water-resistant finish?</div>
+  - no label: kitchen_wood_floor_finish
+    datatype: yesnoradio
+  - note: <div class="initial-q">any cracks?</div>
+  - no label: kitchen_wood_floor_cracks
+    datatype: yesnoradio
+---
+question: |
+  ${question_id("Kitchen:12")}Refridgerator
+fields:
+  - note: <div class="initial-q">Do you have enough space to install a refrigerator?</div>
+  - no label: refrigerator_enough_space
+    datatype: yesnoradio
+  - note: <div class="initial-q">Do you have a proper electrical outlet for your refrigerator?</div>
+  - no label: refrigerator_proper_outlet
+    datatype: yesnoradio

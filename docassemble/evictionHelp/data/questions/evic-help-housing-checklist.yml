@@ -1,0 +1,156 @@
+include: 
+  - evic-help-bathroom-appliances.yml
+  - evic-help-building-safety.yml
+  - evic-help-elec-gas.yml
+  - evic-help-garbage.yml
+  - evic-help-health.yml
+  - evic-help-heating.yml
+  - evic-help-kitchen-appliances.yml
+  - evic-help-light-vent.yml
+  - evic-help-maintenance.yml
+  - evic-help-water.yml
+---
+code: |
+  bad_conditions_list = [
+    { 
+      "heat": "Heat", 
+      "help": "Includes: Not enough heat, temperature over 78 Farenheit" 
+    },
+    { 
+      "elec_gas": "Electricity or gas",
+      "help": "Includes: No electricity or gas, paying for electricity without agreement or meter"
+    },
+    { 
+      "water": "Water",
+      "help": "Includes: No safe water, not enough water or pressure, being charged without agreement"
+    },
+    {
+      "app": "Appliances, fixtures, and plumbing",
+      "help": "Includes: broken kitchen or bathroom appliances, broken toilets and faulty sewage draining"
+    },
+    {
+      "vent_light": "Ventilation or light",
+      "help": "Includes: No safe lights or switches, unsafe wiring"
+    },
+    { 
+      "health": "Health",
+      "help": "Includes: Accumulation of garbage, asbestos, lead paint"
+    },
+    { 
+      "build_safe": "Building safety",
+      "help": "Includes: Missing smoke detectors, obstructed exits, cracks in floors or foundation"
+    },
+    { 
+      "maintenance": "Maintenance",
+      "help": "Includes: unsanitary common areas, turning off water or heat without a notice"
+    }
+  ]
+  
+  problems_to_fix = {
+    1: [],
+    5: [],
+    30: []
+  }
+  
+  def add_problem(time, message):
+    problems_to_fix[time].append(message)
+---
+code: |
+  saw_bad_con_1
+  number_of_units = int(number_of_units)
+  if number_of_units > 2:
+    bad_conditions_list.insert(6, { 
+      "garbage": "Garbage",
+      "help": "Includes: Odor in living spaces, landlord not collecting and disposing of garbage"
+    })  
+    
+  if possible_bad_conditions["heat"]:
+    heating_completed
+    
+  if possible_bad_conditions["elec_gas"]:
+    elec_gas_completed
+  
+  if possible_bad_conditions["water"]:
+    water_completed
+    
+  if possible_bad_conditions["app"]:
+    kitchen_completed
+    bathroom_completed
+  
+  if possible_bad_conditions["vent_light"]:
+    light_vent_completed
+    
+  if possible_bad_conditions["health"]:
+    health_completed
+    
+  if number_of_units > 2 and possible_bad_conditions["garbage"]:
+    garbage_completed
+    
+  if possible_bad_conditions["build_safe"]:
+    building_safety_completed
+  
+  if possible_bad_conditions["maintenance"]:
+    maintenance_completed  
+    
+  bad_conditions_string = ""
+
+  message_strings = [
+    [1, "Very serious"],
+    [5, "Serious"],
+    [30, "Moderately serious"]
+  ]
+
+  for (time, name) in message_strings:
+    if len(problems_to_fix[time]) > 0:
+      day = "days" if time != 1 else "day"
+      bad_conditions_string += "#### %s problems (%d %s): \n" % (name, time, day)
+
+      for problem in problems_to_fix[time]:
+        bad_conditions_string += "* %s \n" % problem
+
+  if additional_conditions_present == True:
+    bad_conditions_string += "#### Additional Problems: \n %s" % additional_conditions
+
+  bad_conditions_completed
+---
+question: |
+  ${question_id("Housing:1")}Now we need to ask about any bad conditions at your apartment.
+field: saw_bad_con_1
+---
+# none of the above should be different
+question: |
+  ${question_id("Housing:2")}How many apartments are in your building?
+field: number_of_units
+default: 1
+choices:
+  - 1: 1
+  - 2: 2
+  - 3: 3
+  - 4 - 9: 4
+  - 10+: 10
+---
+question: |
+  ${question_id("Housing:3")}Have you experienced any bad conditions in the following areas:
+subquestion: |
+  Please select all the areas.
+fields:
+  - no label: possible_bad_conditions
+    datatype: checkboxes
+    code: |
+      bad_conditions_list
+---
+question: |
+  ${question_id("Housing:4")}Are there any other bad conditions you need to bring up?
+fields:
+  - no label: additional_conditions_present
+    datatype: yesnoradio
+  - no label: additional_conditions
+    datatype: area
+    js show if: |
+      val("add_conditions_present") == true
+---
+question: |
+  ${question_id("Housing:5")}The bad conditions you noted are:
+subquestion: |
+  ${ bad_conditions_string }
+field: bad_conditions_completed

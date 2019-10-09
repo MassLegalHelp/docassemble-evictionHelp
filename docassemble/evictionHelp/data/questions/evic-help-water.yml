@@ -1,0 +1,23 @@
+code: |
+  if no_water:
+    add_problem(1, "Landlord shut off/failed to restore water")
+    
+  if not safe_water:
+    add_problem(1, "No safe water")
+    
+  if insufficient_water_over_24:
+    add_problem(1, "24 or more hours without or not enough water")
+  water_completed = True
+---
+question: |
+  ${question_id("Water:1")}Has your landlord shut off and/or failed to restore water to your apartment?
+yesno: no_water
+---
+question: |
+  ${question_id("Water:2")}Do you have any safe water?
+yesno: safe_water
+---
+question: |
+  ${question_id("Water:3")}Have you gone over 24 hours without or not having enough water?
+yesno: insufficient_water_over_24
+---  

@@ -1,0 +1,246 @@
+code: |
+  if insufficient_exits:
+    add_problem(1, "Obstructed exits or common areas leading to exits")
+
+  if locks_present:
+    if not locks_adequate:
+      add_problem(1, "Locks for your building or apartment are insufficient")
+  else:
+    add_problem(1, "No locks are present for your building or apartment")
+
+  if not smoke_co_alarms_present or not smoke_co_alarms_work:
+    add_problem(1, "Missing functional smoke detectors or carbon monoxide alarms")
+
+  if improper_applications:
+    if improper_applications_danger:
+      add_problem(1, "Improper installation or maintenance of electrical, plumbing, or heating that risk danger")
+    else:
+      add_problem(5, "Problems in heating, electrical, or heating appliances that do not risk exposing danger")
+
+  if unsafe_handrails:
+    add_problem(5, "Lacking or unsafe handrails/protective railings")
+
+  if personal_exit:
+    if not personal_exit_agreement and not personal_exit_landlord_safe:
+      add_problem(30, "Landlord does not keep tenant's exit safe, operable and/or free from ice and snow")
+        
+  if not all_exits_landlord_safe:
+    add_problem(30, "Landlord does not keep shared and public exit safe, operable and/or free from ice and snow")
+
+  if fire_ext_present:
+    if not fire_ext_maintenance:
+      add_problem(30, "Landlord does not faintain fire extinguishers appropropriately")
+  else:
+    add_problem(30, "Landlord has not installed fire extinguishers")
+
+  if not landlord_verifies_locks:
+    add_problem(30, "Landlord does not verify that all exterior windows that can open and entry doors have working locks")
+
+  if number_of_units > 3:
+    if not sufficient_front_door:
+      add_problem(30, "Building lacking front door that closes and locks automatically")
+
+    if not exterior_door_working_lock:
+      add_problem(30, "Some or all exterior doors are lacking working locks")
+
+    if building_over_70:
+      if not automatic_sprinkler:
+        add_problem(30, "Building lacking automatic sprinkler system in accordance with Building Code")
+
+  if number_of_units >= 10:
+    if not exit_signs_present:
+      add_problem(30, "Building lacking exit signs for primary and secondary exits")
+    else:
+      if not exit_signs_symbols:
+        add_problem(30, "Exit signs lack symbols")
+        
+  if structural_defect_unsfae:
+    add_problem(30, "Structural defect that could expose danger")
+
+  for element in structures:
+    if structures[element]:
+      add_problem(30, element + " are not in good repair")
+
+  if not doors_weather_proof:
+    add_problem(30, "Doors are not sufficiently weather-proofed")
+
+  if not windows_weather_proof:
+    add_problem(30, "Windows are not sufficiently weather-proofed")
+
+  if not doors_windows_open_fully:
+    add_problem(30, "Doors and/or windows cannot open fully")
+    
+  if not doors_windows_open_easily:
+    add_problem(30, "Doors and/or windows cannot open fully")
+
+  if not glass_panes_unbroken:
+    add_problem(30, "Some glass panes are broken")
+
+  if not glass_panes_caulked_correctly:
+    add_problem(30, "Some glass panes are improperly caulked")
+
+  if not safe_staircase:
+    add_problem(30, "One or more staircases are not stable")
+
+  building_safety_completed = True
+---
+question: |
+  ${question_id("Safety:1")}Exits
+subquestion: |
+  Are the exits in your building blocked or lacking something, or non existent/missing/not enough?
+  This includes if any exits, passageways, or common areas you exit in during an emergency are blocked.
+yesno: insufficient_exits
+---
+question: |
+  ${question_id("Safety:2")}Do all the entry doors to the building your apartment have locks?
+yesno: locks_present
+comment: |
+  CR edit - multiple choice maybe?
+---
+question: |
+  ${question_id("Safety:3")}Do the locks for entry doors to your building or apartment all work well?
+yesno: locks_adequate
+---
+question: |
+  ${question_id("Safety:4")}Do you have functional smoke detectors or carbon monoxide alarms?
+fields:
+  - no label: smoke_co_alarms_present
+    datatype: yesnoradio
+  - note: <div class="initial-q">Do they work?</div>
+    js show if: |
+      val("smoke_co_alarms_present") === true
+  - no label: smoke_co_alarms_work
+    datatype: yesnoradio
+    js show if: |
+      val("smoke_co_alarms_present") === true
+---
+question: |
+  ${question_id("Safety:5")}Do you have any problems with electrical, plumbing or heating applications?
+yesno: improper_applications
+---
+question: |
+  ${question_id("Safety:6")}Could these problems in electrical, plumbing, or heating applications expose you
+  or others to danger?
+yesno: improper_applications_danger
+---
+question: |
+  ${question_id("Safety:7")}Do any porches, roofs, stairways or other similar places have handrails or protective railings that are unsafe?
+yesno: unsafe_handrails
+---
+question: |
+  ${question_id("Safety:8")}Do you have an exit that is only for you and your family?
+yesno: personal_exit
+comment: |
+  not sure what general accepted standards is
+---
+question: |
+  ${question_id("Safety:9")}Do you have an agreement with your landlord that says you must keep your exit free
+  of snow and ice?
+yesno: personal_exit_agreement
+---
+question: |
+  ${question_id("Safety:10")}Does your landlord keep your personal exits safe, working, 
+  and free from ice and snow?
+yesno: personal_exit_landlord_safe
+---
+question: |
+  ${question_id("Safety:11")}Does your landlord keep all shared and public exits inside the building safe, working, 
+  and free from ice and snow?
+subquestion: |
+  This includes exterior stairways and fire escapes.
+yesno: all_exits_landlord_safe
+---
+question: |
+  ${question_id("Safety:12")}Has your landlord installed fire extinguishers as required by your local fire chief?
+yesno: fire_ext_present
+---
+question: |
+  ${question_id("Safety:13")}Does your landlord maintain the fire extinguishers?
+yesno: fire_ext_maintenance
+---
+question: |
+  ${question_id("Safety:14")}Does your landlord make sure that all exterior windows that can open and
+  all entry doors have working locks?
+yesno: landlord_verifies_locks
+---
+question: |
+  ${question_id("Safety:15")}Does your building have a main front door that closes and locks automatically?
+yesno: sufficient_front_door
+---
+question: |
+  ${question_id("Safety:16")}Does every exterior door have a working lock?
+yesno: exterior_door_working_lock
+---
+question: |
+  ${question_id("Safety:17")}Is your building more than 70 feet tall?
+yesno: building_over_70
+---
+question: |
+  ${question_id("Safety:18")}Does your building have an automatic sprinkler system that follows the state 
+  Building Code?
+yesno: automatic_sprinkler
+comment: |
+ CR edit - link to state building code about automatic sprinkler systems.
+---
+question: |
+  ${question_id("Safety:19")}Does your building have lighted signs that show both a primary and secondary exit?
+yesno: exit_signs_present
+---
+question: |
+  ${question_id("Safety:20")}Do the signs use symbols so that people do not have to speak English?
+yesno: exit_signs_symbols
+---
+question: |
+  ${question_id("Safety:21")}Are there defects in the roof, foundation, or other structure that risk exposing
+  you to fire, shock, accident, or other dangers?
+yesno: structural_defect_unsfae
+---
+question: |
+  ${question_id("Safety:22")}Are there any structural elements not in good repair?
+subquestion: |
+  Structural elements must be weathertight, free from chronic dampness,
+  insect- and rodent-proof. They must also be free of holes, cracks and other defects.
+fields:
+  - no label: structures
+    datatype: checkboxes
+    choices:
+      - Foundations
+      - Floors
+      - Walls
+      - Ceilings
+      - Roofs
+      - Chimneys
+      - Other structural elements
+---
+question: |
+  ${question_id("Safety:23")}Are your doors storm doors or sufficiently weather stripped?
+yesno: doors_weather_proof
+---
+question: |
+  ${question_id("Safety:24")}Are your windows storm windows or sufficiently weather stripped?
+yesno: windows_weather_proof
+---
+question: |
+  ${question_id("Safety:25")}Do all your doors and windows open
+fields:
+  - note: <div class="initial-q">Fully?</div>
+  - no label: doors_windows_open_fully
+    datatype: yesnoradio
+  - note: <div class="initial-q">Easily?</div>
+  - no label: doors_windows_open_easily
+    datatype: yesnoradio
+---
+question: |
+  ${question_id("Safety:26")}Are all glass panes
+fields:
+  - note: <div class="initial-q">Unbroken?</div>
+  - no label: glass_panes_unbroken
+    datatype: yesnoradio
+  - note: <div class="initial-q">Caulked correctly?</div>
+  - no label: glass_panes_caulked_correctly
+    datatype: yesnoradio
+---
+question: |
+  ${question_id("Safety:27")}Are your staircases stable?
+yesno: safe_staircase
+---

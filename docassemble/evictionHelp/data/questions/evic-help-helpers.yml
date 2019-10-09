@@ -1,0 +1,12 @@
+code: |
+  def get_logged_in_information(name):
+    if user_logged_in():
+      return get_user_info()[name]
+    else:
+      return ""
+  
+  def question_id(message):
+    if defined("debug_enabled") and debug_enabled:
+      return "[" + message + "] "
+    else:
+      return ""
