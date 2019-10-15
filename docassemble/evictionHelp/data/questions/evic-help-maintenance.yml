@@ -65,12 +65,7 @@ fields:
 question: |
   ${question_id("Maintenance:7")}Do any of the following have problems?
 subquestion: |
-  "Problems" include 
-  not installed correctly, 
-  leaking, 
-  blocked, or 
-  have some
-  other defects. 
+  "Problems" include not installed correctly, leaking, blocked, or have some other defects. 
   Check the box next to every problem your apartment has:
 fields:
   - no label: broken_required_fixture
@@ -80,8 +75,8 @@ fields:
       - Waterheating facilities, gas pipes, heating equipment, or water pipes,
       - Stoves or ovens,
       - Catch-basins, vents, drains, and other similar fixtures,
-      - Connections to water, sewer, gas lines, ( - I think sewer includes this and the subsurface sewage disposal system),
-      # - Any (All) electrical fixtures, wiring, and outlets,
-      # - Any (All) smoke detectors and carbon monoxide alarms,
-      # - Any (All) heating and ventilation equipment,
+      - Connections to water, sewer, gas lines, 
+      - Any electrical fixtures, wiring, and outlets,
+      - Any smoke detectors and carbon monoxide alarms,
+      - Any heating and ventilation equipment,
       - Appliances your landlord installed like a dishwasher, washing machine, clothes dryer, refrigerator, or garbage disposal.

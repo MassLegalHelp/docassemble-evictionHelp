@@ -9,6 +9,7 @@ include:
   - evic-help-light-vent.yml
   - evic-help-maintenance.yml
   - evic-help-water.yml
+  - evic-help-helpers.yml
 ---
 code: |
   bad_conditions_list = [
@@ -55,6 +56,7 @@ code: |
   def add_problem(time, message):
     problems_to_fix[time].append(message)
 ---
+mandatory: True
 code: |
   saw_bad_con_1
   number_of_units = int(number_of_units)
