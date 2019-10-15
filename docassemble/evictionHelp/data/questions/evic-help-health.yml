@@ -1,5 +1,5 @@
 code: |
-  if garbage_accumulation:
+  if not garbage_accumulation.all_false():
     add_problem(1, "Unsafe garbage accumulation that could cause disease or attract pests")
 
   if lead_paint_present:
@@ -25,8 +25,16 @@ code: |
   health_completed = True
 ---
 question: |
-  ${question_id("Health:1")}Is there an accumulation of garbage or filth that could: * attract pests or * cause accidents or *cause disease CR edit - make each of these separate check boxes that if any are true make the variable garbage accumulation true?
-yesno: garbage_accumulation
+  ${question_id("Health:1")}Is there an accumulation of garbage or filth that could cause the following?
+subquesiton: |
+  Please select all that could apply
+fields:
+  - no label: garbage_accumulation
+    datatype: checkboxes
+    choices:
+      - attract pests: pests
+      - cause accidents: accidents
+      - cause disease: cause disease
 ---
 question: |
   ${question_id("Health:2")}Does your apartment have any lead paint?
@@ -63,4 +71,3 @@ fields:
   - note: <div class="inline-q">Have rats, mice, roaches, beadbugs or other insects been found in an individual unit?</div>
   - no label: pests_individual_apartment
     datatype: any
-  

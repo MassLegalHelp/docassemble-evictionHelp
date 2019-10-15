@@ -69,8 +69,11 @@ fields:
       val("tenant_pays_for_electricity") === false
 ---
 question: |
-  ${question_id("ElecGas:5")}Aside from your kitchen and bathroom, do all your rooms have 2 electrical wall outlets 
+  ${question_id("ElecGas:5")}Aside from your and bathroom, do all your rooms have 2 electrical wall outlets 
   or 1 light fixture and wall outlet for?
 yesno: sufficient_outlets_light
 comment: |
    CR edit - bathroom and kitchen not required to have AT LEAST this many electrical outlets? double checking.
+   KG note: in everyroom other than the kitchen and bathroom, your landlord must provide:
+     2 separate electrical wall outlets,or
+     1 electric light fixture and 1 wall outlet.
