@@ -1,6 +1,0 @@
-code: |
-  def get_logged_in_information(name):
-    if user_logged_in():
-      return get_user_info()[name]
-    else:
-      return ""
