@@ -1,7 +1,6 @@
 objects:
   - additional_terms: DADict
 ---
-mandatory: True
 code: |
   case.should_review
   final_questions_complete = True
