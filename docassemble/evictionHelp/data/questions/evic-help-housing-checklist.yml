@@ -56,7 +56,6 @@ code: |
   def add_problem(time, message):
     problems_to_fix[time].append(message)
 ---
-mandatory: True
 code: |
   saw_bad_con_1
   number_of_units = int(number_of_units)
