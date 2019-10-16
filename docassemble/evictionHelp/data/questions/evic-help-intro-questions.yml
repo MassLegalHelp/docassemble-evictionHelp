@@ -45,7 +45,7 @@ code: |
   processed_intro = True
 ---
 question: |
-  ${question_id("Worksheet:2")}What is your unit's address?
+  ${question_id("Worksheet:2")}What is (your unit's- CR delete) address?
 fields:
   - no label: client.address.address
 section: Rent
@@ -70,7 +70,10 @@ comment: |
 ---
 need: client.rent.value
 question: |
-  ${question_id("Worksheet:5")}Do you live in any of these kinds of housing (check all that apply)?
+  ${question_id("Worksheet:5")}What kind of housing do you have?
+subquestion: |
+ The kind of housing you live in makes a difference to the rights you have and the things you ask for in your agreement. 
+  Check all that apply:
 fields:
   - no label: client.subsidy.types
     datatype: checkboxes
@@ -84,9 +87,11 @@ fields:
       I don't know.
 ---
 question: |
-  ${question_id("Worksheet:6")}Subsidy questions
+  ${question_id("Worksheet:6")}Do you live in public or subsidized housing?
 subquestion: |
-  We are asking you a few questions to see if you might have a subsidy. Please check any that apply.
+  Sometimes it is hard to know if your landlord gets government funds, so you do not have to pay such a high rent .
+  These sentences are good ways to figure out if you live in public or subsidized housing. 
+  Check the box next to every sentence that is true.
 fields:
   - My rent changes when my income changes: client.subsidy.rent_changes
     datatype: yesnowide
@@ -101,29 +106,38 @@ fields:
     uncheck others: True
 ---
 question: |
-  ${question_id("Worksheet:7")}Subsidy warnings
+  ${question_id("Worksheet:7")}Risks to be aware of
 subquestion: |
   % if potential_subsidy:
-  Based off your previous responses, we suspect that you may have a housing subsidy. 
-  If this is the case, there are a few possible risks you should be aware of.
+  Based on your answers,
+  (CR - do we want to feedback / review answers they gave us?)
+  it sounds like you have a housing subsidy and the government helps pay for your rent. 
+  If you do live in public or subsidized housing, you need to know about:
+  
+    * some of the risks you may be taking, and 
+    * things you can ask for 
+  when you make an agreement with your landlord.
   % endif
 
   ### All subsidized tenants
 
-  If a you are evicted from any kind of subsidized housing for non-payment of rent, you will not be allowed into the state-guaranteed EA shelter. It may be possible to agree to change the basis of the eviction if they need shelter. Shelter is only a right for children (generally under age 18).
-
+  If a you are evicted from any kind of subsidized housing for non-payment of rent, you will not be able to get ![Emergency Assistance shelter]. Your landlord may agree to change the reason for evicting you if you need shelter. Only children under the age of 18 have a right to shelter.
+  [Emergency Assistance shelter](https://www.masslegalhelp.org/homelessness "Learn more about EA shelter")
+  
   % if client.subsidy.types["section 8"]:
   ### Section 8 vouchers only
 
-  If you are actually evicted by a constable, it will likely mean you will lose your Section 8 voucher. There may be ways to change the NTQ to avoid this.
+  If a constable ends up evicting you, you will probably lose your Section 8 voucher. Your landlord may be willing to change the Notice To Quit so you do not lose your voucher.
     
-  If a you admit to some violation of the lease the housing authority could decide to terminate, whether or not you are evicted or move out voluntarily.
+  If you admit that you violated terms in your lease, the housing authority could decide to "terminate" your lease. It may not matter if they have to evict you or you agree to move out voluntarily.
+  
+  (CR - and if the housing authority "terminates" your lease.... this means you lose your Section 8 housing voucher also?)
   % endif
 
   % if client.subsidy.types["public"] or client.subsidy.types["subsidized"] or client.subsidy.types["other"]:
   ### Non-mobile vouchers only
 
-  If you are evicted or move out voluntarily, you no longer have access to the housing subsidy. You’ll need to reapply and might have a 5 year waitlist.
+  If you are evicted or you move out voluntarily, you will no longer have a housing subsidy. You will need to apply all over again. And the waitlist is up to 5 years.
   % endif
 field: seen_subsidy_warning
 ---
@@ -181,7 +195,7 @@ subquestion: |
     % endfor
     </ul>
   % else:
-    You did not mention any issues
+    You did not describe any issues.
   % endif
 fields:
   - no label: repairs
