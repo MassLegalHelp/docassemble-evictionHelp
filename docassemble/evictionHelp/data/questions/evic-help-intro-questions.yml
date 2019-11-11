@@ -9,7 +9,9 @@ code: |
   has_subsidy = False
   potential_subsidy = False
 
-  if sum(client.subsidy.types.values()) == 0:
+  if client.subsidy.types["private"]:
+    potential_subsidy = False
+  elif sum(client.subsidy.types.values()) == 0:
     potential_subsidy = not client.subsidy.no_change
   else:
     has_subsidy = True
@@ -80,13 +82,16 @@ fields:
       - Section 8 mobile voucher: section 8
       - MRVP mobile voucher: MRVP
       - Other subsidized housing: other
+      - Private housing: private
     none of the above: |
       I don't know.
 ---
 question: |
   ${question_id("Worksheet:6")}Subsidy questions
 subquestion: |
-  We are asking you a few questions to see if you might have a subsidy. Please check any that apply.
+  We are asking you a few questions to see if you might have a subsidy. 
+  Please check any that apply.
+  For more information about subsidies, and housing programs, visit [MassLegalHelp](https://www.masslegalhelp.org/housing/housing-programs-types)
 fields:
   - My rent changes when my income changes: client.subsidy.rent_changes
     datatype: yesnowide
@@ -110,7 +115,9 @@ subquestion: |
 
   ### All subsidized tenants
 
-  If a you are evicted from any kind of subsidized housing for non-payment of rent, you will not be allowed into the state-guaranteed EA shelter. It may be possible to agree to change the basis of the eviction if they need shelter. Shelter is only a right for children (generally under age 18).
+  If a you are evicted from any kind of subsidized housing for non-payment of rent, you will not be allowed into the state-guaranteed EA shelter. 
+  It may be possible to agree to change the basis of the eviction if they need shelter. 
+  Shelter is only a right for children (generally under age 18).
 
   % if client.subsidy.types["section 8"]:
   ### Section 8 vouchers only
