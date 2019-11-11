@@ -56,11 +56,11 @@ fields:
       val("tenant_pays_for_gas") === false
 ---
 question: |
-  ${question_id("ElecGas:4")}Do you have a written agreement with your landlord that says you must pay for gas?
+  ${question_id("ElecGas:4")}Do you have a written agreement with your landlord that says you must pay for electricity?
 fields:
   - no label: tenant_pays_for_electricity
     datatype: yesnoradio
-  - note: <div class="initial-q">Does your landlord pay for gas?</div>
+  - note: <div class="initial-q">Does your landlord pay for electricity?</div>
     js show if: |
       val("tenant_pays_for_electricity") === false
   - no label: landlord_pays_for_electricity

@@ -114,6 +114,7 @@ code: |
 
   bad_conditions_completed
 ---
+section: Bad conditions
 question: |
   ${question_id("Housing:1")}Now we need to ask about any bad conditions at your apartment.
 field: saw_bad_con_1
@@ -148,7 +149,7 @@ fields:
   - no label: additional_conditions
     datatype: area
     js show if: |
-      val("add_conditions_present") == true
+      val("additional_conditions_present") === true
 ---
 question: |
   ${question_id("Housing:5")}The bad conditions you noted are:
