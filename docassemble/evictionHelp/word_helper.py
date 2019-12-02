@@ -15,4 +15,6 @@ def exists(item):
     val = value(item)
     return len(str(val).strip()) > 0
   except:
-    return False
+    return False 
+  
+ #h1

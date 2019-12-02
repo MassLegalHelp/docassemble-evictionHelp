@@ -7,17 +7,25 @@ code: |
   client.initializeAttribute('subsidy', DAObject)
 
   has_subsidy = False
-  potential_subsidy = False
 
-  if client.subsidy.types["private"]:
-    potential_subsidy = False
-  elif sum(client.subsidy.types.values()) == 0:
-    potential_subsidy = not client.subsidy.no_change
-  else:
+  if client.housing_type == "public":
     has_subsidy = True
+  elif client.housing_type == "unknown":
+    if client.subsidy.income_report:
+      has_subsidy = True
+    else:
+      saw_private_housing_notice
+
+  if has_subsidy:
+    in_public = client.subsidy.types["voucher"] or client.subsidy.types["authority"] or client.subsidy.types["money"]
+    if in_public:
+      saw_public_housing_notice
+    elif client.subsidy.types["tax_credit"] and not in_public:
+      saw_tax_credit_notice
+    else:
+      uncertain_subsidy
   
-  if has_subsidy or potential_subsidy:
-    seen_subsidy_warning
+  if has_subsidy:
     client.rent.subsidized_cost
        
   bad_conditions_completed
@@ -72,67 +80,83 @@ comment: |
 ---
 need: client.rent.value
 question: |
-  ${question_id("Worksheet:5")}Do you live in any of these kinds of housing (check all that apply)?
+  ${question_id("Worksheet:5")}Housing
+subquestion: |
+  If you need to move out, your housing choices in the future depend on: 
+
+  * the kind of housing you live in now, and 
+  * the terms your landlord agrees to.
+  
+  If you are not sure of the kind of housing you live in now, we can help you figure it out.
+
+  I live in:
+field: client.housing_type
+choices:
+  - Private housing: private
+  - Public or subsidized housing: public
+  - I am not sure what kind of housing I have: unknown
+---
+question: |
+  ${question_id("Worksheet:5.1")}Is your rent based partly on your income?
+subquestion: |
+  Do you have to report your income to your landlord every year?
+yesno: client.subsidy.income_report
+---
+question: |
+  ${question_id("Worksheet:6.1")}You probably live in private housing.
+subquestion: |
+  Neither you nor your landlord get money from the government to help pay your rent. 
+
+  The rules about Emergency Shelter Assistance and government funded housing programs do not apply to you. 
+field: saw_private_housing_notice
+---
+question: |
+  ${question_id("Worksheet:6.2")}Types of government funded housing
+subquestion: |
+  Please check all boxes that are true for you
 fields:
   - no label: client.subsidy.types
     datatype: checkboxes
     choices:
-      - Public housing: public
-      - Subsidized housing, funded by HUD or Massachusetts: subsidized
-      - Section 8 mobile voucher: section 8
-      - MRVP mobile voucher: MRVP
-      - Other subsidized housing: other
-      - Private housing: private
-    none of the above: |
-      I don't know.
+      - I get / have a  housing voucher: voucher
+      - My landlord is a housing authority: authority
+      - My landlord gets money from the government to provide affordable housing: money
+      - My landlord gets a tax credit from the government to provide affordable housing: tax_credit 
 ---
 question: |
-  ${question_id("Worksheet:6")}Subsidy questions
+  ${question_id("Worksheet:7.1")}It seems that you live in public or subsidized housing
 subquestion: |
-  We are asking you a few questions to see if you might have a subsidy. 
-  Please check any that apply.
-  For more information about subsidies, and housing programs, visit [MassLegalHelp](https://www.masslegalhelp.org/housing/housing-programs-types)
-fields:
-  - My rent changes when my income changes: client.subsidy.rent_changes
-    datatype: yesnowide
-  - I pay no more than 30-40% of my income to the rent each month, even if my income changes: client.subsidy.max_rent_limit
-    datatype: yesnowide
-  - I need to report my income to my landlord each year: client.subsidy.landlord_report
-    datatype: yesnowide
-  - I need to report my income to a housing authority each year: client.subsidy.authority_report
-    datatype: yesnowide
-  - My rent does not change even if my income changes: client.subsidy.no_change
-    datatype: yesnowide
-    uncheck others: True
+  If you are evicted from one these housing programs for non-payment of rent, you cannot get Emergency Assistance Shelter after you move out.  
+  
+  If your landlord evicts you because you violated the lease or you did not pay rent, you cannot get into another subsidized housing program for at least 2 years. And you must pay  back all the rent you owe, before you can get into another subsidized or public housing program
+  
+  But you can ask the landlord to help you keep your housing choices open when you negotiate your agreement.
+  
+  In the worksheet and agreement you get at the end of this interview, you will find find words and terms to ask for, so you can you keep your options open.
+field: saw_public_housing_notice
 ---
 question: |
-  ${question_id("Worksheet:7")}Subsidy warnings
+  ${question_id("Worksheet:7.2")}It looks like you live in a tax-credit unit.
 subquestion: |
-  % if potential_subsidy:
-  Based off your previous responses, we suspect that you may have a housing subsidy. 
-  If this is the case, there are a few possible risks you should be aware of.
-  % endif
-
-  ### All subsidized tenants
-
-  If a you are evicted from any kind of subsidized housing for non-payment of rent, you will not be allowed into the state-guaranteed EA shelter. 
-  It may be possible to agree to change the basis of the eviction if they need shelter. 
-  Shelter is only a right for children (generally under age 18).
-
-  % if client.subsidy.types["section 8"]:
-  ### Section 8 vouchers only
-
-  If you are actually evicted by a constable, it will likely mean you will lose your Section 8 voucher. There may be ways to change the NTQ to avoid this.
-    
-  If a you admit to some violation of the lease the housing authority could decide to terminate, whether or not you are evicted or move out voluntarily.
-  % endif
-
-  % if client.subsidy.types["public"] or client.subsidy.types["subsidized"] or client.subsidy.types["other"]:
-  ### Non-mobile vouchers only
-
-  If you are evicted or move out voluntarily, you no longer have access to the housing subsidy. You’ll need to reapply and might have a 5 year waitlist.
-  % endif
-field: seen_subsidy_warning
+  The only government funding that goes toward your housing is that the government gives your landlord a tax credit for keeping your rent affordable. 
+  
+  The rules that would keep you out of Emergency Assistance Shelter and public and subsidized housing after getting evicted probably do not apply to you. 
+  
+  To be absolutely sure, you may want to check with your landlord about the kind of housing you have. 
+field: saw_tax_credit_notice
+---
+event: uncertain_subsidy
+question: |
+  ${question_id("Worksheet:7.3")}Still uncertain?
+subquestion: |
+  What you can do next depends on knowing the kind of housing you live in. 
+  It is probably best to stop the interview now and find out. 
+  Ask your landlord about the kind of housing you live in. 
+  If you have a written lease it should be in there. 
+  If your lease is not written you may live in private housing. 
+buttons:
+  - I want to keep going: continue
+  - I want to stop now and find out about the kind of housing I live in: exit
 ---
 question: |
   ${question_id("Worksheet:8")}What portion of the rent do you pay?
